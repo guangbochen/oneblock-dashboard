@@ -140,7 +140,7 @@ import {
   ensureRegex, escapeHtml, escapeRegex, ucFirst, pluralize
 } from '@shell/utils/string';
 import {
-  importChart, importList, importDetail, importEdit, listProducts, loadProduct, importCustomPromptRemove, resolveList, resolveEdit, resolveWindowComponent, importWindowComponent, importLogin, resolveChart, resolveDetail, importDialog, importMachineConfig, resolveMachineConfigComponent, resolveCloudCredentialComponent, importCloudCredential
+  importList, importDetail, importEdit, listProducts, loadProduct, importCustomPromptRemove, resolveList, resolveEdit, resolveWindowComponent, importWindowComponent, importLogin, resolveDetail, importDialog,
 } from '@shell/utils/dynamic-importer';
 
 import { NAME as EXPLORER } from '@shell/config/product/explorer';
@@ -148,8 +148,8 @@ import isObject from 'lodash/isObject';
 import { normalizeType } from '@shell/plugins/dashboard-store/normalize';
 import { sortBy } from '@shell/utils/sort';
 
-import { haveV1Monitoring, haveV2Monitoring } from '@shell/utils/monitoring';
-import { NEU_VECTOR_NAMESPACE } from '@shell/config/product/neuvector';
+// import { haveV1Monitoring, haveV2Monitoring } from '@shell/utils/monitoring';
+// import { NEU_VECTOR_NAMESPACE } from '@shell/config/product/neuvector';
 
 export const NAMESPACED = 'namespaced';
 export const CLUSTER_LEVEL = 'cluster';
@@ -171,13 +171,13 @@ const graphConfigMap = {};
 const FIELD_REGEX = /^\$\.metadata\.fields\[([0-9]*)\]/;
 
 export const IF_HAVE = {
-  V1_MONITORING:            'v1-monitoring',
-  V2_MONITORING:            'v2-monitoring',
+  // V1_MONITORING:            'v1-monitoring',
+  // V2_MONITORING:            'v2-monitoring',
   PROJECT:                  'project',
   NO_PROJECT:               'no-project',
   NOT_V1_ISTIO:             'not-v1-istio',
   MULTI_CLUSTER:            'multi-cluster',
-  NEUVECTOR_NAMESPACE:      'neuvector-namespace',
+  // NEUVECTOR_NAMESPACE:      'neuvector-namespace',
   ADMIN:                    'admin-user',
   MCM_DISABLED:             'mcm-disabled',
   NOT_STANDALONE_HARVESTER: 'not-standalone-harvester',
@@ -1154,11 +1154,11 @@ export const getters = {
     };
   },
 
-  importChart(state, getters, rootState) {
-    return (rawType) => {
-      return loadExtension(rootState, 'chart', getters.componentFor(rawType), importChart);
-    };
-  },
+  // importChart(state, getters, rootState) {
+  //   return (rawType) => {
+  //     return loadExtension(rootState, 'chart', getters.componentFor(rawType), importChart);
+  //   };
+  // },
 
   importDetail(state, getters, rootState) {
     return (rawType, subType) => {
@@ -1190,17 +1190,17 @@ export const getters = {
     };
   },
 
-  importMachineConfig(state, getters, rootState) {
-    return (rawType, subType) => {
-      return loadExtension(rootState, 'machine-config', getters.componentFor(rawType, subType), importMachineConfig);
-    };
-  },
-
-  importCloudCredential(state, getters, rootState) {
-    return (rawType, subType) => {
-      return loadExtension(rootState, 'cloud-credential', getters.componentFor(rawType, subType), importCloudCredential);
-    };
-  },
+  // importMachineConfig(state, getters, rootState) {
+  //   return (rawType, subType) => {
+  //     return loadExtension(rootState, 'machine-config', getters.componentFor(rawType, subType), importMachineConfig);
+  //   };
+  // },
+  //
+  // importCloudCredential(state, getters, rootState) {
+  //   return (rawType, subType) => {
+  //     return loadExtension(rootState, 'cloud-credential', getters.componentFor(rawType, subType), importCloudCredential);
+  //   };
+  // },
 
   componentFor(state, getters) {
     return (type, subType) => {

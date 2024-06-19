@@ -1,6 +1,6 @@
 <script>
 import CreateEditView from '@shell/mixins/create-edit-view';
-import ResourcesSummary from '@shell/components/fleet/ResourcesSummary';
+// import ResourcesSummary from '@shell/components/fleet/ResourcesSummary';
 import ResourceTabs from '@shell/components/form/ResourceTabs';
 import { COUNT, WORKLOAD_TYPES } from '@shell/config/types';
 import { WORKLOAD_SCHEMA } from '@shell/config/schema';
@@ -16,7 +16,7 @@ import {
 
 export default {
   components: {
-    ResourcesSummary,
+    // ResourcesSummary,
     ResourceTable,
     ResourceTabs,
     Loading,
@@ -225,11 +225,11 @@ export default {
   <div v-else>
     <div class="mb-20">
       <h3>{{ t('namespace.resources') }}</h3>
-      <ResourcesSummary
-        state-key="namespace.resourceStates"
-        :value="accumulatedStateCounts"
-        :required-states="summaryStates"
-      />
+<!--      <ResourcesSummary-->
+<!--        state-key="namespace.resourceStates"-->
+<!--        :value="accumulatedStateCounts"-->
+<!--        :required-states="summaryStates"-->
+<!--      />-->
     </div>
     <ResourceTabs
       v-model="value"

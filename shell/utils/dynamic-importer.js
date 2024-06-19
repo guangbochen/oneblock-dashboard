@@ -2,21 +2,21 @@
 // So it can be disabled just on this file that does nothing else, instead of every file that uses
 // an import with a variable in the path.
 
-export function importCloudCredential(name) {
-  if (!name) {
-    throw new Error('Name required');
-  }
-
-  return () => import(/* webpackChunkName: "cloud-credential" */ `@shell/cloud-credential/${name}`);
-}
-
-export function importMachineConfig(name) {
-  if (!name) {
-    throw new Error('Name required');
-  }
-
-  return () => import(/* webpackChunkName: "machine-config" */ `@shell/machine-config/${name}`);
-}
+// export function importCloudCredential(name) {
+//   if (!name) {
+//     throw new Error('Name required');
+//   }
+//
+//   return () => import(/* webpackChunkName: "cloud-credential" */ `@shell/cloud-credential/${name}`);
+// }
+//
+// export function importMachineConfig(name) {
+//   if (!name) {
+//     throw new Error('Name required');
+//   }
+//
+//   return () => import(/* webpackChunkName: "machine-config" */ `@shell/machine-config/${name}`);
+// }
 
 export function importLogin(name) {
   if (!name) {
@@ -26,13 +26,13 @@ export function importLogin(name) {
   return () => import(/* webpackChunkName: "login" */ `@shell/components/auth/login/${name}`);
 }
 
-export function importChart(name) {
-  if (!name) {
-    throw new Error('Name required');
-  }
-
-  return () => import(/* webpackChunkName: "chart" */ `@shell/chart/${name}`);
-}
+// export function importChart(name) {
+//   if (!name) {
+//     throw new Error('Name required');
+//   }
+//
+//   return () => import(/* webpackChunkName: "chart" */ `@shell/chart/${name}`);
+// }
 
 export function importList(name) {
   if (!name) {
@@ -107,9 +107,9 @@ export function resolveList(key) {
   return require.resolve(`@shell/list/${ key }`);
 }
 
-export function resolveChart(key) {
-  return require.resolve(`@shell/chart/${ key }`);
-}
+// export function resolveChart(key) {
+//   return require.resolve(`@shell/chart/${ key }`);
+// }
 
 export function resolveEdit(key) {
   return require.resolve(`@shell/edit/${ key }`);
@@ -123,10 +123,10 @@ export function resolveWindowComponent(key) {
   return require.resolve(`@shell/components/nav/WindowManager/${ key }`);
 }
 
-export function resolveMachineConfigComponent(key) {
-  return require.resolve(`@shell/machine-config/${ key }`);
-}
-
-export function resolveCloudCredentialComponent(key) {
-  return require.resolve(`@shell/cloud-credential/${ key }`);
-}
+// export function resolveMachineConfigComponent(key) {
+//   return require.resolve(`@shell/machine-config/${ key }`);
+// }
+//
+// export function resolveCloudCredentialComponent(key) {
+//   return require.resolve(`@shell/cloud-credential/${ key }`);
+// }

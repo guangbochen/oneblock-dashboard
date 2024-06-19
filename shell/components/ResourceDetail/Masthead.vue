@@ -5,7 +5,7 @@ import ButtonGroup from '@shell/components/ButtonGroup';
 import { BadgeState } from '@components/BadgeState';
 import { Banner } from '@components/Banner';
 import { get } from '@shell/utils/object';
-import { NAME as FLEET_NAME } from '@shell/config/product/fleet';
+// import { NAME as FLEET_NAME } from '@shell/config/product/fleet';
 import { HIDE_SENSITIVE } from '@shell/store/prefs';
 import {
   AS, _DETAIL, _CONFIG, _YAML, MODE, _CREATE, _EDIT, _VIEW, _UNFLAG, _GRAPH
@@ -160,7 +160,8 @@ export default {
     },
 
     isWorkspace() {
-      return this.$store.getters['productId'] === FLEET_NAME && !!this.value?.metadata?.namespace;
+      // return this.$store.getters['productId'] === FLEET_NAME && !!this.value?.metadata?.namespace;
+      return true
     },
 
     workspaceLocation() {
@@ -169,7 +170,7 @@ export default {
         params: {
           cluster:  this.$route.params.cluster,
           product:  this.$store.getters['productId'],
-          resource: FLEET.WORKSPACE,
+          // resource: FLEET.WORKSPACE,
           id:       this.$route.params.namespace
         }
       };

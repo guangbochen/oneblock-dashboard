@@ -11,7 +11,7 @@ import LabeledSelect from '@shell/components/form/LabeledSelect';
 import { _CREATE, _VIEW } from '@shell/config/query-params';
 import { PROVISIONER_OPTIONS } from '@shell/models/storage.k8s.io.storageclass';
 import { mapFeature, UNSUPPORTED_STORAGE_DRIVERS } from '@shell/store/features';
-import { CSI_DRIVER, LONGHORN_DRIVER } from '@shell/config/types';
+import { CSI_DRIVER } from '@shell/config/types';
 
 export default {
   name: 'StorageClass',
@@ -121,7 +121,7 @@ export default {
 
       this.csiDrivers.forEach((driver) => {
         // if a csiDriver is in PROVISIONER_OPTIONS, it's already in the dropdown list; dont add again
-        if (driver.metadata.name === LONGHORN_DRIVER || provisionerOptionsDrivers.includes(driver.metadata.name)) {
+        if (provisionerOptionsDrivers.includes(driver.metadata.name)) {
           return;
         }
         const fallback = `${ driver.metadata.name }  ${ this.t('persistentVolume.csi.suffix') }`;

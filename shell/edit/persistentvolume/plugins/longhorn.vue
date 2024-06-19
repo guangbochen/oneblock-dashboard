@@ -3,7 +3,6 @@ import KeyValue from '@shell/components/form/KeyValue';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import { RadioGroup } from '@components/Form/Radio';
 import { _CREATE } from '@shell/config/query-params';
-import { LONGHORN_DRIVER } from '@shell/config/types';
 
 export default {
   components: {
@@ -29,7 +28,7 @@ export default {
 
     if (this.mode === _CREATE) {
       this.$set(this.value.spec, 'csi', this.value.spec.csi || {});
-      this.$set(this.value.spec.csi, 'driver', LONGHORN_DRIVER);
+      // this.$set(this.value.spec.csi, 'driver', LONGHORN_DRIVER);
       this.$set(this.value.spec.csi, 'readOnly', this.value.spec.csi.readOnly || false);
       this.$set(this.value.spec.csi, 'volumeAttributes', this.value.spec.csi.volumeAttributes || defaultVolumeAttributes);
     }

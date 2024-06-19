@@ -12,7 +12,7 @@ import Masthead from '@shell/components/ResourceDetail/Masthead';
 import DetailTop from '@shell/components/DetailTop';
 import { clone, diff } from '@shell/utils/object';
 import IconMessage from '@shell/components/IconMessage';
-import ForceDirectedTreeChart from '@shell/components/fleet/ForceDirectedTreeChart';
+// import ForceDirectedTreeChart from '@shell/components/fleet/ForceDirectedTreeChart';
 import { checkSchemasForFindAllHash } from '@shell/utils/auth';
 
 function modeFor(route) {
@@ -45,7 +45,7 @@ export default {
   components: {
     Loading,
     DetailTop,
-    ForceDirectedTreeChart,
+    // ForceDirectedTreeChart,
     ResourceYaml,
     Masthead,
     IconMessage,
@@ -395,11 +395,11 @@ export default {
       />
     </Masthead>
 
-    <ForceDirectedTreeChart
-      v-if="isGraph && canViewChart"
-      :data="chartData"
-      :fdc-config="getGraphConfig"
-    />
+<!--    <ForceDirectedTreeChart-->
+<!--      v-if="isGraph && canViewChart"-->
+<!--      :data="chartData"-->
+<!--      :fdc-config="getGraphConfig"-->
+<!--    />-->
 
     <ResourceYaml
       v-else-if="isYaml"

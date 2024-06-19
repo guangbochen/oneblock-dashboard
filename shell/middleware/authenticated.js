@@ -14,7 +14,7 @@ import { setFavIcon, haveSetFavIcon } from '@shell/utils/favicon';
 import dynamicPluginLoader from '@shell/pkg/dynamic-plugin-loader';
 import { AFTER_LOGIN_ROUTE, WORKSPACE } from '@shell/store/prefs';
 import { BACK_TO } from '@shell/config/local-storage';
-import { NAME as FLEET_NAME } from '@shell/config/product/fleet.js';
+// import { NAME as FLEET_NAME } from '@shell/config/product/fleet.js';
 import { canViewResource } from '@shell/utils/auth';
 
 const getPackageFromRoute = (route) => {
@@ -438,19 +438,19 @@ export default async function({
 
     // Ensure that the activeNamespaceCache is updated given the change of context either from or to a place where it uses workspaces
     // When fleet moves to it's own package this should be moved to pkg onEnter/onLeave
-    if ((oldProduct === FLEET_NAME || product === FLEET_NAME) && oldProduct !== product) {
-      // See note above for store.app.router.beforeEach, need to setProduct manually, for the moment do this in a targeted way
-      const redirected = setProduct(store, route, redirect);
-
-      if (redirected) {
-        return redirected();
-      }
-
-      store.commit('updateWorkspace', {
-        value:   store.getters['prefs/get'](WORKSPACE) || DEFAULT_WORKSPACE,
-        getters: store.getters
-      });
-    }
+    // if ((oldProduct === FLEET_NAME || product === FLEET_NAME) && oldProduct !== product) {
+    //   // See note above for store.app.router.beforeEach, need to setProduct manually, for the moment do this in a targeted way
+    //   const redirected = setProduct(store, route, redirect);
+    //
+    //   if (redirected) {
+    //     return redirected();
+    //   }
+    //
+    //   store.commit('updateWorkspace', {
+    //     value:   store.getters['prefs/get'](WORKSPACE) || DEFAULT_WORKSPACE,
+    //     getters: store.getters
+    //   });
+    // }
 
     // Always run loadCluster, it handles 'unload' as well
     // Run them in parallel

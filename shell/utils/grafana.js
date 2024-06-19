@@ -1,4 +1,4 @@
-import { haveV2Monitoring } from '@shell/utils/monitoring';
+// import { haveV2Monitoring } from '@shell/utils/monitoring';
 import { parse as parseUrl, addParam } from '@shell/utils/url';
 import { CATALOG } from '@shell/config/types';
 
@@ -33,9 +33,9 @@ export function computeDashboardUrl(monitoringVersion, embedUrl, clusterId, para
 }
 
 export async function dashboardExists(monitoringVersion, store, clusterId, embedUrl, storeName = 'cluster', projectId = null) {
-  if ( !haveV2Monitoring(store.getters) ) {
-    return false;
-  }
+  // if ( !haveV2Monitoring(store.getters) ) {
+  //   return false;
+  // }
 
   const url = parseUrl(embedUrl);
   let prefix = `${ getClusterPrefix(monitoringVersion, clusterId) }/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/`;

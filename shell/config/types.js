@@ -151,7 +151,7 @@ export const MONITORING = {
 
 // export const LONGHORN_DRIVER = 'driver.longhorn.io';
 //
-// export const SNAPSHOT = 'rke.cattle.io.etcdsnapshot';
+export const SNAPSHOT = 'rke.cattle.io.etcdsnapshot';
 
 // --------------------------------------
 // 2. Only if Rancher is installed

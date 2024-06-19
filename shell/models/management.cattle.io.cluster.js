@@ -11,7 +11,7 @@ import { isEmpty } from '@shell/utils/object';
 import { HARVESTER_NAME as HARVESTER } from '@shell/config/features';
 import { isHarvesterCluster } from '@shell/utils/cluster';
 import HybridModel from '@shell/plugins/steve/hybrid-class';
-import { LINUX, WINDOWS } from '@shell/store/catalog';
+// import { LINUX, WINDOWS } from '@shell/store/catalog';
 import { KONTAINER_TO_DRIVER } from './management.cattle.io.kontainerdriver';
 import { PINNED_CLUSTERS } from '@shell/store/prefs';
 import { copyTextToClipboard } from '@shell/utils/clipboard';
@@ -236,12 +236,12 @@ export default class MgmtCluster extends HybridModel {
     if (rke2WindowsWorkers || rke2LinuxWorkers ) {
       const out = [];
 
-      if (rke2WindowsWorkers) {
-        out.push(WINDOWS);
-      }
-      if (rke2LinuxWorkers) {
-        out.push(LINUX);
-      }
+      // if (rke2WindowsWorkers) {
+      //   out.push(WINDOWS);
+      // }
+      // if (rke2LinuxWorkers) {
+      //   out.push(LINUX);
+      // }
 
       return out;
     } else if (this.providerOs === WINDOWS) {

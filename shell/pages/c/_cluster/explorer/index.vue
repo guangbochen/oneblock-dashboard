@@ -27,7 +27,7 @@ import {
   STATE,
 } from '@shell/config/table-headers';
 
-import { haveV1Monitoring, monitoringStatus, canViewGrafanaLink } from '@shell/utils/monitoring';
+// import { haveV1Monitoring, monitoringStatus, canViewGrafanaLink } from '@shell/utils/monitoring';
 import Tabbed from '@shell/components/Tabbed';
 import Tab from '@shell/components/Tabbed/Tab';
 import { allDashboardsExist } from '@shell/utils/grafana';
@@ -107,7 +107,7 @@ export default {
 
       // It's not enough to check that the grafana links are working for the current user; embedded cluster-level dashboards should only be shown if the user can view the grafana endpoint
       // https://github.com/rancher/dashboard/issues/9792
-      setPromiseResult(canViewGrafanaLink(this.$store), this, 'canViewMetrics', 'Determine Grafana Permission');
+      // setPromiseResult(canViewGrafanaLink(this.$store), this, 'canViewMetrics', 'Determine Grafana Permission');
 
       if (this.currentCluster.isLocal && this.$store.getters['management/schemaFor'](MANAGEMENT.NODE)) {
         this.$store.dispatch('management/findAll', { type: MANAGEMENT.NODE });
@@ -156,7 +156,7 @@ export default {
 
   computed: {
     ...mapGetters(['currentCluster']),
-    ...monitoringStatus(),
+    // ...monitoringStatus(),
 
     nodes() {
       return this.$store.getters['cluster/all'](NODE);
@@ -166,13 +166,13 @@ export default {
       return this.$store.getters['management/all'](MANAGEMENT.CLUSTER);
     },
 
-    hasV1Monitoring() {
-      return haveV1Monitoring(this.$store.getters);
-    },
+    // hasV1Monitoring() {
+    //   return haveV1Monitoring(this.$store.getters);
+    // },
 
-    v1MonitoringURL() {
-      return `/k/${ this.currentCluster.id }/monitoring`;
-    },
+    // v1MonitoringURL() {
+    //   return `/k/${ this.currentCluster.id }/monitoring`;
+    // },
 
     displayProvider() {
       const other = 'other';
@@ -464,18 +464,18 @@ export default {
         /></span>
       </div>
       <div :style="{'flex':1}" />
-      <div v-if="!monitoringStatus.v2 && !monitoringStatus.v1">
-        <n-link
-          :to="{name: 'c-cluster-explorer-tools'}"
-          class="monitoring-install"
-        >
-          <i class="icon icon-gear" />
-          <span>{{ t('glance.installMonitoring') }}</span>
-        </n-link>
-      </div>
-      <div v-if="monitoringStatus.v1">
-        <span>{{ t('glance.v1MonitoringInstalled') }}</span>
-      </div>
+<!--      <div v-if="!monitoringStatus.v2 && !monitoringStatus.v1">-->
+<!--        <n-link-->
+<!--          :to="{name: 'c-cluster-explorer-tools'}"-->
+<!--          class="monitoring-install"-->
+<!--        >-->
+<!--          <i class="icon icon-gear" />-->
+<!--          <span>{{ t('glance.installMonitoring') }}</span>-->
+<!--        </n-link>-->
+<!--      </div>-->
+<!--      <div v-if="monitoringStatus.v1">-->
+<!--        <span>{{ t('glance.v1MonitoringInstalled') }}</span>-->
+<!--      </div>-->
       <ConfigBadge
         v-if="currentCluster.canUpdate"
         :cluster="currentCluster"

@@ -33,7 +33,7 @@ export default {
       displayVersion,
       fullVersion,
       clusterFilter:     '',
-      hasProvCluster,
+      // hasProvCluster,
       maxClustersToShow: MENU_MAX_CLUSTERS,
       emptyCluster:      BLANK_CLUSTER,
       showPinClusters:   false,
@@ -42,10 +42,10 @@ export default {
   },
 
   fetch() {
-    if (this.hasProvCluster) {
-      // this.$store.dispatch('management/findAll', { type: CAPI.RANCHER_CLUSTER });
-      this.$store.dispatch('management/findAll', { type: MANAGEMENT.CLUSTER });
-    }
+    // if (this.hasProvCluster) {
+    //   // this.$store.dispatch('management/findAll', { type: CAPI.RANCHER_CLUSTER });
+    //   this.$store.dispatch('management/findAll', { type: MANAGEMENT.CLUSTER });
+    // }
   },
 
   computed: {
@@ -173,6 +173,8 @@ export default {
     clusterFilterCount() {
       return this.clusterFilter ? this.clustersFiltered.length : this.clusters.length;
     },
+
+    // maxClustersToShow: mapPref(MENU_MAX_CLUSTERS),
 
     multiClusterApps() {
       const options = this.options;

@@ -1,4 +1,4 @@
-import { PVC, LONGHORN_DRIVER } from '@shell/config/types';
+import { PVC } from '@shell/config/types';
 import { VOLUME_PLUGINS } from '@shell/config/persistentVolume';
 import SteveModel from '@shell/plugins/steve/steve-class';
 
@@ -19,10 +19,6 @@ export default class PV extends SteveModel {
 
     // every source should be a csi driver or listed in VOLUME_PLUGIN but just in case..
     return this.t('generic.unknown');
-  }
-
-  get isLonghorn() {
-    return this.spec.csi && this.spec.csi.driver === LONGHORN_DRIVER;
   }
 
   get claim() {
