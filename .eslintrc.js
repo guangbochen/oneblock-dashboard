@@ -76,7 +76,7 @@ module.exports = {
     },
     {
       files:         ['**/*.vue'],
-      excludedFiles: ['pkg/oneblock/**/*.vue'],
+      excludedFiles: ['pkg/llmos/**/*.vue'],
       rules:         {
         // Vue/HTML Formatting
         'vue/no-v-html':                    'error',

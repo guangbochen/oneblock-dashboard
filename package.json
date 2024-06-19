@@ -1,9 +1,9 @@
 {
   "name": "dashboard",
-  "description": "Rancher Dashboard",
-  "repository": "https://github.com/rancherlabs/dashboard",
+  "description": "LLMOS Dashboard",
+  "repository": "https://github.com/llmos-ai/dashboard",
   "license": "Apache-2.0",
-  "author": "SUSE",
+  "author": "1block.ai",
   "private": true,
   "version": "0.0.0",
   "engines": {

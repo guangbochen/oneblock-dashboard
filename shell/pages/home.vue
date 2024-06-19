@@ -8,7 +8,7 @@ import { BadgeState } from '@components/BadgeState';
 import CommunityLinks from '@shell/components/CommunityLinks';
 import SingleClusterInfo from '@shell/components/SingleClusterInfo';
 import { mapGetters, mapState } from 'vuex';
-import { MANAGEMENT, CAPI } from '@shell/config/types';
+import { MANAGEMENT } from '@shell/config/types';
 import { NAME as MANAGER } from '@shell/config/product/manager';
 import { STATE } from '@shell/config/table-headers';
 import { MODE, _IMPORT } from '@shell/config/query-params';
@@ -17,6 +17,7 @@ import { getVersionInfo, markSeenReleaseNotes } from '@shell/utils/version';
 import PageHeaderActions from '@shell/mixins/page-actions';
 import { getVendor } from '@shell/config/private-label';
 import { mapFeature, MULTI_CLUSTER } from '@shell/store/features';
+import { filterOnlyKubernetesClusters, filterHiddenLocalCluster } from '@shell/utils/cluster';
 import { BLANK_CLUSTER } from '@shell/store/store-types.js';
 
 import { RESET_CARDS_ACTION, SET_LOGIN_ACTION } from '@shell/config/page-actions';
@@ -37,30 +38,30 @@ export default {
   mixins: [PageHeaderActions],
 
   fetch() {
-    if ( this.$store.getters['management/schemaFor'](CAPI.RANCHER_CLUSTER) ) {
-      this.$store.dispatch('management/findAll', { type: CAPI.RANCHER_CLUSTER });
-    }
+    // if ( this.$store.getters['management/schemaFor'](CAPI.LLMOS_CLUSTER) ) {
+    //   this.$store.dispatch('management/findAll', { type: CAPI.LLMOS_CLUSTER });
+    // }
 
     if ( this.$store.getters['management/schemaFor'](MANAGEMENT.CLUSTER) ) {
       this.$store.dispatch('management/findAll', { type: MANAGEMENT.CLUSTER });
     }
 
-    if ( this.$store.getters['management/canList'](CAPI.MACHINE) ) {
-      this.$store.dispatch('management/findAll', { type: CAPI.MACHINE });
-    }
+    // if ( this.$store.getters['management/canList'](CAPI.MACHINE) ) {
+    //   this.$store.dispatch('management/findAll', { type: CAPI.MACHINE });
+    // }
 
-    if ( this.$store.getters['management/canList'](MANAGEMENT.NODE) ) {
-      this.$store.dispatch('management/findAll', { type: MANAGEMENT.NODE });
-    }
+    // if ( this.$store.getters['management/canList'](MANAGEMENT.NODE) ) {
+    //   this.$store.dispatch('management/findAll', { type: MANAGEMENT.NODE });
+    // }
 
     // We need to fetch node pools and node templates in order to correctly show the provider for RKE1 clusters
-    if ( this.$store.getters['management/canList'](MANAGEMENT.NODE_POOL) ) {
-      this.$store.dispatch('management/findAll', { type: MANAGEMENT.NODE_POOL });
-    }
+    // if ( this.$store.getters['management/canList'](MANAGEMENT.NODE_POOL) ) {
+    //   this.$store.dispatch('management/findAll', { type: MANAGEMENT.NODE_POOL });
+    // }
 
-    if ( this.$store.getters['management/canList'](MANAGEMENT.NODE_TEMPLATE) ) {
-      this.$store.dispatch('management/findAll', { type: MANAGEMENT.NODE_TEMPLATE });
-    }
+    // if ( this.$store.getters['management/canList'](MANAGEMENT.NODE_TEMPLATE) ) {
+    //   this.$store.dispatch('management/findAll', { type: MANAGEMENT.NODE_TEMPLATE });
+    // }
   },
 
   data() {
@@ -88,15 +89,24 @@ export default {
     ...mapGetters(['currentCluster', 'defaultClusterId', 'releaseNotesUrl']),
     mcm: mapFeature(MULTI_CLUSTER),
 
+    mgmtClusters() {
+      return this.$store.getters['management/all'](MANAGEMENT.CLUSTER);
+    },
+
+    provClusters() {
+      // return this.$store.getters['management/all'](CAPI.RANCHER_CLUSTER);
+      return this.$store.getters['management/all'](MANAGEMENT.CLUSTER);
+    },
+
     // User can go to Cluster Management if they can see the cluster schema
     canManageClusters() {
-      const schema = this.$store.getters['management/schemaFor'](CAPI.RANCHER_CLUSTER);
+      const schema = this.$store.getters['management/schemaFor'](MANAGEMENT.CLUSTER);
 
       return !!schema;
     },
 
     canCreateCluster() {
-      const schema = this.$store.getters['management/schemaFor'](CAPI.RANCHER_CLUSTER);
+      const schema = this.$store.getters['management/schemaFor'](MANAGEMENT.CLUSTER);
 
       return !!schema?.collectionMethods.find((x) => x.toLowerCase() === 'post');
     },
@@ -107,7 +117,8 @@ export default {
         params: {
           product:  MANAGER,
           cluster:  BLANK_CLUSTER,
-          resource: CAPI.RANCHER_CLUSTER
+          resource: MANAGEMENT.CLUSTER,
+          // resource: CAPI.RANCHER_CLUSTER
         },
       };
     },
@@ -118,7 +129,8 @@ export default {
         params: {
           product:  MANAGER,
           cluster:  BLANK_CLUSTER,
-          resource: CAPI.RANCHER_CLUSTER
+          resource: MANAGEMENT.CLUSTER,
+          // resource: CAPI.RANCHER_CLUSTER
         },
       };
     },
@@ -129,7 +141,8 @@ export default {
         params: {
           product:  MANAGER,
           cluster:  BLANK_CLUSTER,
-          resource: CAPI.RANCHER_CLUSTER
+          resource: MANAGEMENT.CLUSTER,
+          // resource: CAPI.RANCHER_CLUSTER
         },
         query: { [MODE]: _IMPORT }
       };
@@ -144,11 +157,26 @@ export default {
 
     clusterHeaders() {
       return [
-        STATE,
+        // STATE,
+        {
+          // name:     'state',
+          // labelKey: 'tableHeaders.name',
+          // value:    'status.conditions[0]',
+          // sort:     ['status.conditions[0].status'],
+          name:      'state',
+          labelKey:  'tableHeaders.state',
+          sort:      ['stateSort', 'nameSort'],
+          value:     'status.conditions[0].status',
+          getValue:  (row) => row.status.conditions[0]?.status,
+          width:     100,
+          default:   'unknown',
+          formatter: 'BadgeStateFormatter',
+        },
         {
           name:     'name',
           labelKey: 'tableHeaders.name',
-          value:    'nameDisplay',
+          value:    'displayName',
+          getValue:      (row) => row.mgmt?.displayName,
           sort:     ['nameSort'],
         },
         {
@@ -156,40 +184,51 @@ export default {
           value:     'status.provider',
           name:      'Provider',
           sort:      ['status.provider'],
-          formatter: 'ClusterProvider'
+          // formatter: 'ClusterProvider'
         },
         {
           label: this.t('landing.clusters.kubernetesVersion'),
-          value: 'kubernetesVersion',
+          value: 'status.version.gitVersion',
           name:  'Kubernetes Version'
         },
-        {
-          label: this.t('tableHeaders.cpu'),
-          value: '',
-          name:  'cpu',
-          sort:  ['status.allocatable.cpu', 'status.available.cpu']
-
-        },
-        {
-          label: this.t('tableHeaders.memory'),
-          value: '',
-          name:  'memory',
-          sort:  ['status.allocatable.memory', 'status.available.memory']
-
-        },
-        {
-          label:        this.t('tableHeaders.pods'),
-          name:         'pods',
-          value:        '',
-          sort:         ['status.allocatable.pods', 'status.requested.pods'],
-          formatter:    'PodsUsage',
-          delayLoading: true
-        },
+        // {
+        //   label: this.t('tableHeaders.cpu'),
+        //   value: '',
+        //   name:  'cpu',
+        //   sort:  ['status.allocatable.cpu', 'status.available.cpu']
+        //
+        // },
+        // {
+        //   label: this.t('tableHeaders.memory'),
+        //   value: '',
+        //   name:  'memory',
+        //   sort:  ['status.allocatable.memory', 'status.available.memory']
+        //
+        // },
+        // {
+        //   label:        this.t('tableHeaders.pods'),
+        //   name:         'pods',
+        //   value:        '',
+        //   sort:         ['status.allocatable.pods', 'status.requested.pods'],
+        //   formatter:    'PodsUsage',
+        //   delayLoading: true
+        // },
       ];
     },
 
     kubeClusters() {
-      return this.$store.getters['management/all'](MANAGEMENT.CLUSTER);
+      // console.log('kubeClusters', this.$store.getters['management/all'](MANAGEMENT.CLUSTER));
+      // return this.$store.getters['management/all'](MANAGEMENT.CLUSTER);
+      console.log(this.provClusters)
+      const filteredClusters = filterHiddenLocalCluster(filterOnlyKubernetesClusters(this.provClusters || [], this.$store), this.$store);
+
+      return filteredClusters.map((provCluster) => {
+        const mgmtCluster = this.mgmtClusters?.find((c) => provCluster.mgmt?.id === c.id);
+
+        provCluster.description = provCluster.description || mgmtCluster?.description;
+
+        return provCluster;
+      });
     }
   },
 
@@ -201,10 +240,10 @@ export default {
 
   // Forget the types when we leave the page
   beforeDestroy() {
-    this.$store.dispatch('management/forgetType', CAPI.MACHINE);
-    this.$store.dispatch('management/forgetType', MANAGEMENT.NODE);
-    this.$store.dispatch('management/forgetType', MANAGEMENT.NODE_POOL);
-    this.$store.dispatch('management/forgetType', MANAGEMENT.NODE_TEMPLATE);
+    // this.$store.dispatch('management/forgetType', CAPI.MACHINE);
+    // this.$store.dispatch('management/forgetType', MANAGEMENT.NODE);
+    // this.$store.dispatch('management/forgetType', MANAGEMENT.NODE_POOL);
+    // this.$store.dispatch('management/forgetType', MANAGEMENT.NODE_TEMPLATE);
   },
 
   methods: {
@@ -310,10 +349,7 @@ export default {
             </div>
           </div>
           <div class="row panel">
-            <div
-              v-if="mcm"
-              class="col span-12"
-            >
+            <div v-if="mcm" class="col span-12">
               <SortableTable
                 :table-actions="false"
                 :row-actions="false"
@@ -365,43 +401,43 @@ export default {
                     </n-link>
                   </div>
                 </template>
-                <!-- <template #col:name="{row}">
+                <template #col:name="{row}">
                   <td>
                     <div class="list-cluster-name">
-                      <span v-if="row.mgmt">
+                      <span v-if="row.mgmt?.isReady && !row.hasError">
                         <n-link
-                          v-if="row.mgmt.isReady && !row.hasError"
                           :to="{ name: 'c-cluster-explorer', params: { cluster: row.mgmt.id }}"
                         >
-                          {{ row.nameDisplay }}
+                          {{ row.spec.displayName }}
                         </n-link>
-                        <span v-else>{{ row.nameDisplay }}</span>
                       </span>
-                      <i
-                        v-if="row.unavailableMachines"
-                        v-clean-tooltip="row.unavailableMachines"
-                        class="conditions-alert-icon icon-alert icon"
-                      />
+                      <span v-else>{{ row.spec.displayName }}</span>
+<!--                      <i-->
+<!--                        v-if="row.unavailableMachines"-->
+<!--                        v-clean-tooltip="row.unavailableMachines"-->
+<!--                        class="conditions-alert-icon icon-alert icon"-->
+<!--                      />-->
                     </div>
                   </td>
-                </template> -->
-                <template #col:cpu="{row}">
-                  <td v-if="row.mgmt && cpuAllocatable(row.mgmt)">
-                    {{ `${cpuAllocatable(row.mgmt)} ${t('landing.clusters.cores', {count:cpuAllocatable(row.mgmt) })}` }}
-                  </td>
-                  <td v-else>
-                    &mdash;
-                  </td>
                 </template>
-                <template #col:memory="{row}">
-                  <td v-if="row.mgmt && memoryAllocatable(row.mgmt) && !memoryAllocatable(row.mgmt).match(/^0 [a-zA-z]/)">
-                    {{ memoryAllocatable(row.mgmt) }}
-                  </td>
-                  <td v-else>
-                    &mdash;
-                  </td>
-                </template>
+<!--                <template #col:cpu="{row}">-->
+<!--                  <td v-if="row.mgmt && cpuAllocatable(row.mgmt)">-->
+<!--                    {{ `${cpuAllocatable(row.mgmt)} ${t('landing.clusters.cores', {count:cpuAllocatable(row.mgmt) })}` }}-->
+<!--                  </td>-->
+<!--                  <td v-else>-->
+<!--                    &mdash;-->
+<!--                  </td>-->
+<!--                </template>-->
+<!--                <template #col:memory="{row}">-->
+<!--                  <td v-if="row.mgmt && memoryAllocatable(row.mgmt) && !memoryAllocatable(row.mgmt).match(/^0 [a-zA-z]/)">-->
+<!--                    {{ memoryAllocatable(row.mgmt) }}-->
+<!--                  </td>-->
+<!--                  <td v-else>-->
+<!--                    &mdash;-->
+<!--                  </td>-->
+<!--                </template>-->
               </SortableTable>
+
             </div>
             <div
               v-else
@@ -411,7 +447,7 @@ export default {
             </div>
           </div>
         </div>
-        <CommunityLinks class="col span-3 side-panel" />
+<!--        <CommunityLinks class="col span-3 side-panel" />-->
       </div>
     </IndentedPanel>
   </div>

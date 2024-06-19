@@ -1,9 +1,9 @@
 import { AGE, NAME as NAME_COL, STATE } from '@shell/config/table-headers';
 import {
-  CAPI,
+  // CAPI,
+  // OB,
   CATALOG,
   NORMAN,
-  OB,
   MANAGEMENT
 } from '@shell/config/types';
 import { MULTI_CLUSTER } from '@shell/store/features';
@@ -24,7 +24,7 @@ export function init(store) {
   } = DSL(store, NAME);
 
   product({
-    ifHaveType:          CAPI.RANCHER_CLUSTER,
+    // ifHaveType:          CAPI.RANCHER_CLUSTER,
     ifFeature:           MULTI_CLUSTER,
     inStore:             'management',
     icon:                'cluster-management',
@@ -35,7 +35,7 @@ export function init(store) {
       params: {
         cluster:  BLANK_CLUSTER,
         product:  NAME,
-        resource: CAPI.RANCHER_CLUSTER
+        // resource: CAPI.RANCHER_CLUSTER
       }
     },
     typeStoreMap: {
@@ -55,16 +55,16 @@ export function init(store) {
   });
 
   basicType([
-    CAPI.RANCHER_CLUSTER,
+    // CAPI.RANCHER_CLUSTER,
     'cloud-credentials',
     'drivers',
   ]);
 
-  configureType(CAPI.RANCHER_CLUSTER, {
-    showListMasthead: false, namespaced: false, alias: [OB.CLUSTER]
-  });
+  // configureType(CAPI.RANCHER_CLUSTER, {
+  //   showListMasthead: false, namespaced: false, alias: [OB.CLUSTER]
+  // });
   // configureType(NORMAN.CLOUD_CREDENTIAL, { showListMasthead: false, namespaced: false });
-  weightType(CAPI.RANCHER_CLUSTER, 100, true);
+  // weightType(CAPI.RANCHER_CLUSTER, 100, true);
   weightType('cloud-credentials', 99, true);
   weightType('drivers', 98, true);
   weightType(CATALOG.CLUSTER_REPO, 97, true);
@@ -108,70 +108,70 @@ export function init(store) {
     'rke-node-templates'
   ], 'RKE1Configuration');
 
-  weightType(CAPI.MACHINE_DEPLOYMENT, 3, true);
-  weightType(CAPI.MACHINE_SET, 2, true);
-  weightType(CAPI.MACHINE, 1, true);
+  // weightType(CAPI.MACHINE_DEPLOYMENT, 3, true);
+  // weightType(CAPI.MACHINE_SET, 2, true);
+  // weightType(CAPI.MACHINE, 1, true);
   weightType(CATALOG.CLUSTER_REPO, 0, true);
   weightType(MANAGEMENT.PSA, 5, true);
 
   basicType([
-    CAPI.MACHINE_DEPLOYMENT,
-    CAPI.MACHINE_SET,
-    CAPI.MACHINE,
+    // CAPI.MACHINE_DEPLOYMENT,
+    // CAPI.MACHINE_SET,
+    // CAPI.MACHINE,
     CATALOG.CLUSTER_REPO,
     MANAGEMENT.PSA
   ], 'advanced');
 
   weightGroup('advanced', -1, true);
 
-  const MACHINE_SUMMARY = {
-    name:      'summary',
-    labelKey:  'tableHeaders.machines',
-    sort:      false,
-    search:    false,
-    formatter: 'MachineSummaryGraph',
-    align:     'center',
-    width:     100,
-  };
+  // const MACHINE_SUMMARY = {
+  //   name:      'summary',
+  //   labelKey:  'tableHeaders.machines',
+  //   sort:      false,
+  //   search:    false,
+  //   formatter: 'MachineSummaryGraph',
+  //   align:     'center',
+  //   width:     100,
+  // };
 
-  headers(CAPI.RANCHER_CLUSTER, [
-    STATE,
-    {
-      name:          'name',
-      labelKey:      'tableHeaders.name',
-      value:         'nameDisplay',
-      sort:          ['nameSort'],
-      formatter:     'ClusterLink',
-      canBeVariable: true,
-    },
-    {
-      name:     'kubernetesVersion',
-      labelKey: 'tableHeaders.version',
-      value:    'kubernetesVersion',
-      sort:     'kubernetesVersion',
-      search:   'kubernetesVersion',
-    },
-    {
-      name:      'provider',
-      labelKey:  'tableHeaders.provider',
-      value:     'machineProvider',
-      sort:      ['machineProvider', 'provisioner'],
-      formatter: 'ClusterProvider',
-    },
-    MACHINE_SUMMARY,
-    AGE,
-    {
-      name:  'explorer',
-      label: ' ',
-      align: 'right',
-      width: 65,
-    },
-  ]);
+  // headers(CAPI.RANCHER_CLUSTER, [
+  //   STATE,
+  //   {
+  //     name:          'name',
+  //     labelKey:      'tableHeaders.name',
+  //     value:         'nameDisplay',
+  //     sort:          ['nameSort'],
+  //     formatter:     'ClusterLink',
+  //     canBeVariable: true,
+  //   },
+  //   {
+  //     name:     'kubernetesVersion',
+  //     labelKey: 'tableHeaders.version',
+  //     value:    'kubernetesVersion',
+  //     sort:     'kubernetesVersion',
+  //     search:   'kubernetesVersion',
+  //   },
+  //   {
+  //     name:      'provider',
+  //     labelKey:  'tableHeaders.provider',
+  //     value:     'machineProvider',
+  //     sort:      ['machineProvider', 'provisioner'],
+  //     formatter: 'ClusterProvider',
+  //   },
+  //   MACHINE_SUMMARY,
+  //   AGE,
+  //   {
+  //     name:  'explorer',
+  //     label: ' ',
+  //     align: 'right',
+  //     width: 65,
+  //   },
+  // ]);
 
-  headers(CAPI.MACHINE_DEPLOYMENT, [
-    STATE,
-    NAME_COL,
-    MACHINE_SUMMARY,
-    AGE
-  ]);
+  // headers(CAPI.MACHINE_DEPLOYMENT, [
+  //   STATE,
+  //   NAME_COL,
+  //   MACHINE_SUMMARY,
+  //   AGE
+  // ]);
 }

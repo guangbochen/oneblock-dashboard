@@ -30,35 +30,35 @@ export default async function(context) {
     const rancherVersion = undefined;
 
     // Fetch list of installed plugins from endpoint
-    try {
-      const res = await context.store.dispatch('management/request', {
-        url:                  `${ UI_PLUGIN_BASE_URL }/index.json`,
-        method:               'GET',
-        headers:              { accept: 'application/json' },
-        redirectUnauthorized: false,
-      });
-
-      if (res) {
-        const entries = res.entries || res.Entries || {};
-
-        Object.values(entries).forEach((plugin) => {
-          const shouldNotLoad = shouldNotLoadPlugin(plugin, rancherVersion, context.store.getters['uiplugins/plugins'] || []); // Error key string or boolean
-
-          if (!shouldNotLoad) {
-            hash[plugin.name] = context.$plugin.loadPluginAsync(plugin);
-          } else {
-            context.store.dispatch('uiplugins/setError', { name: plugin.name, error: shouldNotLoad });
-          }
-        });
-      }
-    } catch (e) {
-      if (e?.code === 404) {
-        // Not found, so extensions operator probably not installed
-        console.log('Could not load UI Extensions list (Extensions Operator may not be installed)'); // eslint-disable-line no-console
-      } else {
-        console.error('Could not load UI Extensions list', e); // eslint-disable-line no-console
-      }
-    }
+    // try {
+    //   const res = await context.store.dispatch('management/request', {
+    //     url:                  `${ UI_PLUGIN_BASE_URL }/index.json`,
+    //     method:               'GET',
+    //     headers:              { accept: 'application/json' },
+    //     redirectUnauthorized: false,
+    //   });
+    //
+    //   if (res) {
+    //     const entries = res.entries || res.Entries || {};
+    //
+    //     Object.values(entries).forEach((plugin) => {
+    //       const shouldNotLoad = shouldNotLoadPlugin(plugin, rancherVersion, context.store.getters['uiplugins/plugins'] || []); // Error key string or boolean
+    //
+    //       if (!shouldNotLoad) {
+    //         hash[plugin.name] = context.$plugin.loadPluginAsync(plugin);
+    //       } else {
+    //         context.store.dispatch('uiplugins/setError', { name: plugin.name, error: shouldNotLoad });
+    //       }
+    //     });
+    //   }
+    // } catch (e) {
+    //   if (e?.code === 404) {
+    //     // Not found, so extensions operator probably not installed
+    //     console.log('Could not load UI Extensions list (Extensions Operator may not be installed)'); // eslint-disable-line no-console
+    //   } else {
+    //     console.error('Could not load UI Extensions list', e); // eslint-disable-line no-console
+    //   }
+    // }
 
     // Load all of the plugins
     const pluginLoads = await allHashSettled(hash);

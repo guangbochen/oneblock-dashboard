@@ -159,9 +159,9 @@ export default {
       return '';
     },
 
-    kubectlCmd() {
-      return "kubectl get secret --namespace cattle-system bootstrap-secret -o go-template='{{.data.bootstrapPassword|base64decode}}{{\"\\n\"}}'";
-    },
+    // kubectlCmd() {
+    //   return "kubectl get secret --namespace cattle-system bootstrap-secret -o go-template='{{.data.bootstrapPassword|base64decode}}{{\"\\n\"}}'";
+    // },
 
     hasLoginMessage() {
       return this.errorToDisplay || this.loggedOut || this.timedOut;
@@ -242,7 +242,7 @@ export default {
         //   type: NORMAN.USER,
         //   opt:  { url: '/v3/users?me=true', load: _MULTI }
         // });
-
+        //
         // if (!!user?.[0]) {
         //   this.$store.dispatch('auth/gotUser', user[0]);
         // }
@@ -284,12 +284,9 @@ export default {
 <template>
   <main class="main-layout login">
     <div class="row gutless mb-20">
-      <div class="col span-6 p-20">
-        <p class="text-center">
-          {{ t('login.howdy') }}
-        </p>
+      <div class="col span-12 p-20">
         <h1 class="text-center login-welcome">
-          {{ t('login.welcome', {vendor: '1Block.AI'}) }}
+          {{ t('login.welcome', {vendor: 'LLMOS Dashboard'}) }}
         </h1>
         <div
           class="login-messages"
@@ -416,11 +413,6 @@ export default {
           <LocaleSelector mode="login" />
         </div>
       </div>
-
-      <BrandImage
-        class="col span-6 landscape"
-        file-name="login-landscape.jpg"
-      />
     </div>
   </main>
 </template>
@@ -428,6 +420,8 @@ export default {
 <style lang="scss" scoped>
   .login {
     overflow: hidden;
+    margin: auto;
+    width: 750px;
 
     .row {
       align-items: center;

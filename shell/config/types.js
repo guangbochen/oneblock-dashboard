@@ -140,18 +140,18 @@ export const MONITORING = {
   }
 };
 
-export const LONGHORN = {
-  ENGINES:       'longhorn.io.engine',
-  ENGINE_IMAGES: 'longhorn.io.engineimage',
-  NODES:         'longhorn.io.node',
-  REPLICAS:      'longhorn.io.replica',
-  SETTINGS:      'longhorn.io.setting',
-  VOLUMES:       'longhorn.io.volume',
-};
+// export const LONGHORN = {
+//   ENGINES:       'longhorn.io.engine',
+//   ENGINE_IMAGES: 'longhorn.io.engineimage',
+//   NODES:         'longhorn.io.node',
+//   REPLICAS:      'longhorn.io.replica',
+//   SETTINGS:      'longhorn.io.setting',
+//   VOLUMES:       'longhorn.io.volume',
+// };
 
-export const LONGHORN_DRIVER = 'driver.longhorn.io';
-
-export const SNAPSHOT = 'rke.cattle.io.etcdsnapshot';
+// export const LONGHORN_DRIVER = 'driver.longhorn.io';
+//
+// export const SNAPSHOT = 'rke.cattle.io.etcdsnapshot';
 
 // --------------------------------------
 // 2. Only if Rancher is installed
@@ -163,7 +163,7 @@ export const MANAGEMENT = {
   AUTH_CONFIG:                   'management.cattle.io.authconfig',
   CATALOG_TEMPLATE:              'management.cattle.io.catalogtemplate',
   // CATALOG:                       'management.cattle.io.catalog',
-  CLUSTER:                       'management.oneblock.ai.cluster',
+  CLUSTER:                       'management.cattle.io.cluster',
   CLUSTER_ROLE_TEMPLATE_BINDING: 'management.cattle.io.clusterroletemplatebinding',
   FEATURE:                       'management.cattle.io.feature',
   // GROUP:                         'management.cattle.io.group',
@@ -176,8 +176,8 @@ export const MANAGEMENT = {
   PROJECT:                       'management.cattle.io.project',
   PROJECT_ROLE_TEMPLATE_BINDING: 'management.cattle.io.projectroletemplatebinding',
   ROLE_TEMPLATE:                 'management.cattle.io.roletemplate',
-  SETTING:                       'management.oneblock.ai.setting',
-  USER:                          'management.oneblock.ai.user',
+  SETTING:                       'management.llmos.ai.setting',
+  USER:                          'management.llmos.ai.user',
   TOKEN:                         'management.cattle.io.token',
   GLOBAL_ROLE:                   'management.cattle.io.globalrole',
   GLOBAL_ROLE_BINDING:           'management.cattle.io.globalrolebinding',
@@ -195,6 +195,7 @@ export const CAPI = {
   MACHINE_SET:          'cluster.x-k8s.io.machineset',
   MACHINE:              'cluster.x-k8s.io.machine',
   RANCHER_CLUSTER:      'provisioning.cattle.io.cluster',
+  LLMOS_CLUSTER:      'management.cattle.io.cluster',
   MACHINE_CONFIG_GROUP: 'rke-machine-config.cattle.io',
 };
 
@@ -291,7 +292,7 @@ export const OB = {
   HARVESTER_CONFIG: 'rke-machine-config.cattle.io.harvesterconfig',
 };
 
-export const VIRTUAL_HARVESTER_PROVIDER = 'oneblock';
+export const VIRTUAL_HARVESTER_PROVIDER = 'llmos';
 
 export const ADDRESSES = {
   HOSTNAME:    'Hostname',

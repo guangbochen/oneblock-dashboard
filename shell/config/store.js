@@ -21,21 +21,21 @@ let store = {};
 
   resolveStoreModules(require('../store/action-menu.js'), 'action-menu.js');
   resolveStoreModules(require('../store/auth.js'), 'auth.js');
-  resolveStoreModules(require('../store/aws.js'), 'aws.js');
-  resolveStoreModules(require('../store/catalog.js'), 'catalog.js');
-  resolveStoreModules(require('../store/digitalocean.js'), 'digitalocean.js');
+  // resolveStoreModules(require('../store/aws.js'), 'aws.js');
+  // resolveStoreModules(require('../store/catalog.js'), 'catalog.js');
+  // resolveStoreModules(require('../store/digitalocean.js'), 'digitalocean.js');
   resolveStoreModules(require('../store/features.js'), 'features.js');
-  resolveStoreModules(require('../store/github.js'), 'github.js');
-  resolveStoreModules(require('../store/gitlab.js'), 'gitlab.js');
+  // resolveStoreModules(require('../store/github.js'), 'github.js');
+  // resolveStoreModules(require('../store/gitlab.js'), 'gitlab.js');
   resolveStoreModules(require('../store/growl.js'), 'growl.js');
   resolveStoreModules(require('../store/i18n.js'), 'i18n.js');
-  resolveStoreModules(require('../store/linode.js'), 'linode.js');
-  resolveStoreModules(require('../store/plugins.js'), 'plugins.js');
-  resolveStoreModules(require('../store/pnap.js'), 'pnap.js');
+  // resolveStoreModules(require('../store/linode.js'), 'linode.js');
+  // resolveStoreModules(require('../store/plugins.js'), 'plugins.js');
+  // resolveStoreModules(require('../store/pnap.js'), 'pnap.js');
   resolveStoreModules(require('../store/prefs.js'), 'prefs.js');
   resolveStoreModules(require('../store/resource-fetch.js'), 'resource-fetch.js');
   resolveStoreModules(require('../store/type-map.js'), 'type-map.js');
-  resolveStoreModules(require('../store/uiplugins.ts'), 'uiplugins.ts');
+  // resolveStoreModules(require('../store/uiplugins.ts'), 'uiplugins.ts');
   resolveStoreModules(require('../store/wm.js'), 'wm.js');
 
   // If the environment supports hot reloading...
@@ -45,22 +45,22 @@ let store = {};
     module.hot.accept([
       '../store/action-menu.js',
       '../store/auth.js',
-      '../store/aws.js',
-      '../store/catalog.js',
-      '../store/digitalocean.js',
+      // '../store/aws.js',
+      // '../store/catalog.js',
+      // '../store/digitalocean.js',
       '../store/features.js',
-      '../store/github.js',
-      '../store/gitlab.js',
-      '../store/growl.js',
+      // '../store/github.js',
+      // '../store/gitlab.js',
+      // '../store/growl.js',
       '../store/i18n.js',
       '../store/index.js',
-      '../store/linode.js',
-      '../store/plugins.js',
-      '../store/pnap.js',
+      // '../store/linode.js',
+      // '../store/plugins.js',
+      // '../store/pnap.js',
       '../store/prefs.js',
       '../store/resource-fetch.js',
       '../store/type-map.js',
-      '../store/uiplugins.ts',
+      // '../store/uiplugins.ts',
       '../store/wm.js',
     ], () => {
       // Update `root.modules` with the latest definitions.

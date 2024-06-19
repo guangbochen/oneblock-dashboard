@@ -82,7 +82,7 @@ export default {
       // Upfront load all global roles, this makes it easier to sync fetch them later on
       await this.$store.dispatch('management/findAll', { type: MANAGEMENT.GLOBAL_ROLE });
 
-      await this.$store.dispatch('rancher/findAll', { type: NORMAN.PRINCIPAL, opt: { url: '/v3/principals' } });
+      // await this.$store.dispatch('rancher/findAll', { type: NORMAN.PRINCIPAL, opt: { url: '/v3/principals' } });
     },
     async refreshGroupMemberships(buttonDone) {
       try {

@@ -1,5 +1,5 @@
-# 1Block.AI Dashboard
-[![main-build](https://github.com/oneblock-ai/dashboard/actions/workflows/build.yaml/badge.svg)](https://github.com/oneblock-ai/dashboard/actions/workflows/build.yaml)
+# LLMOS Dashboard
+[![main-build](https://github.com/llmos-ai/dashboard/actions/workflows/build.yaml/badge.svg)](https://github.com/llmos-ai/dashboard/actions/workflows/build.yaml)
 
 
 ## Running for Development

@@ -6,7 +6,7 @@ import { CATALOG, MANAGEMENT } from '@shell/config/types';
 import { getVendor } from '@shell/config/private-label';
 import { SETTING } from '@shell/config/settings';
 import { addParam } from '@shell/utils/url';
-import { isRancherPrime } from '@shell/config/version';
+// import { isRancherPrime } from '@shell/config/version';
 import { hasCspAdapter } from 'mixins/brand';
 
 export default {
@@ -73,9 +73,9 @@ export default {
       return hasCspAdapter(this.apps);
     },
 
-    hasSupport() {
-      return this.hasAWSSupport || isRancherPrime();
-    },
+    // hasSupport() {
+    //   return this.hasAWSSupport || isRancherPrime();
+    // },
 
     hasAWSSupport() {
       return !!this.cspAdapter;

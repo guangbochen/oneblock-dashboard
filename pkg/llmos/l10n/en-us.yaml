@@ -1,0 +1,68 @@
+generic:
+  tip: Tip
+  resourceExternalLinkTips: 'External Link'
+  namespace: Namespace
+  notReady: Not Ready
+  labels: Labels
+  inProgress: In Progress
+  basic: Basic
+
+nav:
+  group:
+    networks: Networks
+    backupAndSnapshot: Backup & Snapshot
+    Monitoring: Monitoring
+    Logging: Logging
+    'Monitoring & Logging': Monitoring & Logging
+
+resourceTable:
+  groupBy:
+    device: Group by Device
+
+validation:
+  arrayCountRequired: "At least {count} {key} {count, plural, =1 {is} other {are}} required, and {key} can not be empty."
+
+members:
+  clusterMemebership: Cluster Membership
+  projectMembership: Project Membership
+
+asyncButton:
+  restart:
+    action: Save & Restart
+    success: Restarted
+    waiting: Restarting&hellip;
+
+llmos:
+  productLabel: 'LLMOS'
+  support:
+    title: LLMOS Support
+    kubeconfig:
+      title: Download KubeConfig
+      titleDescription: Download kubeconfig for debugging.
+    internal:
+      rancher:
+        title: Access Embedded Rancher UI
+        titleDescription: We only support to use the embedded Rancher dashboard for debugging and validation purpose. For Rancher's multi-cluster and multi-tenant integration, please refer to the docs <a target="_blank" href="https://docs.harvesterhci.io/v1.2/rancher/index" rel="noopener noreferrer nofollow">here</a>.
+      longhorn:
+        title: Access Embedded Longhorn UI
+        titleDescription: We only support to use the embedded Longhorn UI for debugging and validation purpose.
+    community:
+      learnMore: Find out more about 1Block.AI.
+      pricing: Contact us for pricing
+
+typeLabel:
+  ray.io.raycluster: |-
+    {count, plural,
+      one { Machine Learning Cluster }
+      other { Machine Learning Clusters }
+    }
+  scheduling.volcano.sh.queue: |-
+    {count, plural,
+      one { Scheduling Queue }
+      other { Scheduling Queues }
+    }
+  node: |-
+    {count, plural,
+      one { Node }
+      other { Nodes }
+    }

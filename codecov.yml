@@ -17,14 +17,14 @@ comment:
 # Generate flags
 flags:
   shell:
-    paths: 
+    paths:
     - shell
   epinio:
-    paths: 
+    paths:
     - pkg/epinio
-  oneblock:
-    paths: 
-    - pkg/oneblock
+  llmos:
+    paths:
+    - pkg/llmos
   rancher-components:
-    paths: 
+    paths:
     - pkg/rancher-components

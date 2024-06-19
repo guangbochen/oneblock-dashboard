@@ -4,7 +4,7 @@ import ClusterIconMenu from '@shell/components/ClusterIconMenu';
 import IconOrSvg from '../IconOrSvg';
 import { BLANK_CLUSTER } from '@shell/store/store-types.js';
 import { mapGetters } from 'vuex';
-import { CAPI, MANAGEMENT } from '@shell/config/types';
+import { MANAGEMENT } from '@shell/config/types';
 import { MENU_MAX_CLUSTERS } from '@shell/store/prefs';
 import { sortBy } from '@shell/utils/sort';
 import { ucFirst } from '@shell/utils/string';
@@ -13,7 +13,7 @@ import { getVersionInfo } from '@shell/utils/version';
 import { LEGACY } from '@shell/store/features';
 import { SETTING } from '@shell/config/settings';
 import { filterOnlyKubernetesClusters, filterHiddenLocalCluster } from '@shell/utils/cluster';
-import { isRancherPrime } from '@shell/config/version';
+// import { isRancherPrime } from '@shell/config/version';
 import Pinned from '@shell/components/nav/Pinned';
 
 export default {
@@ -26,7 +26,7 @@ export default {
 
   data() {
     const { displayVersion, fullVersion } = getVersionInfo(this.$store);
-    const hasProvCluster = this.$store.getters[`management/schemaFor`](CAPI.RANCHER_CLUSTER);
+    // const hasProvCluster = this.$store.getters[`management/schemaFor`](CAPI.RANCHER_CLUSTER);
 
     return {
       shown:             false,
@@ -43,7 +43,8 @@ export default {
 
   fetch() {
     if (this.hasProvCluster) {
-      this.$store.dispatch('management/findAll', { type: CAPI.RANCHER_CLUSTER });
+      // this.$store.dispatch('management/findAll', { type: CAPI.RANCHER_CLUSTER });
+      this.$store.dispatch('management/findAll', { type: MANAGEMENT.CLUSTER });
     }
   },
 
@@ -83,9 +84,9 @@ export default {
 
       return undefined;
     },
-    legacyEnabled() {
-      return this.features(LEGACY);
-    },
+    // legacyEnabled() {
+    //   return this.features(LEGACY);
+    // },
 
     showClusterSearch() {
       return this.clusters.length > this.maxClustersToShow;
@@ -97,7 +98,8 @@ export default {
       let pClusters = null;
 
       if (this.hasProvCluster) {
-        pClusters = this.$store.getters['management/all'](CAPI.RANCHER_CLUSTER);
+        // pClusters = this.$store.getters['management/all'](CAPI.RANCHER_CLUSTER);
+        pClusters = this.$store.getters['management/all'](MANAGEMENT.CLUSTER);
         const available = pClusters.reduce((p, c) => {
           p[c.mgmt] = true;
 
@@ -111,12 +113,14 @@ export default {
       }
 
       return kubeClusters?.map((x) => {
+        console.log('debug x', x, x.isReady, pCluster)
         const pCluster = pClusters?.find((c) => c.mgmt?.id === x.id);
 
         return {
           id:              x.id,
           label:           x.nameDisplay,
-          ready:           x.isReady && !pCluster?.hasError,
+          // ready:           x.isReady && !pCluster?.hasError,
+          ready:           true,
           osLogo:          x.providerOsLogo,
           providerNavLogo: x.providerMenuLogo,
           badge:           x.badge,
@@ -181,11 +185,11 @@ export default {
       });
     },
 
-    legacyApps() {
-      const options = this.options;
-
-      return options.filter((opt) => opt.inStore === 'management' && opt.category === 'legacy');
-    },
+    // legacyApps() {
+    //   const options = this.options;
+    //
+    //   return options.filter((opt) => opt.inStore === 'management' && opt.category === 'legacy');
+    // },
 
     configurationApps() {
       const options = this.options;
@@ -236,9 +240,9 @@ export default {
       return (this.$store.getters['management/schemaFor'](MANAGEMENT.SETTING)?.resourceMethods || []).includes('PUT');
     },
 
-    hasSupport() {
-      return isRancherPrime() || this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.SUPPORTED )?.value === 'true';
-    }
+    // hasSupport() {
+    //   return isRancherPrime() || this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.SUPPORTED )?.value === 'true';
+    // }
   },
 
   watch: {
@@ -599,33 +603,33 @@ export default {
                 </nuxt-link>
               </div>
             </template>
-            <template v-if="legacyEnabled">
-              <div
-                class="category-title"
-              >
-                <hr>
-                <span>
-                  {{ t('nav.categories.legacy') }}
-                </span>
-              </div>
-              <div
-                v-for="a in legacyApps"
-                :key="a.label"
-                @click="hide()"
-              >
-                <nuxt-link
-                  class="option"
-                  :to="a.to"
-                >
-                  <IconOrSvg
-                    v-tooltip="getTooltipConfig(a.label)"
-                    :icon="a.icon"
-                    :src="a.svg"
-                  />
-                  <div>{{ a.label }}</div>
-                </nuxt-link>
-              </div>
-            </template>
+<!--            <template v-if="legacyEnabled">-->
+<!--              <div-->
+<!--                class="category-title"-->
+<!--              >-->
+<!--                <hr>-->
+<!--                <span>-->
+<!--                  {{ t('nav.categories.legacy') }}-->
+<!--                </span>-->
+<!--              </div>-->
+<!--              <div-->
+<!--                v-for="a in legacyApps"-->
+<!--                :key="a.label"-->
+<!--                @click="hide()"-->
+<!--              >-->
+<!--                <nuxt-link-->
+<!--                  class="option"-->
+<!--                  :to="a.to"-->
+<!--                >-->
+<!--                  <IconOrSvg-->
+<!--                    v-tooltip="getTooltipConfig(a.label)"-->
+<!--                    :icon="a.icon"-->
+<!--                    :src="a.svg"-->
+<!--                  />-->
+<!--                  <div>{{ a.label }}</div>-->
+<!--                </nuxt-link>-->
+<!--              </div>-->
+<!--            </template>-->
 
             <!-- App menu -->
             <template v-if="configurationApps.length">
@@ -667,11 +671,11 @@ export default {
             class="support"
             @click="hide()"
           >
-            <nuxt-link
-              :to="{name: 'support'}"
-            >
-              {{ t('nav.support', {hasSupport}) }}
-            </nuxt-link>
+<!--            <nuxt-link-->
+<!--              :to="{name: 'support'}"-->
+<!--            >-->
+<!--              {{ t('nav.support', {hasSupport}) }}-->
+<!--            </nuxt-link>-->
           </div>
           <div
             class="version"

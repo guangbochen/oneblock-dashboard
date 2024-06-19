@@ -61,9 +61,9 @@ export const getters = {
     return state.initialPass;
   },
 
-  isGithub(state) {
-    return state.principalId && state.principalId.startsWith('github_user://');
-  }
+  // isGithub(state) {
+  //   return state.principalId && state.principalId.startsWith('github_user://');
+  // }
 };
 
 export const mutations = {
@@ -134,31 +134,31 @@ export const actions = {
     commit('initialPass', pass);
   },
 
-  getAuthProviders({ dispatch }) {
-    return dispatch('rancher/findAll', {
-      type: 'authProvider',
-      opt:  { url: `/v3-public/authProviders`, watch: false }
-    }, { root: true });
-  },
+  // getAuthProviders({ dispatch }) {
+  //   return dispatch('rancher/findAll', {
+  //     type: 'authProvider',
+  //     opt:  { url: `/v3-public/authProviders`, watch: false }
+  //   }, { root: true });
+  // },
 
-  getAuthConfigs({ dispatch }) {
-    return dispatch('rancher/findAll', {
-      type: 'authConfig',
-      opt:  { url: `/v3/authConfigs` }
-    }, { root: true });
-  },
+  // getAuthConfigs({ dispatch }) {
+  //   return dispatch('rancher/findAll', {
+  //     type: 'authConfig',
+  //     opt:  { url: `/v3/authConfigs` }
+  //   }, { root: true });
+  // },
 
-  async getAuthProvider({ dispatch }, id) {
-    const authProviders = await dispatch('getAuthProviders');
+  // async getAuthProvider({ dispatch }, id) {
+  //   const authProviders = await dispatch('getAuthProviders');
+  //
+  //   return findBy(authProviders, 'id', id);
+  // },
 
-    return findBy(authProviders, 'id', id);
-  },
-
-  async getAuthConfig({ dispatch }, id) {
-    const authConfigs = await dispatch('getAuthConfigs');
-
-    return findBy(authConfigs, 'id', id);
-  },
+  // async getAuthConfig({ dispatch }, id) {
+  //   const authConfigs = await dispatch('getAuthConfigs');
+  //
+  //   return findBy(authConfigs, 'id', id);
+  // },
 
   /**
    * Create the basic json object used for the nonce (this includes the random nonce/state)
@@ -202,123 +202,123 @@ export const actions = {
     return base64Encode(stringify, 'url');
   },
 
-  async redirectTo({ state, commit, dispatch }, opt = {}) {
-    const provider = opt.provider;
-    let redirectUrl = opt.redirectUrl;
+  // async redirectTo({ state, commit, dispatch }, opt = {}) {
+  //   const provider = opt.provider;
+  //   let redirectUrl = opt.redirectUrl;
+  //
+  //   if ( !redirectUrl ) {
+  //     const driver = await dispatch('getAuthProvider', provider);
+  //
+  //     redirectUrl = driver.redirectUrl;
+  //   }
+  //   let returnToUrl = `${ window.location.origin }/verify-auth`;
+  //
+  //   if (provider === 'azuread') {
+  //     const params = { response_type: 'code', response_mode: 'query' };
+  //
+  //     redirectUrl = addParams(redirectUrl, params );
+  //     returnToUrl = `${ window.location.origin }/verify-auth-azure`;
+  //   }
+  //
+  //   // The base nonce that will be sent server way
+  //   const baseNonce = opt.nonce || await dispatch('createNonce', opt);
+  //
+  //   // Save a possibly expanded nonce
+  //   await dispatch('saveNonce', opt.persistNonce || baseNonce);
+  //   // Convert the base nonce in to something we can transmit
+  //   const encodedNonce = await dispatch('encodeNonce', baseNonce);
+  //
+  //   const fromQuery = unescape(parseUrl(redirectUrl).query?.[GITHUB_SCOPE] || '');
+  //   const scopes = fromQuery.split(/[, ]+/).filter((x) => !!x);
+  //
+  //   if (BASE_SCOPES[provider]) {
+  //     addObjects(scopes, BASE_SCOPES[provider]);
+  //   }
+  //
+  //   if ( opt.scopes ) {
+  //     addObjects(scopes, opt.scopes);
+  //   }
+  //
+  //   let url = removeParam(redirectUrl, GITHUB_SCOPE);
+  //
+  //   const params = {
+  //     [GITHUB_SCOPE]: scopes.join(opt.scopesJoinChar || ','), // Some providers won't accept comma separated scopes
+  //     [GITHUB_NONCE]: encodedNonce
+  //   };
+  //
+  //   if (!url.includes(GITHUB_REDIRECT)) {
+  //     params[GITHUB_REDIRECT] = returnToUrl;
+  //   }
+  //
+  //   url = addParams(url, params);
+  //
+  //   if ( opt.redirect === false ) {
+  //     return url;
+  //   } else {
+  //     window.location.href = url;
+  //   }
+  // },
 
-    if ( !redirectUrl ) {
-      const driver = await dispatch('getAuthProvider', provider);
+  // verifyOAuth({ dispatch }, { nonce, code, provider }) {
+  //   const expectJSON = this.$cookies.get(KEY, { parseJSON: false });
+  //   let parsed;
+  //
+  //   try {
+  //     parsed = JSON.parse(expectJSON);
+  //   } catch {
+  //     return ERR_NONCE;
+  //   }
+  //
+  //   const expect = parsed.nonce;
+  //
+  //   if ( !expect || expect !== nonce ) {
+  //     return ERR_NONCE;
+  //   }
+  //
+  //   const body = { code };
+  //
+  //   // If the request came with a pkce code ensure we also sent that in the verify
+  //   if (parsed.pkceCodeVerifier) {
+  //     body.code_verifier = parsed.pkceCodeVerifier;
+  //   }
+  //
+  //   return dispatch('login', {
+  //     provider,
+  //     body
+  //   });
+  // },
 
-      redirectUrl = driver.redirectUrl;
-    }
-    let returnToUrl = `${ window.location.origin }/verify-auth`;
-
-    if (provider === 'azuread') {
-      const params = { response_type: 'code', response_mode: 'query' };
-
-      redirectUrl = addParams(redirectUrl, params );
-      returnToUrl = `${ window.location.origin }/verify-auth-azure`;
-    }
-
-    // The base nonce that will be sent server way
-    const baseNonce = opt.nonce || await dispatch('createNonce', opt);
-
-    // Save a possibly expanded nonce
-    await dispatch('saveNonce', opt.persistNonce || baseNonce);
-    // Convert the base nonce in to something we can transmit
-    const encodedNonce = await dispatch('encodeNonce', baseNonce);
-
-    const fromQuery = unescape(parseUrl(redirectUrl).query?.[GITHUB_SCOPE] || '');
-    const scopes = fromQuery.split(/[, ]+/).filter((x) => !!x);
-
-    if (BASE_SCOPES[provider]) {
-      addObjects(scopes, BASE_SCOPES[provider]);
-    }
-
-    if ( opt.scopes ) {
-      addObjects(scopes, opt.scopes);
-    }
-
-    let url = removeParam(redirectUrl, GITHUB_SCOPE);
-
-    const params = {
-      [GITHUB_SCOPE]: scopes.join(opt.scopesJoinChar || ','), // Some providers won't accept comma separated scopes
-      [GITHUB_NONCE]: encodedNonce
-    };
-
-    if (!url.includes(GITHUB_REDIRECT)) {
-      params[GITHUB_REDIRECT] = returnToUrl;
-    }
-
-    url = addParams(url, params);
-
-    if ( opt.redirect === false ) {
-      return url;
-    } else {
-      window.location.href = url;
-    }
-  },
-
-  verifyOAuth({ dispatch }, { nonce, code, provider }) {
-    const expectJSON = this.$cookies.get(KEY, { parseJSON: false });
-    let parsed;
-
-    try {
-      parsed = JSON.parse(expectJSON);
-    } catch {
-      return ERR_NONCE;
-    }
-
-    const expect = parsed.nonce;
-
-    if ( !expect || expect !== nonce ) {
-      return ERR_NONCE;
-    }
-
-    const body = { code };
-
-    // If the request came with a pkce code ensure we also sent that in the verify
-    if (parsed.pkceCodeVerifier) {
-      body.code_verifier = parsed.pkceCodeVerifier;
-    }
-
-    return dispatch('login', {
-      provider,
-      body
-    });
-  },
-
-  async test({ dispatch }, { provider, body }) {
-    const driver = await dispatch('getAuthConfig', provider);
-
-    try {
-      // saml providers
-      if (!!driver?.actions?.testAndEnable) {
-        const finalRedirectUrl = returnTo({ config: provider }, this);
-
-        const res = await driver.doAction('testAndEnable', { finalRedirectUrl });
-
-        const { idpRedirectUrl } = res;
-
-        return openAuthPopup(idpRedirectUrl, provider);
-      } else {
-      // github, google, azuread, oidc
-        const res = await driver.doAction('configureTest', body);
-        const { redirectUrl } = res;
-
-        const url = await dispatch('redirectTo', {
-          provider,
-          redirectUrl,
-          test:     true,
-          redirect: false
-        });
-
-        return openAuthPopup(url, provider);
-      }
-    } catch (err) {
-      return Promise.reject(err);
-    }
-  },
+  // async test({ dispatch }, { provider, body }) {
+  //   const driver = await dispatch('getAuthConfig', provider);
+  //
+  //   try {
+  //     // saml providers
+  //     if (!!driver?.actions?.testAndEnable) {
+  //       const finalRedirectUrl = returnTo({ config: provider }, this);
+  //
+  //       const res = await driver.doAction('testAndEnable', { finalRedirectUrl });
+  //
+  //       const { idpRedirectUrl } = res;
+  //
+  //       return openAuthPopup(idpRedirectUrl, provider);
+  //     } else {
+  //     // github, google, azuread, oidc
+  //       const res = await driver.doAction('configureTest', body);
+  //       const { redirectUrl } = res;
+  //
+  //       const url = await dispatch('redirectTo', {
+  //         provider,
+  //         redirectUrl,
+  //         test:     true,
+  //         redirect: false
+  //       });
+  //
+  //       return openAuthPopup(url, provider);
+  //     }
+  //   } catch (err) {
+  //     return Promise.reject(err);
+  //   }
+  // },
 
   async login({ dispatch }, { provider, body }) {
     try {

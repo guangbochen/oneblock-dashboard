@@ -8,7 +8,7 @@ import { SETTING } from '@shell/config/settings';
 import { _EDIT, _VIEW } from '@shell/config/query-params';
 import KeyValue from '@shell/components/form/KeyValue';
 import { mapGetters } from 'vuex';
-import { isRancherPrime } from '@shell/config/version';
+// import { isRancherPrime } from '@shell/config/version';
 import DefaultLinksEditor from './DefaultLinksEditor';
 import { CUSTOM_LINKS_VERSION, fetchLinks } from '@shell/config/home-links';
 
@@ -28,7 +28,7 @@ export default {
   data() {
     return {
       defaultsDisabled: true,
-      isRancherPrime:   isRancherPrime(),
+      // isRancherPrime:   isRancherPrime(),
       uiCustomLinks:    {},
       bannerVal:        {},
       value:            [],

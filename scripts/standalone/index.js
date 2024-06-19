@@ -37,10 +37,10 @@ const proxy = {
   '/apis':           proxyWsOpts(api), // Management k8s API
   '/v1':             proxyWsOpts(api), // Management Steve API
   '/v3':             proxyWsOpts(api), // Rancher API
-  '/v3-public':      proxyOpts(api), // Rancher Unauthed API
+  // '/v3-public':      proxyOpts(api), // Rancher Unauthed API
   '/api-ui':         proxyOpts(api), // Browser API UI
   '/meta':           proxyMetaOpts(api), // Browser API UI
-  '/rancherversion': proxyOpts(api), // Rancher version endpoint
+  // '/rancherversion': proxyOpts(api), // Rancher version endpoint
   '/v1-*':           proxyOpts(api), // SAML, KDM, etc
   // These are for Ember embedding
   '/c/*/edit':       proxyOpts('https://127.0.0.1:8000'), // Can't proxy all of /c because that's used by Vue too

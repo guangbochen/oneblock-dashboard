@@ -204,7 +204,7 @@ export default async function({
 
     firstLogin = res?.value === 'true';
 
-    if (!initialPass && plSetting?.value === 'oneblock') {
+    if (!initialPass && plSetting?.value === 'llmos') {
       initialPass = 'admin';
     }
   } catch (e) {
@@ -215,7 +215,7 @@ export default async function({
       const res = await store.dispatch('rancher/find', {
         type: 'setting',
         id:   SETTING.FIRST_LOGIN,
-        opt:  { url: `/v3/settings/${ SETTING.FIRST_LOGIN }` }
+        opt:  { url: `/v1/settings/${ SETTING.FIRST_LOGIN }` }
       });
 
       firstLogin = res?.value === 'true';
@@ -223,10 +223,10 @@ export default async function({
       const plSetting = await store.dispatch('rancher/find', {
         type: 'setting',
         id:   SETTING.PL,
-        opt:  { url: `/v3/settings/${ SETTING.PL }` }
+        opt:  { url: `/v1/settings/${ SETTING.PL }` }
       });
 
-      if (!initialPass && plSetting?.value === 'oneblock') {
+      if (!initialPass && plSetting?.value === 'llmos') {
         initialPass = 'admin';
       }
     } catch (e) {

@@ -4,7 +4,7 @@ import Closeable from '@shell/mixins/closeable';
 import { MANAGEMENT } from '@shell/config/types';
 import { SETTING } from '@shell/config/settings';
 import { mapGetters } from 'vuex';
-import { isRancherPrime } from '@shell/config/version';
+// import { isRancherPrime } from '@shell/config/version';
 import { fetchLinks } from '@shell/config/home-links';
 
 export default {
@@ -44,9 +44,9 @@ export default {
       return !!Object.keys(this.options).length || !!Object.keys(this.$slots).length;
     },
 
-    hasSupport() {
-      return isRancherPrime() || this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.SUPPORTED )?.value === 'true';
-    },
+    // hasSupport() {
+    //   return isRancherPrime() || this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.SUPPORTED )?.value === 'true';
+    // },
 
     options() {
       // Use linkOptions if provided - used by Harvester

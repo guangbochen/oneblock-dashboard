@@ -5,7 +5,7 @@ export const STANDARD = 1;
 export const CUSTOM = 2;
 export const DOCS_BASE = 'https://ranchermanager.docs.rancher.com/v2.8';
 
-const STANDARD_VENDOR = 'OneBlock';
+const STANDARD_VENDOR = 'LLMOS';
 const STANDARD_PRODUCT = 'Explorer';
 const CUSTOM_VENDOR = {
   suse: 'Rancher Prime',
@@ -76,10 +76,10 @@ export function getProduct() {
 export function setTitle() {
   const v = getVendor();
 
-  if (v === 'oneblock') {
+  if (v === 'llmos') {
     const ico = require(`~shell/assets/images/pl/oneblock.png`);
 
-    document.title = 'OneBlock';
+    document.title = 'LLMOS';
     const link = document.createElement('link');
 
     link.hid = 'icon';

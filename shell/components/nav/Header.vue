@@ -824,7 +824,7 @@ export default {
     .side-menu-logo-img {
       object-fit: contain;
       height: 21px;
-      max-width: 200px;
+      max-width: 30px;
     }
 
     > * {

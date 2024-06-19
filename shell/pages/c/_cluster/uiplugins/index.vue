@@ -7,7 +7,7 @@ import { allHash } from '@shell/utils/promise';
 import { CATALOG, UI_PLUGIN, SERVICE, MANAGEMENT } from '@shell/config/types';
 import { SETTING } from '@shell/config/settings';
 import { fetchOrCreateSetting } from '@shell/utils/settings';
-import { getVersionData } from '@shell/config/version';
+// import { getVersionData } from '@shell/config/version';
 import { CATALOG as CATALOG_ANNOTATIONS } from '@shell/config/labels-annotations';
 import { NAME as APP_PRODUCT } from '@shell/config/product/apps';
 import ActionMenu from '@shell/components/ActionMenu';
@@ -88,7 +88,7 @@ export default {
       hasService:                     false,
       defaultIcon:                    require('~shell/assets/images/generic-plugin.svg'),
       reloadRequired:                 false,
-      rancherVersion:                 getVersionData()?.Version,
+      // rancherVersion:                 getVersionData()?.Version,
       showCatalogList:                false
     };
   },

@@ -20,7 +20,7 @@ const INTERCEPTS = {
     params: {
       cluster:  '',
       product:  MANAGER,
-      resource: CAPI.RANCHER_CLUSTER,
+      // resource: CAPI.RANCHER_CLUSTER,
     }
   },
   'authenticated.cluster.index': {
@@ -28,7 +28,7 @@ const INTERCEPTS = {
     params: {
       cluster:  '',
       product:  MANAGER,
-      resource: CAPI.RANCHER_CLUSTER,
+      // resource: CAPI.RANCHER_CLUSTER,
     }
   },
   'global-admin.catalog': {

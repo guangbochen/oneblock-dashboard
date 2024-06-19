@@ -34,16 +34,16 @@ export default {
       default: false
     }
   },
-  async fetch() {
-    const store = this.$store;
-
-    await store.dispatch(`rancher/findAll`, { type: NORMAN.USER });
-
-    await this.$fetchType(this.resource);
-
-    this.canRefreshAccess = await this.$store.dispatch('rancher/request', { url: '/v3/users?limit=0' })
-      .then((res) => !!res?.actions?.refreshauthprovideraccess);
-  },
+  // async fetch() {
+  //   const store = this.$store;
+  //
+  //   await store.dispatch(`rancher/findAll`, { type: NORMAN.USER });
+  //
+  //   await this.$fetchType(this.resource);
+  //
+  //   this.canRefreshAccess = await this.$store.dispatch('rancher/request', { url: '/v3/users?limit=0' })
+  //     .then((res) => !!res?.actions?.refreshauthprovideraccess);
+  // },
 
   data() {
     const getters = this.$store.getters;

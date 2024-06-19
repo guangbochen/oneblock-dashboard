@@ -1,14 +1,14 @@
 const config = require('./shell/vue.config');
 
 // Excludes the following plugins if there's no .env file.
-let defaultExcludes = 'epinio, rancher-components, oneblock';
+let defaultExcludes = 'rancher-components';
 
-if (process.env.RANCHER_ENV === 'oneblock') {
-  defaultExcludes = defaultExcludes.replace(', oneblock', '');
+if (process.env.RANCHER_ENV === 'llmos') {
+  defaultExcludes = defaultExcludes.replace(', llmos', '');
 }
 const excludes = process.env.EXCLUDES_PKG || defaultExcludes;
 
 module.exports = config(__dirname, {
   excludes: excludes.replace(/\s/g, '').split(','),
-  // excludes: ['fleet', 'example']
+  excludes: ['llmos'] // comment out for multi-cluster dev
 });

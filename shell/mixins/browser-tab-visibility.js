@@ -12,14 +12,14 @@ export default {
       }
     },
 
-    async visibilityChange() {
-      if (!document.hidden) {
-        await this.$store.dispatch('rancher/request', {
-          type: NORMAN.USER,
-          opt:  { url: '/v3/users?me=true' }
-        });
-      }
-    },
+    // async visibilityChange() {
+    //   if (!document.hidden) {
+    //     await this.$store.dispatch('rancher/request', {
+    //       type: NORMAN.USER,
+    //       opt:  { url: '/v3/users?me=true' }
+    //     });
+    //   }
+    // },
   },
 
   mounted() {

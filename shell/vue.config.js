@@ -276,7 +276,7 @@ module.exports = function(dir, _appConfig) {
     '/apis':           configHelper.proxyWsOpts(api), // Management k8s API
     '/v1':             configHelper.proxyWsOpts(api), // Management Steve API
     '/v3':             configHelper.proxyWsOpts(api), // Rancher API
-    '/v3-public':      configHelper.proxyOpts(api), // Rancher Unauthed API
+    // '/v3-public':      configHelper.proxyOpts(api), // Rancher Unauthed API
     '/api-ui':         configHelper.proxyOpts(api), // Browser API UI
     '/meta':           configHelper.proxyMetaOpts(api), // Browser API UI
     '/v1-*':           configHelper.proxyOpts(api), // SAML, KDM, etc
