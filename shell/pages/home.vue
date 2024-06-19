@@ -9,7 +9,7 @@ import CommunityLinks from '@shell/components/CommunityLinks';
 import SingleClusterInfo from '@shell/components/SingleClusterInfo';
 import { mapGetters, mapState } from 'vuex';
 import { MANAGEMENT } from '@shell/config/types';
-import { NAME as MANAGER } from '@shell/config/product/manager';
+// import { NAME as MANAGER } from '@shell/config/product/manager';
 import { STATE } from '@shell/config/table-headers';
 import { MODE, _IMPORT } from '@shell/config/query-params';
 import { createMemoryFormat, formatSi, parseSi, createMemoryValues } from '@shell/utils/units';
@@ -115,7 +115,7 @@ export default {
       return {
         name:   'c-cluster-product-resource',
         params: {
-          product:  MANAGER,
+          // product:  MANAGER,
           cluster:  BLANK_CLUSTER,
           resource: MANAGEMENT.CLUSTER,
           // resource: CAPI.RANCHER_CLUSTER

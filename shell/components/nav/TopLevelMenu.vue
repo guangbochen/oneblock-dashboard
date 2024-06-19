@@ -10,10 +10,8 @@ import { sortBy } from '@shell/utils/sort';
 import { ucFirst } from '@shell/utils/string';
 import { KEY } from '@shell/utils/platform';
 import { getVersionInfo } from '@shell/utils/version';
-import { LEGACY } from '@shell/store/features';
 import { SETTING } from '@shell/config/settings';
 import { filterOnlyKubernetesClusters, filterHiddenLocalCluster } from '@shell/utils/cluster';
-// import { isRancherPrime } from '@shell/config/version';
 import Pinned from '@shell/components/nav/Pinned';
 
 export default {
@@ -84,9 +82,6 @@ export default {
 
       return undefined;
     },
-    // legacyEnabled() {
-    //   return this.features(LEGACY);
-    // },
 
     showClusterSearch() {
       return this.clusters.length > this.maxClustersToShow;

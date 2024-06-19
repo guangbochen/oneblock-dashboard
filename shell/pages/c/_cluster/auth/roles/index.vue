@@ -5,14 +5,14 @@ import Tabbed from '@shell/components/Tabbed';
 import { MANAGEMENT } from '@shell/config/types';
 import ResourceTable from '@shell/components/ResourceTable';
 import Loading from '@shell/components/Loading';
-import { SUBTYPE_MAPPING, CREATE_VERBS } from '@shell/models/management.cattle.io.roletemplate';
+// import { SUBTYPE_MAPPING, CREATE_VERBS } from '@shell/models/management.cattle.io.roletemplate';
 import { NAME } from '@shell/config/product/auth';
 import { BLANK_CLUSTER } from '@shell/store/store-types.js';
 import { Banner } from '@components/Banner';
 
-const GLOBAL = SUBTYPE_MAPPING.GLOBAL.key;
-const CLUSTER = SUBTYPE_MAPPING.CLUSTER.key;
-const PROJECT = SUBTYPE_MAPPING.NAMESPACE.key;
+// const GLOBAL = SUBTYPE_MAPPING.GLOBAL.key;
+// const CLUSTER = SUBTYPE_MAPPING.CLUSTER.key;
+// const PROJECT = SUBTYPE_MAPPING.NAMESPACE.key;
 
 const createGlobalRole = {
   name:   `c-cluster-${ NAME }-roles-resource-create`,
@@ -59,7 +59,7 @@ export default {
           canFetch:       globalRoleSchema?.collectionMethods.find((verb) => verb === 'GET'),
           canCreate:      globalRoleSchema?.resourceMethods.find((verb) => CREATE_VERBS.has(verb)),
           weight:         3,
-          labelKey:       SUBTYPE_MAPPING.GLOBAL.labelKey,
+          // labelKey:       SUBTYPE_MAPPING.GLOBAL.labelKey,
           schema:         globalRoleSchema,
           createLocation: {
             ...createGlobalRole,
@@ -69,7 +69,7 @@ export default {
         [CLUSTER]: {
           canFetch:       roleTemplatesSchema?.collectionMethods.find((verb) => verb === 'GET'),
           canCreate:      roleTemplatesSchema?.resourceMethods.find((verb) => CREATE_VERBS.has(verb)),
-          labelKey:       SUBTYPE_MAPPING.CLUSTER.labelKey,
+          // labelKey:       SUBTYPE_MAPPING.CLUSTER.labelKey,
           weight:         2,
           schema:         roleTemplatesSchema,
           headers:        this.applyDefaultHeaderLabel(roleTemplateHeaders, defaultHeaderIndex, 'tableHeaders.authRoles.clusterDefault'),
@@ -81,7 +81,7 @@ export default {
         [PROJECT]: {
           canFetch:       roleTemplatesSchema?.collectionMethods.find((verb) => verb === 'GET'),
           canCreate:      roleTemplatesSchema?.resourceMethods.find((verb) => CREATE_VERBS.has(verb)),
-          labelKey:       SUBTYPE_MAPPING.NAMESPACE.labelKey,
+          // labelKey:       SUBTYPE_MAPPING.NAMESPACE.labelKey,
           weight:         1,
           schema:         roleTemplatesSchema,
           headers:        this.applyDefaultHeaderLabel(roleTemplateHeaders, defaultHeaderIndex, 'tableHeaders.authRoles.projectDefault'),

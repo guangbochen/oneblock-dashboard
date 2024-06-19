@@ -17,13 +17,13 @@ import { _CLONE, _DETAIL } from '@shell/config/query-params';
 import { SCOPED_RESOURCES } from '@shell/config/roles';
 import { Banner } from '@components/Banner';
 
-import { SUBTYPE_MAPPING, VERBS } from '@shell/models/management.cattle.io.roletemplate';
+// import { SUBTYPE_MAPPING, VERBS } from '@shell/models/management.cattle.io.roletemplate';
 import Loading from '@shell/components/Loading';
 
-const GLOBAL = SUBTYPE_MAPPING.GLOBAL.key;
-const CLUSTER = SUBTYPE_MAPPING.CLUSTER.key;
-const NAMESPACE = SUBTYPE_MAPPING.NAMESPACE.key;
-const RBAC_ROLE = SUBTYPE_MAPPING.RBAC_ROLE.key;
+// const GLOBAL = SUBTYPE_MAPPING.GLOBAL.key;
+// const CLUSTER = SUBTYPE_MAPPING.CLUSTER.key;
+// const NAMESPACE = SUBTYPE_MAPPING.NAMESPACE.key;
+// const RBAC_ROLE = SUBTYPE_MAPPING.RBAC_ROLE.key;
 
 /**
  * Handles the View, Create and Edit of

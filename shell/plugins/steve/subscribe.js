@@ -479,17 +479,16 @@ const sharedActions = {
       msg.selector = selector;
     }
 
-    const worker = this.$workers?.[getters.storeName] || {};
-
-    if (worker.mode === WORKER_MODES.ADVANCED || worker.mode === WORKER_MODES.WAITING) {
-      if ( force ) {
-        msg.force = true;
-      }
-
-      worker.postMessage({ watch: msg });
-
-      return;
-    }
+    // const worker = this.$workers?.[getters.storeName] || {};
+    // if (worker.mode === WORKER_MODES.ADVANCED || worker.mode === WORKER_MODES.WAITING) {
+    //   if ( force ) {
+    //     msg.force = true;
+    //   }
+    //
+    //   worker.postMessage({ watch: msg });
+    //
+    //   return;
+    // }
 
     return dispatch('send', msg);
   },

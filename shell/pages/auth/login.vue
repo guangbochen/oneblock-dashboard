@@ -10,7 +10,7 @@ import { Banner } from '@components/Banner';
 import { LOCAL, LOGGED_OUT, TIMED_OUT, _FLAGGED } from '@shell/config/query-params';
 import { Checkbox } from '@components/Form/Checkbox';
 import Password from '@shell/components/form/Password';
-import { configType } from '@shell/models/management.cattle.io.authconfig';
+// import { configType } from '@shell/models/management.cattle.io.authconfig';
 import { mapGetters } from 'vuex';
 import { MANAGEMENT } from '@shell/config/types';
 import { SETTING } from '@shell/config/settings';
@@ -171,7 +171,8 @@ export default {
 
   created() {
     this.providerComponents = this.providers.map((name) => {
-      return this.$store.getters['type-map/importLogin'](configType[name] || name);
+      return this.$store.getters['type-map/importLogin'](name);
+      // return this.$store.getters['type-map/importLogin'](configType[name] || name);
     });
   },
 

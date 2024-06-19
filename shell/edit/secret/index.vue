@@ -16,7 +16,7 @@ import Labels from '@shell/components/form/Labels';
 import { HIDE_SENSITIVE } from '@shell/store/prefs';
 import { CAPI } from '@shell/config/labels-annotations';
 import { clear, uniq } from '@shell/utils/array';
-import { NAME as MANAGER } from '@shell/config/product/manager';
+// import { NAME as MANAGER } from '@shell/config/product/manager';
 import SelectIconGrid from '@shell/components/SelectIconGrid';
 import { sortBy } from '@shell/utils/sort';
 import { ucFirst } from '@shell/utils/string';
@@ -213,11 +213,11 @@ export default {
     },
 
     doneRoute() {
-      if ( this.$store.getters['currentProduct'].name === MANAGER ) {
-        return 'c-cluster-manager-secret';
-      } else {
+      // if ( this.$store.getters['currentProduct'].name === MANAGER ) {
+      //   return 'c-cluster-manager-secret';
+      // } else {
         return 'c-cluster-product-resource';
-      }
+      // }
     },
   },
 

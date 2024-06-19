@@ -402,7 +402,7 @@ export default {
 <!--    />-->
 
     <ResourceYaml
-      v-else-if="isYaml"
+      v-if="isYaml"
       ref="resourceyaml"
       v-model="value"
       :mode="mode"

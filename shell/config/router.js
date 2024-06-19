@@ -78,11 +78,7 @@ export const routerOptions = {
     path:      '/c/:cluster/explorer',
     component: () => interopDefault(import('../pages/c/_cluster/explorer/index.vue' /* webpackChunkName: "pages/c/_cluster/explorer/index" */)),
     name:      'c-cluster-explorer'
-  }, {
-    path:      '/c/:cluster/manager',
-    component: () => interopDefault(import('../pages/c/_cluster/manager/index.vue' /* webpackChunkName: "pages/c/_cluster/manager/index" */)),
-    name:      'c-cluster-manager'
-  }, {
+  },{
     path:      '/c/:cluster/settings',
     component: () => interopDefault(import('../pages/c/_cluster/settings/index.vue' /* webpackChunkName: "pages/c/_cluster/settings/index" */)),
     name:      'c-cluster-settings'
@@ -106,10 +102,6 @@ export const routerOptions = {
     path:      '/c/:cluster/explorer/explorer-utils',
     component: () => interopDefault(import('../pages/c/_cluster/explorer/explorer-utils.js' /* webpackChunkName: "pages/c/_cluster/explorer/explorer-utils" */)),
     name:      'c-cluster-explorer-explorer-utils'
-  }, {
-    path:      '/c/:cluster/manager/cloudCredential',
-    component: () => interopDefault(import('../pages/c/_cluster/manager/cloudCredential/index.vue' /* webpackChunkName: "pages/c/_cluster/manager/cloudCredential/index" */)),
-    name:      'c-cluster-manager-cloudCredential'
   }, {
     path:      '/c/:cluster/settings/banners',
     component: () => interopDefault(import('../pages/c/_cluster/settings/banners.vue' /* webpackChunkName: "pages/c/_cluster/settings/banners" */)),
@@ -135,21 +127,9 @@ export const routerOptions = {
     component: () => interopDefault(import('../pages/c/_cluster/auth/group.principal/assign-edit.vue' /* webpackChunkName: "pages/c/_cluster/auth/group.principal/assign-edit" */)),
     name:      'c-cluster-auth-group.principal-assign-edit'
   }, {
-    path:      '/c/:cluster/manager/cloudCredential/create',
-    component: () => interopDefault(import('../pages/c/_cluster/manager/cloudCredential/create.vue' /* webpackChunkName: "pages/c/_cluster/manager/cloudCredential/create" */)),
-    name:      'c-cluster-manager-cloudCredential-create'
-  }, {
     path:      '/c/:cluster/auth/config/:id',
     component: () => interopDefault(import('../pages/c/_cluster/auth/config/_id.vue' /* webpackChunkName: "pages/c/_cluster/auth/config/_id" */)),
     name:      'c-cluster-auth-config-id'
-  }, {
-    path:      '/c/:cluster/manager/cloudCredential/:id',
-    component: () => interopDefault(import('../pages/c/_cluster/manager/cloudCredential/_id.vue' /* webpackChunkName: "pages/c/_cluster/manager/cloudCredential/_id" */)),
-    name:      'c-cluster-manager-cloudCredential-id'
-  }, {
-    path:      '/c/:cluster/manager/pages/:page?',
-    component: () => interopDefault(import('../pages/c/_cluster/manager/pages/_page.vue' /* webpackChunkName: "pages/c/_cluster/manager/pages/_page" */)),
-    name:      'c-cluster-manager-pages-page'
   }, {
     path:      '/c/:cluster/auth/roles/:resource/create',
     component: () => interopDefault(import('../pages/c/_cluster/auth/roles/_resource/create.vue' /* webpackChunkName: "pages/c/_cluster/auth/roles/_resource/create" */)),
@@ -220,7 +200,6 @@ export function createRouter(config) {
     if (typeof to === 'string') {
       to = normalizeURL(to);
     }
-    console.log('resolve', to, current, append);
     return resolve(to, current, append);
   };
 

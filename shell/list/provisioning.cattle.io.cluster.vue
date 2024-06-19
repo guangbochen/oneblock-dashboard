@@ -87,9 +87,9 @@ export default {
   computed: {
     filteredRows() {
       // If Harvester feature is enabled, hide Harvester Clusters
-      if (this.harvesterEnabled) {
-        return filterHiddenLocalCluster(filterOnlyKubernetesClusters(this.rows, this.$store), this.$store);
-      }
+      // if (this.harvesterEnabled) {
+      //   return filterHiddenLocalCluster(filterOnlyKubernetesClusters(this.rows, this.$store), this.$store);
+      // }
 
       // Otherwise, show Harvester clusters - these will be shown with a warning
       return filterHiddenLocalCluster(this.rows, this.$store);
@@ -100,7 +100,7 @@ export default {
       const isExplorer = product?.name === EXPLORER;
 
       // Don't show Harvester banner message on the cluster management page or if Harvester if not enabled
-      if (!isExplorer || !this.harvesterEnabled) {
+      if (!isExplorer) {
         return 0;
       }
 

@@ -1,7 +1,7 @@
 <script>
 import Loading from '@shell/components/Loading';
 import { mapGetters, mapState } from 'vuex';
-import { NAME as MANAGER } from '@shell/config/product/manager';
+// import { NAME as MANAGER } from '@shell/config/product/manager';
 import { CAPI, MANAGEMENT } from '@shell/config/types';
 import { SETTING } from '@shell/config/settings';
 import { findEmberPage, clearEmberInactiveTimer, startEmberInactiveTimer, EMBER_FRAME } from '@shell/utils/ember-page';
@@ -19,7 +19,7 @@ const INTERCEPTS = {
     name:   'c-cluster-product-resource',
     params: {
       cluster:  '',
-      product:  MANAGER,
+      // product:  MANAGER,
       // resource: CAPI.RANCHER_CLUSTER,
     }
   },
@@ -27,7 +27,7 @@ const INTERCEPTS = {
     name:   'c-cluster-product-resource',
     params: {
       cluster:  '',
-      product:  MANAGER,
+      // product:  MANAGER,
       // resource: CAPI.RANCHER_CLUSTER,
     }
   },

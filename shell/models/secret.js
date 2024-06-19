@@ -4,7 +4,7 @@ import { base64Decode, base64Encode } from '@shell/utils/crypto';
 import { removeObjects } from '@shell/utils/array';
 import { SERVICE_ACCOUNT } from '@shell/config/types';
 import { set } from '@shell/utils/object';
-import { NAME as MANAGER } from '@shell/config/product/manager';
+// import { NAME as MANAGER } from '@shell/config/product/manager';
 import SteveModel from '@shell/plugins/steve/steve-class';
 import { colorForState, stateDisplay, STATES_ENUM } from '@shell/plugins/dashboard-store/resource-class';
 import { diffFrom } from '@shell/utils/time';
@@ -385,11 +385,11 @@ export default class Secret extends SteveModel {
   }
 
   get doneRoute() {
-    if ( this.$rootGetters['currentProduct'].name === MANAGER ) {
-      return 'c-cluster-manager-secret';
-    } else {
+    // if ( this.$rootGetters['currentProduct'].name === MANAGER ) {
+    //   return 'c-cluster-manager-secret';
+    // } else {
       return 'c-cluster-product-resource';
-    }
+    // }
   }
 
   get certLifetime() {
