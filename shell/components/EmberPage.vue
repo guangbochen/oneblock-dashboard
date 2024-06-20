@@ -2,7 +2,7 @@
 import Loading from '@shell/components/Loading';
 import { mapGetters, mapState } from 'vuex';
 // import { NAME as MANAGER } from '@shell/config/product/manager';
-import { CAPI, MANAGEMENT } from '@shell/config/types';
+import { MANAGEMENT } from '@shell/config/types';
 import { SETTING } from '@shell/config/settings';
 import { findEmberPage, clearEmberInactiveTimer, startEmberInactiveTimer, EMBER_FRAME } from '@shell/utils/ember-page';
 

@@ -4,7 +4,6 @@ import { SCHEMA, COUNT } from '@shell/config/types';
 import { normalizeType, keyFieldFor } from '@shell/plugins/dashboard-store/normalize';
 import { addSchemaIndexFields } from '@shell/plugins/steve/schema.utils';
 import { classify } from '@shell/plugins/dashboard-store/classify';
-import garbageCollect from '@shell/utils/gc/gc';
 
 function registerType(state, type) {
   let cache = state.types[type];
@@ -123,8 +122,6 @@ export function forgetType(state, type) {
     cache.map.clear();
     delete state.types[type];
 
-    garbageCollect.gcResetType(state, type);
-
     return true;
   }
 }
@@ -136,8 +133,6 @@ export function resetStore(state, commit) {
   for ( const type of Object.keys(state.types) ) {
     commit(`${ state.config.namespace }/forgetType`, type);
   }
-
-  garbageCollect.gcResetStore(state);
 }
 
 export function remove(state, obj, getters) {

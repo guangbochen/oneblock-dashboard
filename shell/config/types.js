@@ -161,18 +161,18 @@ export const SNAPSHOT = 'rke.cattle.io.etcdsnapshot';
 // Base: /v1
 export const MANAGEMENT = {
   AUTH_CONFIG:                   'management.cattle.io.authconfig',
-  CATALOG_TEMPLATE:              'management.cattle.io.catalogtemplate',
+  // CATALOG_TEMPLATE:              'management.cattle.io.catalogtemplate',
   // CATALOG:                       'management.cattle.io.catalog',
   CLUSTER:                       'management.cattle.io.cluster',
   CLUSTER_ROLE_TEMPLATE_BINDING: 'management.cattle.io.clusterroletemplatebinding',
   FEATURE:                       'management.cattle.io.feature',
   // GROUP:                         'management.cattle.io.group',
-  KONTAINER_DRIVER:              'management.cattle.io.kontainerdriver',
-  MULTI_CLUSTER_APP:             'management.cattle.io.multiclusterapp',
-  NODE:                          'management.cattle.io.node',
-  NODE_DRIVER:                   'management.cattle.io.nodedriver',
-  NODE_POOL:                     'management.cattle.io.nodepool',
-  NODE_TEMPLATE:                 'management.cattle.io.nodetemplate',
+  // KONTAINER_DRIVER:              'management.cattle.io.kontainerdriver',
+  // MULTI_CLUSTER_APP:             'management.cattle.io.multiclusterapp',
+  // NODE:                          'management.cattle.io.node',
+  // NODE_DRIVER:                   'management.cattle.io.nodedriver',
+  // NODE_POOL:                     'management.cattle.io.nodepool',
+  // NODE_TEMPLATE:                 'management.cattle.io.nodetemplate',
   PROJECT:                       'management.cattle.io.project',
   PROJECT_ROLE_TEMPLATE_BINDING: 'management.cattle.io.projectroletemplatebinding',
   ROLE_TEMPLATE:                 'management.cattle.io.roletemplate',
@@ -185,8 +185,8 @@ export const MANAGEMENT = {
   MANAGED_CHART:                 'management.cattle.io.managedchart',
   USER_NOTIFICATION:             'management.cattle.io.rancherusernotification',
   GLOBAL_DNS_PROVIDER:           'management.cattle.io.globaldnsprovider',
-  RKE_TEMPLATE:                  'management.cattle.io.clustertemplate',
-  RKE_TEMPLATE_REVISION:         'management.cattle.io.clustertemplaterevision',
+  // RKE_TEMPLATE:                  'management.cattle.io.clustertemplate',
+  // RKE_TEMPLATE_REVISION:         'management.cattle.io.clustertemplaterevision',
 };
 
 export const CAPI = {
@@ -195,7 +195,6 @@ export const CAPI = {
   MACHINE_SET:          'cluster.x-k8s.io.machineset',
   MACHINE:              'cluster.x-k8s.io.machine',
   RANCHER_CLUSTER:      'provisioning.cattle.io.cluster',
-  LLMOS_CLUSTER:      'management.cattle.io.cluster',
   MACHINE_CONFIG_GROUP: 'rke-machine-config.cattle.io',
 };
 

@@ -18,7 +18,6 @@ import { CLUSTER as CLUSTER_PREF, LAST_NAMESPACE, NAMESPACE_FILTERS, WORKSPACE }
 import { BOTH, CLUSTER_LEVEL, NAMESPACED } from '@shell/store/type-map';
 import { filterBy, findBy } from '@shell/utils/array';
 import { ApiError, ClusterNotFoundError } from '@shell/utils/error';
-import { gcActions, gcGetters } from '@shell/utils/gc/gc-root-store';
 import {
   NAMESPACE_FILTER_ALL_ORPHANS as ALL_ORPHANS,
   NAMESPACE_FILTER_ALL_SYSTEM as ALL_SYSTEM,
@@ -588,7 +587,6 @@ export const getters = {
     return `${ base }/latest`;
   },
 
-  ...gcGetters
 };
 
 export const mutations = {
@@ -1144,6 +1142,4 @@ export const actions = {
       }
     });
   },
-
-  ...gcActions
 };

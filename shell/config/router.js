@@ -31,10 +31,6 @@ export const routerOptions = {
     component: () => interopDefault(import('../pages/clusters/index.vue' /* webpackChunkName: "pages/clusters/index" */)),
     name:      'clusters'
   }, {
-    path:      '/diagnostic',
-    component: () => interopDefault(import('../pages/diagnostic.vue' /* webpackChunkName: "pages/diagnostic" */)),
-    name:      'diagnostic'
-  }, {
     path:      '/fail-whale',
     component: () => interopDefault(import('../pages/fail-whale.vue' /* webpackChunkName: "pages/fail-whale" */)),
     name:      'fail-whale'
@@ -87,10 +83,6 @@ export const routerOptions = {
     component: () => interopDefault(import('../pages/c/_cluster/auth/config/index.vue' /* webpackChunkName: "pages/c/_cluster/auth/config/index" */)),
     name:      'c-cluster-auth-config'
   }, {
-    path:      '/c/:cluster/auth/roles',
-    component: () => interopDefault(import('../pages/c/_cluster/auth/roles/index.vue' /* webpackChunkName: "pages/c/_cluster/auth/roles/index" */)),
-    name:      'c-cluster-auth-roles'
-  }, {
     path:      '/c/:cluster/explorer/ConfigBadge',
     component: () => interopDefault(import('../pages/c/_cluster/explorer/ConfigBadge.vue' /* webpackChunkName: "pages/c/_cluster/explorer/ConfigBadge" */)),
     name:      'c-cluster-explorer-ConfigBadge'
@@ -102,10 +94,6 @@ export const routerOptions = {
     path:      '/c/:cluster/explorer/explorer-utils',
     component: () => interopDefault(import('../pages/c/_cluster/explorer/explorer-utils.js' /* webpackChunkName: "pages/c/_cluster/explorer/explorer-utils" */)),
     name:      'c-cluster-explorer-explorer-utils'
-  }, {
-    path:      '/c/:cluster/settings/banners',
-    component: () => interopDefault(import('../pages/c/_cluster/settings/banners.vue' /* webpackChunkName: "pages/c/_cluster/settings/banners" */)),
-    name:      'c-cluster-settings-banners'
   }, {
     path:      '/c/:cluster/settings/brand',
     component: () => interopDefault(import('../pages/c/_cluster/settings/brand.vue' /* webpackChunkName: "pages/c/_cluster/settings/brand" */)),
@@ -119,25 +107,9 @@ export const routerOptions = {
     component: () => interopDefault(import('../pages/c/_cluster/settings/links.vue' /* webpackChunkName: "pages/c/_cluster/settings/links" */)),
     name:      'c-cluster-settings-links'
   }, {
-    path:      '/c/:cluster/settings/performance',
-    component: () => interopDefault(import('../pages/c/_cluster/settings/performance.vue' /* webpackChunkName: "pages/c/_cluster/settings/performance" */)),
-    name:      'c-cluster-settings-performance'
-  }, {
-    path:      '/c/:cluster/auth/group.principal/assign-edit',
-    component: () => interopDefault(import('../pages/c/_cluster/auth/group.principal/assign-edit.vue' /* webpackChunkName: "pages/c/_cluster/auth/group.principal/assign-edit" */)),
-    name:      'c-cluster-auth-group.principal-assign-edit'
-  }, {
     path:      '/c/:cluster/auth/config/:id',
     component: () => interopDefault(import('../pages/c/_cluster/auth/config/_id.vue' /* webpackChunkName: "pages/c/_cluster/auth/config/_id" */)),
     name:      'c-cluster-auth-config-id'
-  }, {
-    path:      '/c/:cluster/auth/roles/:resource/create',
-    component: () => interopDefault(import('../pages/c/_cluster/auth/roles/_resource/create.vue' /* webpackChunkName: "pages/c/_cluster/auth/roles/_resource/create" */)),
-    name:      'c-cluster-auth-roles-resource-create'
-  }, {
-    path:      '/c/:cluster/auth/roles/:resource/:id?',
-    component: () => interopDefault(import('../pages/c/_cluster/auth/roles/_resource/_id.vue' /* webpackChunkName: "pages/c/_cluster/auth/roles/_resource/_id" */)),
-    name:      'c-cluster-auth-roles-resource-id'
   }, {
     path:      '/c/:cluster/navlinks/:group?',
     component: () => interopDefault(import('../pages/c/_cluster/navlinks/_group.vue' /* webpackChunkName: "pages/c/_cluster/navlinks/_group" */)),

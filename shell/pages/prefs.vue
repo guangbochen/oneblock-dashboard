@@ -8,8 +8,8 @@ import ButtonGroup from '@shell/components/ButtonGroup';
 import { Checkbox } from '@components/Form/Checkbox';
 import LandingPagePreference from '@shell/components/LandingPagePreference';
 import {
-  mapPref, THEME, KEYMAP, DATE_FORMAT, TIME_FORMAT, ROWS_PER_PAGE, HIDE_DESC, SHOW_PRE_RELEASE,
-  VIEW_IN_API, ALL_NAMESPACES, THEME_SHORTCUT, PLUGIN_DEVELOPER, SCALE_POOL_PROMPT
+  mapPref, THEME, KEYMAP, DATE_FORMAT, TIME_FORMAT, ROWS_PER_PAGE, HIDE_DESC, VIEW_IN_API,
+  ALL_NAMESPACES, THEME_SHORTCUT, PLUGIN_DEVELOPER, SCALE_POOL_PROMPT
   , MENU_MAX_CLUSTERS
 } from '@shell/store/prefs';
 
@@ -35,7 +35,6 @@ export default {
     timeFormat:        mapPref(TIME_FORMAT),
     perPage:           mapPref(ROWS_PER_PAGE),
     hideDesc:          mapPref(HIDE_DESC),
-    showPreRelease:    mapPref(SHOW_PRE_RELEASE),
     pluginDeveloper:   mapPref(PLUGIN_DEVELOPER),
     scalingDownPrompt: mapPref(SCALE_POOL_PROMPT),
 
@@ -92,15 +91,6 @@ export default {
 
         return {
           label: now.format(value),
-          value
-        };
-      });
-    },
-
-    helmOptions() {
-      return this.$store.getters['prefs/options'](SHOW_PRE_RELEASE).map((value) => {
-        return {
-          labelKey: `prefs.helm.${ value }`,
           value
         };
       });
@@ -317,19 +307,6 @@ export default {
         v-model="keymap"
         data-testid="prefs__keymapOptions"
         :options="keymapOptions"
-      />
-    </div>
-    <!-- Helm Charts -->
-    <div
-      v-if="!isSingleProduct"
-      class="col mt-10 mb-40"
-    >
-      <hr>
-      <h4 v-t="'prefs.helm.label'" />
-      <ButtonGroup
-        v-model="showPreRelease"
-        data-testid="prefs__helmOptions"
-        :options="helmOptions"
       />
     </div>
   </div>

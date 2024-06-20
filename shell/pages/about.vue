@@ -96,16 +96,6 @@ export default {
     class="about"
   >
     <BackLink :link="backLink" />
-    <div class="title-block mt-20 mb-40">
-      <h1 v-t="'about.title'" />
-      <n-link
-        :to="{ name: 'diagnostic' }"
-        class="btn role-primary"
-        data-testid="about__diagnostics_button"
-      >
-        {{ t('about.diagnostic.title') }}
-      </n-link>
-    </div>
     <h3>{{ t('about.versions.title') }}</h3>
     <table>
       <thead>

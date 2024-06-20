@@ -1,5 +1,5 @@
 <script>
-import { MANAGEMENT, NORMAN } from '@shell/config/types';
+import { MANAGEMENT } from '@shell/config/types';
 import CreateEditView from '@shell/mixins/create-edit-view';
 import GlobalRoleBindings from '@shell/components/GlobalRoleBindings.vue';
 import ChangePassword from '@shell/components/form/ChangePassword';
@@ -18,10 +18,7 @@ export default {
   ],
 
   data() {
-    const showGlobalRoles = !!this.$store.getters[`management/schemaFor`](MANAGEMENT.GLOBAL_ROLE);
-
     return {
-      showGlobalRoles,
       form: {
         username:    this.value.username,
         description: this.value.description,
@@ -33,21 +30,19 @@ export default {
       },
       validation: {
         password:     false,
-        roles:        !showGlobalRoles,
-        rolesChanged: false,
       },
     };
   },
 
   computed: {
     valid() {
-      const valid = this.credentialsValid && this.rolesValid;
+      const valid = this.credentialsValid;
 
       if (this.isCreate) {
         return valid;
       }
       if (this.isEdit) {
-        return valid && (this.credentialsChanged || this.validation.rolesChanged);
+        return valid && this.credentialsChanged;
       }
 
       return false;
@@ -77,9 +72,6 @@ export default {
 
       return false;
     },
-    rolesValid() {
-      return this.validation.roles;
-    },
     isCreate() {
       return this.mode === _CREATE;
     },
@@ -101,11 +93,8 @@ export default {
       try {
         if (this.isCreate) {
           const user = await this.createUser();
-
-          await this.updateRoles(user.id);
         } else {
           await this.editUser();
-          await this.updateRoles();
         }
 
         this.$router.replace({ name: this.doneRoute });
@@ -124,19 +113,21 @@ export default {
         throw new Error(this.t('user.edit.credentials.username.exists'));
       }
 
-      const user = await this.$store.dispatch('rancher/create', {
-        type:               NORMAN.USER,
+      const user = await this.$store.dispatch('management/create', {
+        type: MANAGEMENT.USER,
+        metadata: {
+          generateName: 'user-',
+        },
         description:        this.form.description,
+        isAdmin:            true,
         enabled:            true,
         mustChangePassword: this.form.password.userChangeOnLogin,
-        name:               this.form.displayName,
+        displayName:        this.form.displayName,
         password:           this.form.password.password,
         username:           this.form.username
       });
 
-      const newNormanUser = await user.save();
-
-      return this.$store.dispatch('management/find', { type: MANAGEMENT.USER, id: newNormanUser.id });
+      return await user.save();
     },
 
     async editUser() {
@@ -144,15 +135,15 @@ export default {
         return;
       }
 
-      const normanUser = await this.$store.dispatch('rancher/find', {
-        type: NORMAN.USER,
+      const user = await this.$store.dispatch('management/find', {
+        type: MANAGEMENT.USER,
         id:   this.value.id,
       });
 
       // Save change of password
       // - Password must be changed before editing mustChangePassword (setpassword action sets this to false)
       if (this.form.password.password) {
-        await this.$refs.changePassword.save(normanUser);
+        await this.$refs.changePassword.save(user);
 
         // Why the wait? Without these the user updates below are ignored
         // - The update request succeeds and shows the correct values in it's response.
@@ -163,11 +154,11 @@ export default {
       }
 
       // Save user updates
-      normanUser.description = this.form.description;
-      normanUser._name = this.form.displayName;
-      normanUser.mustChangePassword = this.form.password.userChangeOnLogin;
+      user.description = this.form.description;
+      user._name = this.form.displayName;
+      user.mustChangePassword = this.form.password.userChangeOnLogin;
 
-      await normanUser.save();
+      await user.save();
 
       return await this.$store.dispatch('management/find', {
         type: MANAGEMENT.USER,
@@ -175,12 +166,6 @@ export default {
         opt:  { force: true }
       });
     },
-
-    async updateRoles(userId) {
-      if (this.$refs.grb) {
-        await this.$refs.grb.save(userId);
-      }
-    }
   }
 };
 </script>
@@ -240,20 +225,6 @@ export default {
         :mode="mode"
         :must-change-password="value.mustChangePassword"
         @valid="validation.password = $event"
-      />
-    </div>
-    <div
-      v-if="showGlobalRoles"
-      class="global-permissions"
-    >
-      <GlobalRoleBindings
-        ref="grb"
-        :user-id="value.id || liveValue.id"
-        :mode="mode"
-        :real-mode="realMode"
-        type="user"
-        @hasChanges="validation.rolesChanged = $event"
-        @canLogIn="validation.roles = $event"
       />
     </div>
   </CruResource>

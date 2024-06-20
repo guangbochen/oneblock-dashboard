@@ -73,26 +73,6 @@ export function init(store) {
 
   virtualType({
     ifHaveType: MANAGEMENT.SETTING,
-    labelKey:   'banner.settingName',
-    name:       'banners',
-    namespaced: false,
-    weight:     98,
-    icon:       'folder',
-    route:      { name: 'c-cluster-settings-banners' }
-  });
-
-  virtualType({
-    ifHaveType: MANAGEMENT.SETTING,
-    labelKey:   'performance.settingName',
-    name:       'performance',
-    namespaced: false,
-    weight:     97,
-    icon:       'folder',
-    route:      { name: 'c-cluster-settings-performance' }
-  });
-
-  virtualType({
-    ifHaveType: MANAGEMENT.SETTING,
     labelKey:   'customLinks.label',
     name:       'links',
     namespaced: false,

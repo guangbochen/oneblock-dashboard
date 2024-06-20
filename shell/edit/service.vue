@@ -18,13 +18,10 @@ import { ucFirst } from '@shell/utils/string';
 import CruResource from '@shell/components/CruResource';
 import { Banner } from '@components/Banner';
 import Labels from '@shell/components/form/Labels';
-import HarvesterServiceAddOnConfig from '@shell/components/HarvesterServiceAddOnConfig';
 import { clone } from '@shell/utils/object';
 import { POD, CAPI, OB } from '@shell/config/types';
 import { matching } from '@shell/utils/selector';
-import { HARVESTER_NAME as HARVESTER } from '@shell/config/features';
 import { allHash } from '@shell/utils/promise';
-import { isHarvesterSatisfiesVersion } from '@shell/utils/cluster';
 import { Port } from '@shell/utils/validators/formRules';
 
 const SESSION_AFFINITY_ACTION_VALUES = {
@@ -56,7 +53,7 @@ export default {
     Tab,
     Tabbed,
     UnitInput,
-    HarvesterServiceAddOnConfig,
+    // HarvesterServiceAddOnConfig,
   },
 
   mixins: [CreateEditView, FormValidation],
@@ -170,25 +167,25 @@ export default {
       );
     },
 
-    showHarvesterAddOnConfig() {
-      let cloudProvider;
-      const version = this.provisioningCluster?.kubernetesVersion;
-
-      if (this.provisioningCluster?.isRke2) {
-        const machineSelectorConfig = this.provisioningCluster?.spec?.rkeConfig?.machineSelectorConfig || {};
-        const agentConfig = (machineSelectorConfig[0] || {}).config;
-
-        cloudProvider = agentConfig?.['cloud-provider-name'];
-      } else if (this.provisioningCluster?.isRke1) {
-        const currentCluster = this.$store.getters['currentCluster'];
-
-        cloudProvider = currentCluster?.spec?.rancherKubernetesEngineConfig?.cloudProvider?.name;
-      }
-
-      return this.checkTypeIs('LoadBalancer') &&
-              cloudProvider === HARVESTER &&
-              isHarvesterSatisfiesVersion(version);
-    },
+    // showHarvesterAddOnConfig() {
+    //   let cloudProvider;
+    //   const version = this.provisioningCluster?.kubernetesVersion;
+    //
+    //   if (this.provisioningCluster?.isRke2) {
+    //     const machineSelectorConfig = this.provisioningCluster?.spec?.rkeConfig?.machineSelectorConfig || {};
+    //     const agentConfig = (machineSelectorConfig[0] || {}).config;
+    //
+    //     cloudProvider = agentConfig?.['cloud-provider-name'];
+    //   } else if (this.provisioningCluster?.isRke1) {
+    //     const currentCluster = this.$store.getters['currentCluster'];
+    //
+    //     cloudProvider = currentCluster?.spec?.rancherKubernetesEngineConfig?.cloudProvider?.name;
+    //   }
+    //
+    //   return this.checkTypeIs('LoadBalancer') &&
+    //           cloudProvider === HARVESTER &&
+    //           isHarvesterSatisfiesVersion(version);
+    // },
 
     provisioningCluster() {
       const out = this.$store.getters['management/all'](CAPI.RANCHER_CLUSTER).find((c) => c?.status?.clusterName === this.currentCluster.metadata.name);
@@ -268,9 +265,9 @@ export default {
         const inStore = this.$store.getters['currentStore'](POD);
 
         const hash = {
-          provClusters:     this.$store.dispatch('management/findAll', { type: CAPI.RANCHER_CLUSTER }),
+          // provClusters:     this.$store.dispatch('management/findAll', { type: CAPI.RANCHER_CLUSTER }),
           pods:             this.$store.dispatch(`${ inStore }/findAll`, { type: POD }),
-          harvesterConfigs: this.$store.dispatch(`management/findAll`, { type: OB.HARVESTER_CONFIG }),
+          // harvesterConfigs: this.$store.dispatch(`management/findAll`, { type: OB.HARVESTER_CONFIG }),
         };
 
         const res = await allHash(hash);
@@ -460,18 +457,6 @@ export default {
             />
           </div>
         </div>
-      </Tab>
-      <Tab
-        v-if="showHarvesterAddOnConfig"
-        name="add-on-config"
-        :label="t('servicesPage.harvester.title')"
-        :weight="-1"
-      >
-        <HarvesterServiceAddOnConfig
-          :mode="mode"
-          :value="value"
-          :register-before-hook="registerBeforeHook"
-        />
       </Tab>
       <Tab
         v-if="!checkTypeIs('ExternalName') && !checkTypeIs('Headless')"

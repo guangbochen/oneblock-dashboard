@@ -516,13 +516,13 @@ export default {
     </div>
 
     <h3
-      v-if="!hasV1Monitoring && hasStats"
+      v-if="hasStats"
       class="mt-40"
     >
       {{ t('clusterIndexPage.sections.capacity.label') }}
     </h3>
     <div
-      v-if="!hasV1Monitoring && hasStats"
+      v-if="hasStats"
       class="hardware-resource-gauges"
     >
       <HardwareResourceGauge
@@ -543,7 +543,7 @@ export default {
       />
     </div>
 
-    <div v-if="!hasV1Monitoring && componentServices">
+    <div v-if="componentServices">
       <div
         v-for="status in componentServices"
         :key="status.name"
@@ -562,16 +562,16 @@ export default {
       </div>
     </div>
 
-    <div
-      v-if="hasV1Monitoring"
-      id="ember-anchor"
-      class="mt-20"
-    >
-      <EmberPage
-        inline="ember-anchor"
-        :src="v1MonitoringURL"
-      />
-    </div>
+<!--    <div-->
+<!--      v-if="hasV1Monitoring"-->
+<!--      id="ember-anchor"-->
+<!--      class="mt-20"-->
+<!--    >-->
+<!--      <EmberPage-->
+<!--        inline="ember-anchor"-->
+<!--        :src="v1MonitoringURL"-->
+<!--      />-->
+<!--    </div>-->
 
     <div class="mt-30">
       <Tabbed @changed="tabChange">

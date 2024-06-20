@@ -1,5 +1,6 @@
 import { DSL } from '@shell/store/type-map';
-import { MANAGEMENT, NORMAN } from '@shell/config/types';
+// import { MANAGEMENT, NORMAN } from '@shell/config/types';
+import { MANAGEMENT } from '@shell/config/types';
 import { uniq } from '@shell/utils/array';
 import {
   GROUP_NAME, GROUP_ROLE_NAME,
@@ -66,13 +67,13 @@ export function init(store) {
 
   spoofedType({
     labelKey:          'typeLabel."group.principal"',
-    type:              NORMAN.SPOOFED.GROUP_PRINCIPAL,
+    // type:              NORMAN.SPOOFED.GROUP_PRINCIPAL,
     weight:            101,
     ifHaveType:        MANAGEMENT.GLOBAL_ROLE_BINDING,
     collectionMethods: [],
     schemas:           [
       {
-        id:                NORMAN.SPOOFED.GROUP_PRINCIPAL,
+        // id:                NORMAN.SPOOFED.GROUP_PRINCIPAL,
         type:              'schema',
         collectionMethods: [],
         resourceFields:    {},
@@ -88,10 +89,10 @@ export function init(store) {
       }
 
       // Ensure we upfront load principals (saves making individual requests later)
-      await store.dispatch('rancher/findAll', {
-        type: NORMAN.PRINCIPAL,
-        opt:  { url: '/v3/principals' }
-      });
+      // await store.dispatch('rancher/findAll', {
+      //   type: NORMAN.PRINCIPAL,
+      //   opt:  { url: '/v3/principals' }
+      // });
 
       // getInstances should return a list of principals that have global bindings.
       // It would be easier to just filter principals from above by those with bindings...
@@ -108,40 +109,40 @@ export function init(store) {
         .map((grb) => grb.groupPrincipalName)
       );
 
-      const allPrincipalsP = uniquePrincipalIds
-        .map(async(pId) => {
-          // Guard against principals that aren't retrievable (bindings to principals from previous auth providers)
-          try {
-            return await store.dispatch('rancher/find', {
-              type: NORMAN.PRINCIPAL,
-              opt:  { url: `/v3/principals/${ encodeURIComponent(pId) }` },
-              id:   pId
-            });
-          } catch (e) {
-            console.warn(`Failed to fetch Principal with id: '${ pId }'`, e); // eslint-disable-line no-console
-          }
-        });
+      // const allPrincipalsP = uniquePrincipalIds
+      //   .map(async(pId) => {
+      //     // Guard against principals that aren't retrievable (bindings to principals from previous auth providers)
+      //     try {
+      //       return await store.dispatch('rancher/find', {
+      //         type: NORMAN.PRINCIPAL,
+      //         opt:  { url: `/v3/principals/${ encodeURIComponent(pId) }` },
+      //         id:   pId
+      //       });
+      //     } catch (e) {
+      //       console.warn(`Failed to fetch Principal with id: '${ pId }'`, e); // eslint-disable-line no-console
+      //     }
+      //   });
 
-      const allPrincipals = await Promise.all(allPrincipalsP);
-
-      return allPrincipals
-        .filter((p) => !!p)
-        .map((p) => ({
-          ...p,
-          type: NORMAN.SPOOFED.GROUP_PRINCIPAL
-        }));
+      // const allPrincipals = await Promise.all(allPrincipalsP);
+      //
+      // return allPrincipals
+      //   .filter((p) => !!p)
+      //   .map((p) => ({
+      //     ...p,
+      //     type: NORMAN.SPOOFED.GROUP_PRINCIPAL
+      //   }));
     }
   });
-  configureType(NORMAN.SPOOFED.GROUP_PRINCIPAL, {
-    isCreatable:      false,
-    showAge:          false,
-    showState:        false,
-    isRemovable:      false,
-    showListMasthead: false,
-  });
-  // Use labelFor... so lookup succeeds with .'s in path.... and end result is 'trimmed' as per other entries
-  mapType(NORMAN.SPOOFED.GROUP_PRINCIPAL, store.getters['type-map/labelFor']({ id: NORMAN.SPOOFED.GROUP_PRINCIPAL }, 2));
-  weightType(NORMAN.SPOOFED.GROUP_PRINCIPAL, 101, true);
+  // configureType(NORMAN.SPOOFED.GROUP_PRINCIPAL, {
+  //   isCreatable:      false,
+  //   showAge:          false,
+  //   showState:        false,
+  //   isRemovable:      false,
+  //   showListMasthead: false,
+  // });
+  // // Use labelFor... so lookup succeeds with .'s in path.... and end result is 'trimmed' as per other entries
+  // mapType(NORMAN.SPOOFED.GROUP_PRINCIPAL, store.getters['type-map/labelFor']({ id: NORMAN.SPOOFED.GROUP_PRINCIPAL }, 2));
+  // weightType(NORMAN.SPOOFED.GROUP_PRINCIPAL, 101, true);
 
   virtualType({
     labelKey:   'auth.roleTemplate',
@@ -178,14 +179,14 @@ export function init(store) {
   basicType([
     'config',
     USERS_VIRTUAL_TYPE,
-    NORMAN.SPOOFED.GROUP_PRINCIPAL,
+    // NORMAN.SPOOFED.GROUP_PRINCIPAL,
     ROLES_VIRTUAL_TYPE
   ]);
 
-  headers(NORMAN.SPOOFED.GROUP_PRINCIPAL, [
-    GROUP_NAME,
-    GROUP_ROLE_NAME
-  ]);
+  // headers(NORMAN.SPOOFED.GROUP_PRINCIPAL, [
+  //   GROUP_NAME,
+  //   GROUP_ROLE_NAME
+  // ]);
 
   // A lot of the built in roles have nicer names returned by nameDisplay. In both tables we want to show both nicer and base names
   const DISPLAY_NAME = {

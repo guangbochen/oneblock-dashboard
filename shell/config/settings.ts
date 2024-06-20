@@ -1,6 +1,4 @@
 // Settings
-import { GC_DEFAULTS, GC_PREFERENCES } from '@shell/utils/gc/gc-types';
-
 interface GlobalSettingRuleset {
   name: string,
   key?: string | number,
@@ -75,7 +73,7 @@ export const SETTING = {
   LINK_COLOR:                           'ui-link-color',
   COMMUNITY_LINKS:                      'ui-community-links',
   FAVICON:                              'ui-favicon',
-  UI_PERFORMANCE:                       'ui-performance',
+  // UI_PERFORMANCE:                       'ui-performance',
   UI_CUSTOM_LINKS:                      'ui-custom-links',
   /**
    * Allow the backend to force a light/dark theme. Used in non-rancher world and results in the theme used
@@ -180,7 +178,7 @@ export interface PerfSettings {
   };
   manualRefresh: {};
   disableWebsocketNotification: boolean;
-  garbageCollection: GC_PREFERENCES;
+  // garbageCollection: GC_PREFERENCES;
   forceNsFilterV2: any;
   advancedWorker: {};
   kubeAPI: PerfSettingsKubeApi;
@@ -200,7 +198,7 @@ export const DEFAULT_PERF_SETTING: PerfSettings = {
     threshold: 1500,
   },
   disableWebsocketNotification: true,
-  garbageCollection:            GC_DEFAULTS,
+  // garbageCollection:            GC_DEFAULTS,
   forceNsFilterV2:              { enabled: false },
   advancedWorker:               { enabled: false },
   kubeAPI:                      {

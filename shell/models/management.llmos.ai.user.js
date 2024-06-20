@@ -1,4 +1,3 @@
-import { NORMAN } from '@shell/config/types';
 import HybridModel, { cleanHybridResources } from '@shell/plugins/steve/hybrid-class';
 
 export default class User extends HybridModel {
@@ -8,16 +7,6 @@ export default class User extends HybridModel {
 
     super(data, ctx, rehydrateNamespace, setClone);
     this.description = _description;
-  }
-
-  // Clean the Norman properties, but keep description
-  cleanResource(data) {
-    const desc = data.description;
-    const clean = cleanHybridResources(data);
-
-    clean._description = desc;
-
-    return clean;
   }
 
   get isSystem() {
@@ -36,12 +25,6 @@ export default class User extends HybridModel {
     return !!(this.principalIds || []).find((p) => p === currentPrincipal);
   }
 
-  get principals() {
-    return this.principalIds
-      .map((id) => this.$rootGetters['rancher/byId'](NORMAN.PRINCIPAL, id))
-      .filter((p) => p);
-  }
-
   get nameDisplay() {
     return this.displayName || this.username || this.id;
   }
@@ -58,7 +41,7 @@ export default class User extends HybridModel {
   }
 
   get provider() {
-    const principals = this.principalIds || [];
+    const principals = [];
     let isSystem = false;
     let isLocal = true;
     let provider = '';
@@ -157,15 +140,6 @@ export default class User extends HybridModel {
     await Promise.all(items.map((item) => item.setEnabled(false)));
   }
 
-  async refreshGroupMembership() {
-    const user = await this.$dispatch('rancher/find', {
-      type: NORMAN.USER,
-      id:   this.id,
-    }, { root: true });
-
-    await user.doAction('refreshauthprovideraccess');
-  }
-
   canActivate(state) {
     const stateOk = state ? this.state === 'inactive' : this.state === 'active';
     const permissionOk = this.hasLink('update'); // Not canUpdate, only gate on api not whether editable pages should be visible
@@ -193,12 +167,6 @@ export default class User extends HybridModel {
         enabled:    this.canActivate(false),
         weight:     1
       },
-      {
-        action:  'refreshGroupMembership',
-        label:   this.t('authGroups.actions.refresh'),
-        icon:    'icon icon-refresh',
-        enabled: this.canRefreshAccess
-      },
       { divider: true },
       ...super._availableActions,
     ];
@@ -217,10 +185,6 @@ export default class User extends HybridModel {
 
   get confirmRemove() {
     return true;
-  }
-
-  get norman() {
-    return this.$rootGetters['rancher/byId'](NORMAN.USER, this.id);
   }
 
   get canDelete() {

@@ -28,7 +28,7 @@ export default {
   data() {
     return {
       defaultsDisabled: true,
-      // isRancherPrime:   isRancherPrime(),
+      hasSupport: false,
       uiCustomLinks:    {},
       bannerVal:        {},
       value:            [],
@@ -50,10 +50,6 @@ export default {
         defaults: this.value.defaults.filter((obj) => obj.enabled).map((obj) => obj.key),
         custom:   this.value.custom
       };
-    },
-
-    hasSupport() {
-      return isRancherPrime() || this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.SUPPORTED )?.value === 'true';
     },
   },
   methods: {

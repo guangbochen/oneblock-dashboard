@@ -311,8 +311,6 @@ export default async function({
         }
       }
     }
-
-    store.dispatch('gcStartIntervals');
   }
 
   const backTo = window.localStorage.getItem(BACK_TO);
@@ -324,7 +322,7 @@ export default async function({
   }
 
   // GC should be notified of route change before any find/get request is made that might be used for that page
-  store.dispatch('gcRouteChanged', route);
+  // store.dispatch('gcRouteChanged', route);
 
   // Load stuff
   let localCheckResource = false;

@@ -1,6 +1,6 @@
 <script>
 import AsyncButton from '@shell/components/AsyncButton';
-import { NORMAN } from '@shell/config/types';
+import { MANAGEMENT } from '@shell/config/types';
 import { NAME } from '@shell/config/product/auth';
 import ResourceTable from '@shell/components/ResourceTable';
 import Masthead from '@shell/components/ResourceList/Masthead';
@@ -34,16 +34,13 @@ export default {
       default: false
     }
   },
-  // async fetch() {
-  //   const store = this.$store;
-  //
-  //   await store.dispatch(`rancher/findAll`, { type: NORMAN.USER });
-  //
-  //   await this.$fetchType(this.resource);
-  //
-  //   this.canRefreshAccess = await this.$store.dispatch('rancher/request', { url: '/v3/users?limit=0' })
-  //     .then((res) => !!res?.actions?.refreshauthprovideraccess);
-  // },
+  async fetch() {
+    const store = this.$store;
+
+    await store.dispatch(`management/findAll`, { type: MANAGEMENT.USER });
+
+    await this.$fetchType(this.resource);
+  },
 
   data() {
     const getters = this.$store.getters;
@@ -52,7 +49,6 @@ export default {
 
     return {
       schema,
-      canRefreshAccess: false,
     };
   },
 
@@ -81,30 +77,12 @@ export default {
       const params = { ...this.$route.params };
       const requiredUsers = params.product === NAME ? this.rows.filter((a) => !a.isSystem) : this.rows;
 
-      requiredUsers.forEach((r) => {
-        r.canRefreshAccess = this.canRefreshAccess;
-      });
-
       return requiredUsers;
     }
 
   },
 
-  methods: {
-    async refreshGroupMemberships(buttonDone) {
-      try {
-        await this.$store.dispatch('rancher/collectionAction', {
-          type:       NORMAN.USER,
-          actionName: 'refreshauthprovideraccess',
-        });
-
-        buttonDone(true);
-      } catch (err) {
-        this.$store.dispatch('growl/fromError', { title: this.t('user.list.errorRefreshingGroupMemberships'), err }, { root: true });
-        buttonDone(false);
-      }
-    },
-  },
+  methods: {},
 };
 </script>
 
@@ -117,17 +95,6 @@ export default {
       :load-resources="loadResources"
       :load-indeterminate="loadIndeterminate"
     >
-      <template slot="extraActions">
-        <AsyncButton
-          v-if="canRefreshAccess"
-          mode="refresh"
-          :action-label="t('authGroups.actions.refresh')"
-          :waiting-label="t('authGroups.actions.refresh')"
-          :success-label="t('authGroups.actions.refresh')"
-          :error-label="t('authGroups.actions.refresh')"
-          @click="refreshGroupMemberships"
-        />
-      </template>
     </Masthead>
 
     <ResourceTable

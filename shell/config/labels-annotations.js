@@ -4,8 +4,6 @@ export const HOSTNAME = 'kubernetes.io/hostname';
 export const TIMESTAMP = 'cattle.io/timestamp';
 export const SYSTEM_NAMESPACE = 'management.cattle.io/system-namespace';
 export const PROJECT = 'field.cattle.io/projectId';
-export const DEFAULT_PROJECT = 'authz.management.cattle.io/default-project';
-export const SYSTEM_PROJECT = 'authz.management.cattle.io/system-project';
 export const CONTAINER_DEFAULT_RESOURCE_LIMIT = 'field.cattle.io/containerDefaultResourceLimit';
 export const CATTLE_PUBLIC_ENDPOINTS = 'field.cattle.io/publicEndpoints';
 export const TARGET_WORKLOADS = 'field.cattle.io/targetWorkloadIds';
@@ -46,19 +44,19 @@ export const MACHINE_ROLES = {
 };
 
 export const CAPI = {
-  DEPLOYMENT_NAME:      'cluster.x-k8s.io/deployment-name',
-  CREDENTIAL_DRIVER:    'provisioning.cattle.io/driver',
-  CLUSTER_NAMESPACE:    'cluster.x-k8s.io/cluster-namespace',
-  FORCE_MACHINE_REMOVE: 'provisioning.cattle.io/force-machine-remove',
-  MACHINE_NAME:         'cluster.x-k8s.io/machine',
-  DELETE_MACHINE:       'cluster.x-k8s.io/delete-machine',
+  // DEPLOYMENT_NAME:      'cluster.x-k8s.io/deployment-name',
+  // CREDENTIAL_DRIVER:    'provisioning.cattle.io/driver',
+  // CLUSTER_NAMESPACE:    'cluster.x-k8s.io/cluster-namespace',
+  // FORCE_MACHINE_REMOVE: 'provisioning.cattle.io/force-machine-remove',
+  // MACHINE_NAME:         'cluster.x-k8s.io/machine',
+  // DELETE_MACHINE:       'cluster.x-k8s.io/delete-machine',
   PROVIDER:             'provider.cattle.io',
-  SECRET_AUTH:          'v2prov-secret-authorized-for-cluster',
-  SECRET_WILL_DELETE:   'v2prov-authorized-secret-deletes-on-cluster-removal',
+  // SECRET_AUTH:          'v2prov-secret-authorized-for-cluster',
+  // SECRET_WILL_DELETE:   'v2prov-authorized-secret-deletes-on-cluster-removal',
   /**
    * Annotation for overriding the cluster provider,
    */
-  UI_CUSTOM_PROVIDER:   'ui.rancher/provider'
+  // UI_CUSTOM_PROVIDER:   'ui.rancher/provider'
 };
 
 export const CATALOG = {

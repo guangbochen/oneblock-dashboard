@@ -3,14 +3,10 @@ import { SETTING } from './settings';
 export const ANY = 0;
 export const STANDARD = 1;
 export const CUSTOM = 2;
-export const DOCS_BASE = 'https://ranchermanager.docs.rancher.com/v2.8';
+export const DOCS_BASE = 'https://llmos.docs.1block.ai/latest';
 
 const STANDARD_VENDOR = 'LLMOS';
 const STANDARD_PRODUCT = 'Explorer';
-const CUSTOM_VENDOR = {
-  suse: 'Rancher Prime',
-  csp:  'SUSE Rancher'
-};
 
 let mode = STANDARD;
 let vendor = STANDARD_VENDOR;
@@ -57,15 +53,6 @@ export function matches(pl) {
 }
 
 export function getVendor() {
-  if ( vendor === SETTING.PL_RANCHER_VALUE ) {
-    // Custom vendor override based on brand
-    if (brand && CUSTOM_VENDOR[brand]) {
-      return CUSTOM_VENDOR[brand];
-    }
-
-    return STANDARD_VENDOR;
-  }
-
   return vendor;
 }
 

@@ -5,7 +5,6 @@ import { SPOOFED_API_PREFIX, SPOOFED_PREFIX } from '@shell/store/type-map';
 import { createYaml } from '@shell/utils/create-yaml';
 import { classify } from '@shell/plugins/dashboard-store/classify';
 import { normalizeType } from './normalize';
-import garbageCollect from '@shell/utils/gc/gc';
 import { addSchemaIndexFields } from '@shell/plugins/steve/schema.utils';
 
 export const _ALL = 'all';
@@ -338,8 +337,6 @@ export default {
       dispatch('resource-fetch/updateManualRefreshIsLoading', false, { root: true });
     }
 
-    garbageCollect.gcUpdateLastAccessed(ctx, type);
-
     return all;
   },
 
@@ -396,8 +393,6 @@ export default {
         force:    opt.forceWatch === true,
       });
     }
-
-    garbageCollect.gcUpdateLastAccessed(ctx, type);
 
     return getters.matching( type, selector, namespace );
   },
@@ -460,7 +455,6 @@ export default {
 
     out = getters.byId(type, id);
 
-    garbageCollect.gcUpdateLastAccessed(ctx, type);
 
     return out;
   },
@@ -635,12 +629,4 @@ export default {
   incrementLoadCounter({ commit }, resource) {
     commit('incrementLoadCounter', resource);
   },
-
-  garbageCollect(ctx, ignoreTypes) {
-    return garbageCollect.garbageCollect(ctx, ignoreTypes);
-  },
-
-  gcResetStore({ state }) {
-    garbageCollect.gcResetStore(state);
-  }
 };

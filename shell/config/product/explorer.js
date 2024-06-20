@@ -6,7 +6,7 @@ import {
   RBAC,
   MANAGEMENT,
   NAMESPACE,
-  NORMAN,
+  // NORMAN,
   VIRTUAL_TYPES,
 } from '@shell/config/types';
 
@@ -135,24 +135,24 @@ export function init(store) {
   mapGroup('admissionregistration.k8s.io', 'admission');
   mapGroup('crd.projectcalico.org', 'Calico');
   mapGroup(/^(.+\.)?cert-manager\.(k8s\.)?io$/, 'Cert Manager');
-  mapGroup(/^(.+\.)?(gateway|gloo)\.solo\.io$/, 'Gloo');
-  mapGroup(/^(.*\.)?monitoring\.coreos\.com$/, 'Monitoring');
-  mapGroup(/^(.*\.)?tekton\.dev$/, 'Tekton');
-  mapGroup(/^(.*\.)?tigera\.io$/, 'Tigera');
-  mapGroup(/^(.*\.)?longhorn(\.rancher)?\.io$/, 'Longhorn');
-  mapGroup(/^(.*\.)?(fleet|gitjob)\.cattle\.io$/, 'Fleet');
+  // mapGroup(/^(.+\.)?(gateway|gloo)\.solo\.io$/, 'Gloo');
+  // mapGroup(/^(.*\.)?monitoring\.coreos\.com$/, 'Monitoring');
+  // mapGroup(/^(.*\.)?tekton\.dev$/, 'Tekton');
+  // mapGroup(/^(.*\.)?tigera\.io$/, 'Tigera');
+  // mapGroup(/^(.*\.)?longhorn(\.rancher)?\.io$/, 'Longhorn');
+  // mapGroup(/^(.*\.)?(fleet|gitjob)\.cattle\.io$/, 'Fleet');
   mapGroup(/^(.*\.)?(k3s)\.cattle\.io$/, 'K3s');
   mapGroup(/^(.*\.)?(helm)\.cattle\.io$/, 'Helm');
   mapGroup(/^(.*\.)?upgrade\.cattle\.io$/, 'Upgrade Controller');
-  mapGroup(/^(.*\.)?cis\.cattle\.io$/, 'CIS');
+  // mapGroup(/^(.*\.)?cis\.cattle\.io$/, 'CIS');
   mapGroup(/^(.*\.)?traefik\.containo\.us$/, 'Træfik');
-  mapGroup(/^(catalog|management|project|ui)\.cattle\.io$/, 'Rancher');
-  mapGroup(/^(.*\.)?istio\.io$/, 'Istio');
-  mapGroup('split.smi-spec.io', 'SMI');
-  mapGroup(/^(.*\.)*knative\.(io|dev)$/, 'Knative');
-  mapGroup('argoproj.io', 'Argo');
-  mapGroup('logging.banzaicloud.io', 'Logging');
-  mapGroup(/^(.*\.)?resources\.cattle\.io$/, 'Backup-Restore');
+  // mapGroup(/^(catalog|management|project|ui)\.cattle\.io$/, 'Rancher');
+  // mapGroup(/^(.*\.)?istio\.io$/, 'Istio');
+  // mapGroup('split.smi-spec.io', 'SMI');
+  // mapGroup(/^(.*\.)*knative\.(io|dev)$/, 'Knative');
+  // mapGroup('argoproj.io', 'Argo');
+  // mapGroup('logging.banzaicloud.io', 'Logging');
+  // mapGroup(/^(.*\.)?resources\.cattle\.io$/, 'Backup-Restore');
   mapGroup(/^(.*\.)?cluster\.x-k8s\.io$/, 'clusterProvisioning');
   mapGroup(/^(aks|eks|gke|rke|rke-machine-config|rke-machine|provisioning)\.cattle\.io$/, 'clusterProvisioning');
 
@@ -161,7 +161,7 @@ export function init(store) {
   configureType(MANAGEMENT.CLUSTER_ROLE_TEMPLATE_BINDING, { isEditable: false });
   configureType(MANAGEMENT.PROJECT_ROLE_TEMPLATE_BINDING, { isEditable: false, depaginate: true });
   configureType(MANAGEMENT.PROJECT, { displayName: store.getters['i18n/t']('namespace.project.label') });
-  configureType(NORMAN.PROJECT_ROLE_TEMPLATE_BINDING, { depaginate: true });
+  // configureType(NORMAN.PROJECT_ROLE_TEMPLATE_BINDING, { depaginate: true });
 
   configureType(EVENT, { limit: 500 });
   weightType(EVENT, -1, true);
@@ -262,14 +262,14 @@ export function init(store) {
     AGE
   ]);
 
-  headers(NORMAN.TOKEN, [
-    EXPIRY_STATE,
-    ACCESS_KEY,
-    DESCRIPTION,
-    SCOPE_NORMAN,
-    EXPIRES,
-    AGE_NORMAN
-  ]);
+  // headers(NORMAN.TOKEN, [
+  //   EXPIRY_STATE,
+  //   ACCESS_KEY,
+  //   DESCRIPTION,
+  //   SCOPE_NORMAN,
+  //   EXPIRES,
+  //   AGE_NORMAN
+  // ]);
 
   virtualType({
     label:      store.getters['i18n/t']('clusterIndexPage.header'),
@@ -337,15 +337,15 @@ export function init(store) {
   });
 
   // Ignore these types as they are managed through the settings product
-  ignoreType(MANAGEMENT.FEATURE);
+  // ignoreType(MANAGEMENT.FEATURE);
   ignoreType(MANAGEMENT.SETTING);
 
   // Don't show Tokens/API Keys in the side navigation
-  ignoreType(MANAGEMENT.TOKEN);
-  ignoreType(NORMAN.TOKEN);
+  // ignoreType(MANAGEMENT.TOKEN);
+  // ignoreType(NORMAN.TOKEN);
 
   // Ignore these types as they are managed through the auth product
   ignoreType(MANAGEMENT.USER);
-  ignoreType(MANAGEMENT.GLOBAL_ROLE);
-  ignoreType(MANAGEMENT.ROLE_TEMPLATE);
+  // ignoreType(MANAGEMENT.GLOBAL_ROLE);
+  // ignoreType(MANAGEMENT.ROLE_TEMPLATE);
 }

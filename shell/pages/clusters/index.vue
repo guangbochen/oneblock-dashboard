@@ -1,5 +1,4 @@
 <script>
-// import { NAME as MANAGER } from '@shell/config/product/manager';
 
 export default {
   fetch({ store, redirect }) {
@@ -12,7 +11,6 @@ export default {
         name:   'c-cluster-product',
         params: {
           cluster: 'local',
-          // product: MANAGER
         }
       });
     }

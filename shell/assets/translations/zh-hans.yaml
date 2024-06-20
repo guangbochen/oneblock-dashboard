@@ -4241,7 +4241,7 @@ prefs:
   advFeatures:
     title: 高级功能
     viewInApi: 启用“在 API 中查看”
-    allNamespaces: 显示由 Rancher 管理的 system 命名空间（不要编辑或删除）
+    allNamespaces: 显示由 LLMOS 管理的 system 命名空间（不要编辑或删除）
     themeShortcut: 使用快捷键（shift+T）来切换深色/浅色主题
     pluginDeveloper: 启用扩展开发者功能
   hideDesc:
@@ -5352,7 +5352,7 @@ tableHeaders:
   constraint: 约束
   completions: 完成 Job 历史数
   count: 数量
-  createdAt: 创建于 
+  createdAt: 创建于
   customVerbs: 自定义操作
   description: 描述
   expires: 过期时间
@@ -6465,7 +6465,7 @@ typeLabel:
       one { 功能开关 }
       other { 功能开关 }
     }
-  management.cattle.io.setting: |-
+  management.llmos.ai.setting: |-
     {count, plural,
       one { 设置 }
       other { 设置 }

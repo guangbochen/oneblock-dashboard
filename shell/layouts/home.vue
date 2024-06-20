@@ -17,7 +17,7 @@ export default {
     FixedBanner,
     GrowlManager,
     AzureWarning,
-    AwsComplianceBanner,
+    // AwsComplianceBanner,
     Inactivity
   },
 
@@ -55,7 +55,7 @@ export default {
   <div class="dashboard-root">
     <FixedBanner :header="true" />
     <Inactivity />
-    <AwsComplianceBanner />
+<!--    <AwsComplianceBanner />-->
     <AzureWarning />
 
     <div

@@ -9,7 +9,6 @@ import Resource from '@shell/plugins/dashboard-store/resource-class';
 import mutations from './mutations';
 import { keyFieldFor, normalizeType } from './normalize';
 import { lookup } from './model-loader';
-import garbageCollect from '@shell/utils/gc/gc';
 
 export const urlFor = (state, getters) => (type, id, opt) => {
   opt = opt || {};
@@ -57,10 +56,6 @@ export default {
       mutations.registerType(state, type);
     }
 
-    garbageCollect.gcUpdateLastAccessed({
-      state, getters, rootState
-    }, type);
-
     return state.types[type].list;
   },
 
@@ -71,10 +66,6 @@ export default {
     if (namespace && typeof namespace === 'string') {
       matching = matching.filter((obj) => obj.namespace === namespace);
     }
-
-    garbageCollect.gcUpdateLastAccessed({
-      state, getters, rootState
-    }, type);
 
     // Looks like a falsy selector is a thing, so if we're not interested in filtering by the selector... explicitly avoid it
     if (config.skipSelector) {
@@ -91,10 +82,6 @@ export default {
     const entry = state.types[type];
 
     if ( entry ) {
-      garbageCollect.gcUpdateLastAccessed({
-        state, getters, rootState
-      }, type);
-
       return entry.map.get(id);
     }
   },

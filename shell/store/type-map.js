@@ -148,9 +148,6 @@ import isObject from 'lodash/isObject';
 import { normalizeType } from '@shell/plugins/dashboard-store/normalize';
 import { sortBy } from '@shell/utils/sort';
 
-// import { haveV1Monitoring, haveV2Monitoring } from '@shell/utils/monitoring';
-// import { NEU_VECTOR_NAMESPACE } from '@shell/config/product/neuvector';
-
 export const NAMESPACED = 'namespaced';
 export const CLUSTER_LEVEL = 'cluster';
 export const BOTH = 'both';
@@ -171,16 +168,10 @@ const graphConfigMap = {};
 const FIELD_REGEX = /^\$\.metadata\.fields\[([0-9]*)\]/;
 
 export const IF_HAVE = {
-  // V1_MONITORING:            'v1-monitoring',
-  // V2_MONITORING:            'v2-monitoring',
   PROJECT:                  'project',
   NO_PROJECT:               'no-project',
-  NOT_V1_ISTIO:             'not-v1-istio',
   MULTI_CLUSTER:            'multi-cluster',
-  // NEUVECTOR_NAMESPACE:      'neuvector-namespace',
   ADMIN:                    'admin-user',
-  MCM_DISABLED:             'mcm-disabled',
-  NOT_STANDALONE_HARVESTER: 'not-standalone-harvester',
 };
 
 export function DSL(store, product, module = 'type-map') {
@@ -381,9 +372,6 @@ export const state = function() {
       componentFor:       {},
       promptRemove:       {},
       windowComponents:   {},
-      'machine-config':   {},
-      'cloud-credential': {}
-
     },
   };
 };
@@ -1062,14 +1050,6 @@ export const getters = {
     };
   },
 
-  hasCustomChart(state, getters, rootState) {
-    return (rawType) => {
-      const key = getters.componentFor(rawType);
-
-      return hasCustom(state, rootState, 'chart', key, (key) => resolveChart(key));
-    };
-  },
-
   hasCustomDetail(state, getters, rootState) {
     return (rawType, subType) => {
       const key = getters.componentFor(rawType, subType);
@@ -1120,22 +1100,6 @@ export const getters = {
     };
   },
 
-  hasCustomMachineConfigComponent(state, getters, rootState) {
-    return (rawType, subType) => {
-      const key = getters.componentFor(rawType, subType);
-
-      return hasCustom(state, rootState, 'machine-config', key, (key) => resolveMachineConfigComponent(key));
-    };
-  },
-
-  hasCustomCloudCredentialComponent(state, getters, rootState) {
-    return (rawType, subType) => {
-      const key = getters.componentFor(rawType, subType);
-
-      return hasCustom(state, rootState, 'cloud-credential', key, (key) => resolveCloudCredentialComponent(key));
-    };
-  },
-
   importComponent(state, getters) {
     return (path) => {
       return importEdit(path);
@@ -1153,12 +1117,6 @@ export const getters = {
       return loadExtension(rootState, 'list', getters.componentFor(rawType), importList);
     };
   },
-
-  // importChart(state, getters, rootState) {
-  //   return (rawType) => {
-  //     return loadExtension(rootState, 'chart', getters.componentFor(rawType), importChart);
-  //   };
-  // },
 
   importDetail(state, getters, rootState) {
     return (rawType, subType) => {
@@ -1189,18 +1147,6 @@ export const getters = {
       return loadExtension(rootState, 'login', authType, importLogin);
     };
   },
-
-  // importMachineConfig(state, getters, rootState) {
-  //   return (rawType, subType) => {
-  //     return loadExtension(rootState, 'machine-config', getters.componentFor(rawType, subType), importMachineConfig);
-  //   };
-  // },
-  //
-  // importCloudCredential(state, getters, rootState) {
-  //   return (rawType, subType) => {
-  //     return loadExtension(rootState, 'cloud-credential', getters.componentFor(rawType, subType), importCloudCredential);
-  //   };
-  // },
 
   componentFor(state, getters) {
     return (type, subType) => {
@@ -1786,35 +1732,17 @@ function stringToRegex(str) {
 
 function ifHave(getters, option) {
   switch (option) {
-  case IF_HAVE.V2_MONITORING: {
-    return haveV2Monitoring(getters);
-  }
-  case IF_HAVE.V1_MONITORING: {
-    return haveV1Monitoring(getters);
-  }
   case IF_HAVE.PROJECT: {
     return !!project(getters);
   }
   case IF_HAVE.NO_PROJECT: {
     return !project(getters);
   }
-  case IF_HAVE.NOT_V1_ISTIO: {
-    return !isV1Istio(getters);
-  }
   case IF_HAVE.MULTI_CLUSTER: {
     return getters.isMultiCluster;
   }
-  case IF_HAVE.NEUVECTOR_NAMESPACE: {
-    return getters[`cluster/all`](NAMESPACE).find((n) => n.metadata.name === NEU_VECTOR_NAMESPACE);
-  }
   case IF_HAVE.ADMIN: {
     return isAdminUser(getters);
-  }
-  case IF_HAVE.MCM_DISABLED: {
-    return !getters['isRancherInHarvester'];
-  }
-  case IF_HAVE.NOT_STANDALONE_HARVESTER: {
-    return !getters['isStandaloneHarvester'];
   }
   default:
     return false;
@@ -1825,11 +1753,11 @@ function ifHave(getters, option) {
 export function isAdminUser(getters) {
   const canEditSettings = (getters['management/schemaFor'](MANAGEMENT.SETTING)?.resourceMethods || []).includes('PUT');
   const canEditFeatureFlags = (getters['management/schemaFor'](MANAGEMENT.FEATURE)?.resourceMethods || []).includes('PUT');
-  const canInstallApps = (getters['management/schemaFor'](CATALOG.APP)?.resourceMethods || []).includes('PUT');
-  const canAddRepos = (getters['management/schemaFor'](CATALOG.CLUSTER_REPO)?.resourceMethods || []).includes('PUT');
-  const canPutHelmOperations = (getters['management/schemaFor'](CATALOG.OPERATION)?.resourceMethods || []).includes('PUT');
+  // const canInstallApps = (getters['management/schemaFor'](CATALOG.APP)?.resourceMethods || []).includes('PUT');
+  // const canAddRepos = (getters['management/schemaFor'](CATALOG.CLUSTER_REPO)?.resourceMethods || []).includes('PUT');
+  // const canPutHelmOperations = (getters['management/schemaFor'](CATALOG.OPERATION)?.resourceMethods || []).includes('PUT');
 
-  return canEditSettings && canEditFeatureFlags && canInstallApps && canAddRepos && canPutHelmOperations;
+  return canEditSettings && canEditFeatureFlags
 }
 
 function _findColumnByName(schema, colName) {
