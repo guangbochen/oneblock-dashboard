@@ -1748,12 +1748,7 @@ function ifHave(getters, option) {
 // Could list a larger set of resources that typically only an admin user would have
 export function isAdminUser(getters) {
   const canEditSettings = (getters['management/schemaFor'](MANAGEMENT.SETTING)?.resourceMethods || []).includes('PUT');
-  const canEditFeatureFlags = (getters['management/schemaFor'](MANAGEMENT.FEATURE)?.resourceMethods || []).includes('PUT');
-  // const canInstallApps = (getters['management/schemaFor'](CATALOG.APP)?.resourceMethods || []).includes('PUT');
-  // const canAddRepos = (getters['management/schemaFor'](CATALOG.CLUSTER_REPO)?.resourceMethods || []).includes('PUT');
-  // const canPutHelmOperations = (getters['management/schemaFor'](CATALOG.OPERATION)?.resourceMethods || []).includes('PUT');
-
-  return canEditSettings && canEditFeatureFlags
+  return canEditSettings
 }
 
 function _findColumnByName(schema, colName) {

@@ -7,10 +7,7 @@ import {
 } from '@shell/config/table-headers';
 import metricPoller from '@shell/mixins/metric-poller';
 
-import {
-  CAPI,
-  MANAGEMENT, METRIC, NODE, NORMAN, POD
-} from '@shell/config/types';
+import { METRIC, NODE, POD } from '@shell/config/types';
 import { allHash } from '@shell/utils/promise';
 import { GROUP_RESOURCES, mapPref } from '@shell/store/prefs';
 import { COLUMN_BREAKPOINTS } from '@shell/components/SortableTable/index.vue';

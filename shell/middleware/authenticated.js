@@ -11,7 +11,7 @@ import { ClusterNotFoundError, RedirectToError } from '@shell/utils/error';
 import { get } from '@shell/utils/object';
 import { setFavIcon, haveSetFavIcon } from '@shell/utils/favicon';
 import dynamicPluginLoader from '@shell/pkg/dynamic-plugin-loader';
-import { AFTER_LOGIN_ROUTE, WORKSPACE } from '@shell/store/prefs';
+import { AFTER_LOGIN_ROUTE } from '@shell/store/prefs';
 import { BACK_TO } from '@shell/config/local-storage';
 import { canViewResource } from '@shell/utils/auth';
 
@@ -26,13 +26,7 @@ const getPackageFromRoute = (route) => {
 };
 
 const getResourceFromRoute = (to) => {
-  let resource = to.params?.resource;
-
-  // if (!resource) {
-  //   resource = findMeta(to, 'resource');
-  // }
-
-  return resource;
+  return to.params?.resource;
 };
 
 let beforeEachSetup = false;

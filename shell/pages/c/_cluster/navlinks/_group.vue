@@ -1,5 +1,5 @@
 <script>
-import { UI } from '@shell/config/types';
+// import { UI } from '@shell/config/types';
 import { filterBy } from '@shell/utils/array';
 import SelectIconGrid from '@shell/components/SelectIconGrid';
 
@@ -12,9 +12,9 @@ export default {
     },
 
     entries() {
-      const all = this.$store.getters['cluster/all'](UI.NAV_LINK);
+      // const all = this.$store.getters['cluster/all'](UI.NAV_LINK);
 
-      return filterBy(all, 'normalizedGroup', this.groupSlug);
+      // return filterBy(all, 'normalizedGroup', this.groupSlug);
     },
 
     groupName() {

@@ -14,9 +14,7 @@ import Tabbed from '@shell/components/Tabbed';
 import Tab from '@shell/components/Tabbed/Tab';
 import Labels from '@shell/components/form/Labels';
 import { HIDE_SENSITIVE } from '@shell/store/prefs';
-import { CAPI } from '@shell/config/labels-annotations';
 import { clear, uniq } from '@shell/utils/array';
-// import { NAME as MANAGER } from '@shell/config/product/manager';
 import SelectIconGrid from '@shell/components/SelectIconGrid';
 import { sortBy } from '@shell/utils/sort';
 import { ucFirst } from '@shell/utils/string';
@@ -46,26 +44,9 @@ export default {
 
   mixins: [CreateEditView],
 
-  async fetch() {
-    if ( this.isCloud ) {
-      this.nodeDrivers = await this.$store.dispatch('management/findAll', { type: MANAGEMENT.NODE_DRIVER });
-    }
-  },
+  async fetch() {},
 
   data() {
-    const newCloudCred = this.$route.query[CLOUD_CREDENTIAL] === _FLAGGED;
-    const editCloudCred = this.mode === _EDIT && this.value._type === TYPES.CLOUD_CREDENTIAL;
-    const cloneCloudCred = this.realMode === _CLONE && this.liveValue._type === TYPES.CLOUD_CREDENTIAL;
-    const isCloud = newCloudCred || editCloudCred || cloneCloudCred;
-
-    if ( newCloudCred ) {
-      this.value.metadata.namespace = DEFAULT_WORKSPACE;
-
-      this.$set(this.value.metadata, 'name', '');
-
-      this.$set(this.value, 'data', {});
-    }
-
     const secretTypes = [
       {
         label: 'Custom',
@@ -86,7 +67,6 @@ export default {
     });
 
     return {
-      isCloud,
       nodeDrivers:       null,
       secretTypes,
       secretType:        this.value._type,
@@ -102,10 +82,6 @@ export default {
       return this.secretType === 'custom';
     },
     typeKey() {
-      if ( this.isCloud ) {
-        return 'cloud';
-      }
-
       switch ( this.value._type ) {
       case TYPES.TLS: return 'tls';
       case TYPES.BASIC: return 'basic';
@@ -120,68 +96,26 @@ export default {
       return require(`@shell/edit/secret/${ this.typeKey }`).default;
     },
 
-    driverName() {
-      const driver = this.value.metadata?.annotations?.[CAPI.CREDENTIAL_DRIVER];
-
-      return driver;
-    },
-
-    cloudComponent() {
-      if (this.$store.getters['type-map/hasCustomCloudCredentialComponent'](this.driverName)) {
-        return this.$store.getters['type-map/importCloudCredential'](this.driverName);
-      }
-
-      return this.$store.getters['type-map/importCloudCredential']('generic');
-    },
-
     // array of id, label, description, initials for type selection step
     secretSubTypes() {
       const out = [];
-
-      // Cloud credentials
-      if ( this.isCloud ) {
-        const machineTypes = uniq(this.nodeDrivers
-          .filter((x) => x.spec.active)
-          .map((x) => x.spec.displayName || x.id)
-          .map((x) => this.$store.getters['plugins/credentialDriverFor'](x))
-        );
-
-        for ( const id of machineTypes ) {
-          let bannerImage, bannerAbbrv;
-
-          try {
-            bannerImage = require(`~shell/assets/images/providers/${ id }.svg`);
-          } catch (e) {
-            bannerImage = null;
-            bannerAbbrv = this.initialDisplayFor(id);
-          }
-
-          out.push({
-            id,
-            label: this.typeDisplay(CAPI.CREDENTIAL_DRIVER, id),
-            bannerImage,
-            bannerAbbrv
-          });
-        }
-      } else {
-        // Other kinds
-        for ( const id of creatableTypes ) {
-          out.push({
-            id,
-            label:       this.typeDisplay(id),
-            bannerAbbrv: this.initialDisplayFor(id),
-            description: this.t(`secret.typeDescriptions.'${ id }'.description`),
-            docLink:     this.t(`secret.typeDescriptions.'${ id }'.docLink`)
-          });
-        }
-
+      // Other kinds
+      for ( const id of creatableTypes ) {
         out.push({
-          id:          'custom',
-          label:       this.t('secret.customType'),
-          bannerAbbrv: this.initialDisplayFor('custom'),
-          description: this.t('secret.typeDescriptions.custom.description')
+          id,
+          label:       this.typeDisplay(id),
+          bannerAbbrv: this.initialDisplayFor(id),
+          description: this.t(`secret.typeDescriptions.'${ id }'.description`),
+          docLink:     this.t(`secret.typeDescriptions.'${ id }'.docLink`)
         });
       }
+
+      out.push({
+        id:          'custom',
+        label:       this.t('secret.customType'),
+        bannerAbbrv: this.initialDisplayFor('custom'),
+        description: this.t('secret.typeDescriptions.custom.description')
+      });
 
       return sortBy(out, 'label');
     },
@@ -226,51 +160,11 @@ export default {
       if ( this.errors ) {
         clear(this.errors);
       }
-
-      if ( typeof this.$refs.cloudComponent?.test === 'function' ) {
-        try {
-          const res = await this.$refs.cloudComponent.test();
-
-          if ( !res || res?.errors) {
-            if (res?.errors) {
-              this.errors = res.errors;
-            } else {
-              this.errors = ['Authentication test failed, please check your credentials'];
-            }
-            btnCb(false);
-
-            return;
-          }
-        } catch (e) {
-          this.errors = [e];
-          btnCb(false);
-
-          return;
-        }
-      }
-
       return this.save(btnCb);
     },
 
     selectType(type) {
-      let driver;
-
-      if ( this.isCloud ) {
-        if ( type === TYPES.CLOUD_CREDENTIAL ) {
-          // Clone goes through here
-          driver = this.driverName;
-        } else {
-          driver = type;
-          type = TYPES.CLOUD_CREDENTIAL;
-        }
-
-        if ( this.mode === _CREATE ) {
-          this.value.setAnnotation(CAPI.CREDENTIAL_DRIVER, driver);
-        }
-      }
-
       this.$set(this.value, '_type', type);
-      this.$emit('set-subtype', this.typeDisplay(type, driver));
 
       this.secretType = type;
 
@@ -280,13 +174,8 @@ export default {
     },
 
     typeDisplay(type, driver) {
-      if ( type === CAPI.CREDENTIAL_DRIVER ) {
-        return this.$store.getters['i18n/withFallback'](`cluster.provider."${ driver }"`, null, driver);
-      } else {
-        const fallback = type.replace(/^kubernetes.io\//, '');
-
-        return this.$store.getters['i18n/withFallback'](`secret.types."${ type }"`, null, fallback);
-      }
+      const fallback = type.replace(/^kubernetes.io\//, '');
+      return this.$store.getters['i18n/withFallback'](`secret.types."${ type }"`, null, fallback);
     },
 
     initialDisplayFor(type) {
@@ -323,7 +212,6 @@ export default {
       <NameNsDescription
         v-model="value"
         :mode="mode"
-        :namespaced="!isCloud"
       />
 
       <div
@@ -358,17 +246,7 @@ export default {
       </div>
 
       <div class="spacer" />
-      <component
-        :is="cloudComponent"
-        v-if="isCloud"
-        ref="cloudComponent"
-        :driver-name="driverName"
-        :value="value"
-        :mode="mode"
-        :hide-sensitive-data="hideSensitiveData"
-      />
       <Tabbed
-        v-else
         :side-tabs="true"
         default-tab="data"
       >

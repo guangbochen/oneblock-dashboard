@@ -1,9 +1,7 @@
 <script>
 import ClusterProviderIcon from '@shell/components/ClusterProviderIcon';
 import ResourceSummary, { resourceCounts } from '@shell/components/ResourceSummary';
-import {
-  NAMESPACE, MANAGEMENT, NODE, COUNT, CATALOG
-} from '@shell/config/types';
+import { NAMESPACE, MANAGEMENT, NODE, COUNT } from '@shell/config/types';
 import { RESOURCES } from '@shell/pages/c/_cluster/explorer/index';
 
 export default {
@@ -67,11 +65,6 @@ export default {
     canAccessNamespaces() {
       return !!this.clusterCounts?.[0]?.counts?.[NAMESPACE];
     },
-
-    showClusterTools() {
-      return this.$store.getters['cluster/canList'](CATALOG.CLUSTER_REPO) &&
-             this.$store.getters['cluster/canList'](CATALOG.APP);
-    }
   },
 
   watch: {
@@ -141,17 +134,6 @@ export default {
           class="cluster-link"
         >
           {{ t('nav.categories.explore') }}
-        </nuxt-link>
-      </div>
-      <div
-        v-if="showClusterTools"
-        class="glance-item"
-      >
-        <nuxt-link
-          :to="clusterToolsLink"
-          class="cluster-link"
-        >
-          {{ t('nav.clusterTools') }}
         </nuxt-link>
       </div>
     </div>

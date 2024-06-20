@@ -6,14 +6,12 @@ import {
   _VIEW, _EDIT, _CLONE, _IMPORT, _STAGE, _CREATE,
   AS, _YAML, _DETAIL, _CONFIG, _GRAPH, PREVIEW, MODE,
 } from '@shell/config/query-params';
-import { FLEET, SCHEMA } from '@shell/config/types';
+import { SCHEMA } from '@shell/config/types';
 import { createYaml } from '@shell/utils/create-yaml';
 import Masthead from '@shell/components/ResourceDetail/Masthead';
 import DetailTop from '@shell/components/DetailTop';
 import { clone, diff } from '@shell/utils/object';
 import IconMessage from '@shell/components/IconMessage';
-// import ForceDirectedTreeChart from '@shell/components/fleet/ForceDirectedTreeChart';
-import { checkSchemasForFindAllHash } from '@shell/utils/auth';
 
 function modeFor(route) {
   if ( route.query?.mode === _IMPORT ) {
@@ -45,7 +43,6 @@ export default {
   components: {
     Loading,
     DetailTop,
-    // ForceDirectedTreeChart,
     ResourceYaml,
     Masthead,
     IconMessage,
@@ -161,27 +158,6 @@ export default {
         yaml = createYaml(schemas, resource, data);
       }
     } else {
-      if ( as === _GRAPH ) {
-        const graphSchema = await checkSchemasForFindAllHash({
-          cluster: {
-            inStoreType: 'management',
-            type:        FLEET.CLUSTER
-          },
-          bundle: {
-            inStoreType: 'management',
-            type:        FLEET.BUNDLE
-          },
-
-          bundleDeployment: {
-            inStoreType: 'management',
-            type:        FLEET.BUNDLE_DEPLOYMENT
-          }
-
-        }, this.$store);
-
-        this.canViewChart = graphSchema.cluster && graphSchema.bundle && graphSchema.bundleDeployment;
-      }
-
       let fqid = id;
 
       if ( schema.attributes?.namespaced && namespace ) {
@@ -394,12 +370,6 @@ export default {
         :value="liveModel"
       />
     </Masthead>
-
-<!--    <ForceDirectedTreeChart-->
-<!--      v-if="isGraph && canViewChart"-->
-<!--      :data="chartData"-->
-<!--      :fdc-config="getGraphConfig"-->
-<!--    />-->
 
     <ResourceYaml
       v-if="isYaml"

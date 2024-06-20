@@ -40,7 +40,7 @@ export default {
 
   computed: {
     ...mapGetters(['clusterId']),
-    ...mapGetters(['clusterReady', 'isRancher', 'currentCluster', 'currentProduct', 'isRancherInHarvester']),
+    ...mapGetters(['clusterReady', 'isRancher', 'currentCluster', 'currentProduct']),
     ...mapGetters({ features: 'features/get' }),
 
     value: {
@@ -138,35 +138,11 @@ export default {
       return this.clusterFilter ? this.clustersFiltered.length : this.clusters.length;
     },
 
-    // maxClustersToShow: mapPref(MENU_MAX_CLUSTERS),
-
-    multiClusterApps() {
-      const options = this.options;
-
-      return options.filter((opt) => {
-        const filterApps = (opt.inStore === 'management' || opt.isMultiClusterApp) && opt.category !== 'configuration' && opt.category !== 'legacy';
-
-        // We expect the location of Virtualization Management to remain the same when rancher-manage-support is not enabled
-        return filterApps;
-      });
-    },
-
-    // legacyApps() {
-    //   const options = this.options;
-    //
-    //   return options.filter((opt) => opt.inStore === 'management' && opt.category === 'legacy');
-    // },
-
     configurationApps() {
       const options = this.options;
+      console.log("aa123", this.options);
 
       return options.filter((opt) => opt.category === 'configuration');
-    },
-
-    hciApps() {
-      const options = this.options;
-
-      return options.filter((opt) => this.isRancherInHarvester && opt.category === 'hci');
     },
 
     options() {
@@ -205,10 +181,6 @@ export default {
     canEditSettings() {
       return (this.$store.getters['management/schemaFor'](MANAGEMENT.SETTING)?.resourceMethods || []).includes('PUT');
     },
-
-    // hasSupport() {
-    //   return isRancherPrime() || this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.SUPPORTED )?.value === 'true';
-    // }
   },
 
   watch: {
@@ -256,14 +228,6 @@ export default {
       this.shown = !this.shown;
     },
 
-    async goToHarvesterCluster() {
-      const localCluster = this.$store.getters['management/all'](CAPI.RANCHER_CLUSTER).find((C) => C.id === 'fleet-local/local');
-
-      try {
-        await localCluster.goToHarvesterCluster();
-      } catch {
-      }
-    },
     getTooltipConfig(item) {
       if (!this.shown && !item) {
         return;
@@ -375,41 +339,6 @@ export default {
               </div>
             </div>
           </div>
-
-          <!-- Harvester extras -->
-          <template v-if="hciApps.length">
-            <div class="category" />
-            <div>
-              <a
-                v-if="isRancherInHarvester"
-                class="option"
-                @click="goToHarvesterCluster()"
-              >
-                <i
-                  class="icon icon-dashboard"
-                />
-                <div>
-                  {{ t('nav.harvesterDashboard') }}
-                </div>
-              </a>
-            </div>
-            <div
-              v-for="a in hciApps"
-              :key="a.label"
-              @click="hide()"
-            >
-              <nuxt-link
-                class="option"
-                :to="a.to"
-              >
-                <IconOrSvg
-                  :icon="a.icon"
-                  :src="a.svg"
-                />
-                <div>{{ a.label }}</div>
-              </nuxt-link>
-            </div>
-          </template>
 
           <!-- Cluster menu -->
           <template v-if="clusters && !!clusters.length">
@@ -542,66 +471,9 @@ export default {
           </template>
 
           <div class="category">
-            <template v-if="multiClusterApps.length">
-              <div
-                class="category-title"
-              >
-                <hr>
-                <span>
-                  {{ t('nav.categories.multiCluster') }}
-                </span>
-              </div>
-              <div
-                v-for="a in multiClusterApps"
-                :key="a.label"
-                @click="hide()"
-              >
-                <nuxt-link
-                  class="option"
-                  :to="a.to"
-                >
-                  <IconOrSvg
-                    v-tooltip="getTooltipConfig(a.label)"
-                    :icon="a.icon"
-                    :src="a.svg"
-                  />
-                  <span class="option-link">{{ a.label }}</span>
-                </nuxt-link>
-              </div>
-            </template>
-<!--            <template v-if="legacyEnabled">-->
-<!--              <div-->
-<!--                class="category-title"-->
-<!--              >-->
-<!--                <hr>-->
-<!--                <span>-->
-<!--                  {{ t('nav.categories.legacy') }}-->
-<!--                </span>-->
-<!--              </div>-->
-<!--              <div-->
-<!--                v-for="a in legacyApps"-->
-<!--                :key="a.label"-->
-<!--                @click="hide()"-->
-<!--              >-->
-<!--                <nuxt-link-->
-<!--                  class="option"-->
-<!--                  :to="a.to"-->
-<!--                >-->
-<!--                  <IconOrSvg-->
-<!--                    v-tooltip="getTooltipConfig(a.label)"-->
-<!--                    :icon="a.icon"-->
-<!--                    :src="a.svg"-->
-<!--                  />-->
-<!--                  <div>{{ a.label }}</div>-->
-<!--                </nuxt-link>-->
-<!--              </div>-->
-<!--            </template>-->
-
             <!-- App menu -->
             <template v-if="configurationApps.length">
-              <div
-                class="category-title"
-              >
+              <div class="category-title">
                 <hr>
                 <span>
                   {{ t('nav.categories.configuration') }}
@@ -637,11 +509,6 @@ export default {
             class="support"
             @click="hide()"
           >
-<!--            <nuxt-link-->
-<!--              :to="{name: 'support'}"-->
-<!--            >-->
-<!--              {{ t('nav.support', {hasSupport}) }}-->
-<!--            </nuxt-link>-->
           </div>
           <div
             class="version"

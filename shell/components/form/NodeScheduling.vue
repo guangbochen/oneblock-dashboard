@@ -3,7 +3,6 @@ import { mapGetters } from 'vuex';
 import { RadioGroup } from '@components/Form/Radio';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import NodeAffinity from '@shell/components/form/NodeAffinity';
-import { LLMOS_NAME as VIRTUAL } from '@shell/config/features';
 import { _VIEW } from '@shell/config/query-params';
 import { isEmpty } from '@shell/utils/object';
 import { HOSTNAME } from '@shell/config/labels-annotations';
@@ -39,8 +38,6 @@ export default {
   },
 
   data() {
-    const isHarvester = this.$store.getters['currentProduct'].inStore === VIRTUAL;
-
     let { nodeName = '' } = this.value;
     const { affinity = {}, nodeSelector = {} } = this.value;
 
@@ -50,7 +47,7 @@ export default {
 
     if (this.value.nodeName) {
       selectNode = 'nodeSelector';
-    } else if (isHarvester && this.value?.nodeSelector?.[HOSTNAME]) {
+    } else if (this.value?.nodeSelector?.[HOSTNAME]) {
       selectNode = 'nodeSelector';
       nodeName = nodeSelector[HOSTNAME];
     } else if (!isEmpty(nodeAffinity)) {
@@ -75,12 +72,8 @@ export default {
       return this.mode === _VIEW;
     },
 
-    isHarvester() {
-      return this.$store.getters['currentProduct'].inStore === VIRTUAL;
-    },
-
     selectNodeOptions() {
-      const prefix = this.isHarvester ? 'harvester.virtualMachine' : 'workload';
+      const prefix = 'workload';
       const out = [{
         label: this.t(`${ prefix }.scheduling.affinity.anyNode`),
         value: null
@@ -104,11 +97,7 @@ export default {
 
       switch (this.selectNode) {
       case 'nodeSelector':
-        if (this.isHarvester) {
-          Object.assign(this.value, { nodeSelector: { [HOSTNAME]: nodeName } });
-        } else {
-          Object.assign(this.value, { nodeSelector, nodeName });
-        }
+        Object.assign(this.value, { nodeSelector, nodeName });
         if (this.value?.affinity?.nodeAffinity) {
           delete this.value.affinity.nodeAffinity;
         }
@@ -136,7 +125,7 @@ export default {
   watch: {
     'value.nodeSelector': {
       handler(nodeSelector) {
-        if (this.isHarvester && nodeSelector?.[HOSTNAME]) {
+        if (nodeSelector?.[HOSTNAME]) {
           this.selectNode = 'nodeSelector';
           const nodeName = nodeSelector[HOSTNAME];
 

@@ -1,5 +1,5 @@
 import { CLUSTER_BADGE } from '@shell/config/labels-annotations';
-import { NODE, FLEET, MANAGEMENT, CAPI } from '@shell/config/types';
+import { NODE, MANAGEMENT } from '@shell/config/types';
 import { insertAt, addObject, removeObject } from '@shell/utils/array';
 import { downloadFile } from '@shell/utils/download';
 import { parseSi } from '@shell/utils/units';
@@ -310,13 +310,12 @@ export default class MgmtCluster extends HybridModel {
   }
 
   setClusterNameLabel(andSave) {
-    if ( this.ownerReferences?.length || this.metadata?.labels?.[FLEET.CLUSTER_NAME] === this.id ) {
+    if ( this.ownerReferences?.length ) {
       return;
     }
 
     this.metadata = this.metadata || {};
     this.metadata.labels = this.metadata.labels || {};
-    this.metadata.labels[FLEET.CLUSTER_NAME] = this.id;
 
     if ( andSave ) {
       return this.save();
@@ -436,22 +435,6 @@ export default class MgmtCluster extends HybridModel {
 
   get nodes() {
     return this.$getters['all'](MANAGEMENT.NODE).filter((node) => node.id.startsWith(this.id));
-  }
-
-  get provClusterId() {
-    const isRKE1 = !!this.spec?.rancherKubernetesEngineConfig;
-    // Note: RKE1 provisioning cluster IDs are in a different format. For example,
-    // RKE2 cluster IDs include the name - fleet-default/cluster-name - whereas an RKE1
-    // cluster has the less human readable management cluster ID in it: fleet-default/c-khk48
-
-    const verb = this.isLocal || isRKE1 || this.isHostedKubernetesProvider ? 'to' : 'from';
-    const res = findRelationship(verb, CAPI.RANCHER_CLUSTER, this.metadata?.relationships);
-
-    if (res) {
-      return res;
-    }
-
-    return findRelationship(verb === 'to' ? 'from' : 'to', CAPI.RANCHER_CLUSTER, this.metadata?.relationships);
   }
 
   get pinned() {

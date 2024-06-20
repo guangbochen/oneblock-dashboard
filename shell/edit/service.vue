@@ -19,7 +19,7 @@ import CruResource from '@shell/components/CruResource';
 import { Banner } from '@components/Banner';
 import Labels from '@shell/components/form/Labels';
 import { clone } from '@shell/utils/object';
-import { POD, CAPI, OB } from '@shell/config/types';
+import { POD } from '@shell/config/types';
 import { matching } from '@shell/utils/selector';
 import { allHash } from '@shell/utils/promise';
 import { Port } from '@shell/utils/validators/formRules';
@@ -166,32 +166,6 @@ export default {
         this.checkTypeIs('NodePort')
       );
     },
-
-    // showHarvesterAddOnConfig() {
-    //   let cloudProvider;
-    //   const version = this.provisioningCluster?.kubernetesVersion;
-    //
-    //   if (this.provisioningCluster?.isRke2) {
-    //     const machineSelectorConfig = this.provisioningCluster?.spec?.rkeConfig?.machineSelectorConfig || {};
-    //     const agentConfig = (machineSelectorConfig[0] || {}).config;
-    //
-    //     cloudProvider = agentConfig?.['cloud-provider-name'];
-    //   } else if (this.provisioningCluster?.isRke1) {
-    //     const currentCluster = this.$store.getters['currentCluster'];
-    //
-    //     cloudProvider = currentCluster?.spec?.rancherKubernetesEngineConfig?.cloudProvider?.name;
-    //   }
-    //
-    //   return this.checkTypeIs('LoadBalancer') &&
-    //           cloudProvider === HARVESTER &&
-    //           isHarvesterSatisfiesVersion(version);
-    // },
-
-    provisioningCluster() {
-      const out = this.$store.getters['management/all'](CAPI.RANCHER_CLUSTER).find((c) => c?.status?.clusterName === this.currentCluster.metadata.name);
-
-      return out;
-    },
   },
 
   watch: {
@@ -265,9 +239,7 @@ export default {
         const inStore = this.$store.getters['currentStore'](POD);
 
         const hash = {
-          // provClusters:     this.$store.dispatch('management/findAll', { type: CAPI.RANCHER_CLUSTER }),
-          pods:             this.$store.dispatch(`${ inStore }/findAll`, { type: POD }),
-          // harvesterConfigs: this.$store.dispatch(`management/findAll`, { type: OB.HARVESTER_CONFIG }),
+          pods: this.$store.dispatch(`${ inStore }/findAll`, { type: POD }),
         };
 
         const res = await allHash(hash);

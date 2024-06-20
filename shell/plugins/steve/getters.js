@@ -1,7 +1,7 @@
 import { isArray } from '@shell/utils/array';
 import { BY_TYPE } from '@shell/plugins/dashboard-store/classify';
 import { lookup } from '@shell/plugins/dashboard-store/model-loader';
-import { NAMESPACE, SCHEMA, COUNT, UI } from '@shell/config/types';
+import { NAMESPACE, SCHEMA, COUNT } from '@shell/config/types';
 
 import SteveModel from './steve-class';
 import HybridModel, { cleanHybridResources } from './hybrid-class';
@@ -21,7 +21,6 @@ const GC_IGNORE_TYPES = {
   [COUNT]:       true,
   [NAMESPACE]:   true,
   [SCHEMA]:      true,
-  [UI.NAV_LINK]: true,
 };
 
 // Include calls to /v1 AND /k8s/clusters/<cluster id>/v1

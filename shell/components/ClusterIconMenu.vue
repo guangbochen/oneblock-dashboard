@@ -13,7 +13,7 @@ export default {
       return !!this.cluster?.ready;
     },
     showLocalIcon() {
-      return this.cluster.isLocal && !this.cluster.isHarvester && !this.cluster.badge?.iconText;
+      return this.cluster.isLocal && !this.cluster.badge?.iconText;
     },
     badgeLogoBorderBottom() {
       const color = this.cluster.badge?.color;

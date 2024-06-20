@@ -55,14 +55,6 @@ export const routerOptions = {
     component: () => interopDefault(import('../pages/auth/logout.vue' /* webpackChunkName: "pages/auth/logout" */)),
     name:      'auth-logout'
   }, {
-    path:      '/auth/setup',
-    component: () => interopDefault(import('../pages/auth/setup.vue' /* webpackChunkName: "pages/auth/setup" */)),
-    name:      'auth-setup'
-  }, {
-    path:      '/auth/verify',
-    component: () => interopDefault(import('../pages/auth/verify.vue' /* webpackChunkName: "pages/auth/verify" */)),
-    name:      'auth-verify'
-  }, {
     path:      '/c/:cluster',
     component: () => interopDefault(import('../pages/c/_cluster/index.vue' /* webpackChunkName: "pages/c/_cluster/index" */)),
     name:      'c-cluster'
@@ -78,10 +70,6 @@ export const routerOptions = {
     path:      '/c/:cluster/settings',
     component: () => interopDefault(import('../pages/c/_cluster/settings/index.vue' /* webpackChunkName: "pages/c/_cluster/settings/index" */)),
     name:      'c-cluster-settings'
-  }, {
-    path:      '/c/:cluster/auth/config',
-    component: () => interopDefault(import('../pages/c/_cluster/auth/config/index.vue' /* webpackChunkName: "pages/c/_cluster/auth/config/index" */)),
-    name:      'c-cluster-auth-config'
   }, {
     path:      '/c/:cluster/explorer/ConfigBadge',
     component: () => interopDefault(import('../pages/c/_cluster/explorer/ConfigBadge.vue' /* webpackChunkName: "pages/c/_cluster/explorer/ConfigBadge" */)),
@@ -107,10 +95,6 @@ export const routerOptions = {
     component: () => interopDefault(import('../pages/c/_cluster/settings/links.vue' /* webpackChunkName: "pages/c/_cluster/settings/links" */)),
     name:      'c-cluster-settings-links'
   }, {
-    path:      '/c/:cluster/auth/config/:id',
-    component: () => interopDefault(import('../pages/c/_cluster/auth/config/_id.vue' /* webpackChunkName: "pages/c/_cluster/auth/config/_id" */)),
-    name:      'c-cluster-auth-config-id'
-  }, {
     path:      '/c/:cluster/navlinks/:group?',
     component: () => interopDefault(import('../pages/c/_cluster/navlinks/_group.vue' /* webpackChunkName: "pages/c/_cluster/navlinks/_group" */)),
     name:      'c-cluster-navlinks-group'
@@ -122,10 +106,6 @@ export const routerOptions = {
     path:      '/c/:cluster/:product/namespaces',
     component: () => interopDefault(import('../pages/c/_cluster/_product/namespaces.vue' /* webpackChunkName: "pages/c/_cluster/_product/namespaces" */)),
     name:      'c-cluster-product-namespaces'
-  }, {
-    path:      '/c/:cluster/:product/projectsnamespaces',
-    component: () => interopDefault(import('../pages/c/_cluster/_product/projectsnamespaces.vue' /* webpackChunkName: "pages/c/_cluster/_product/projectsnamespaces" */)),
-    name:      'c-cluster-product-projectsnamespaces'
   }, {
     path:      '/c/:cluster/:product/:resource',
     component: () => interopDefault(import('../pages/c/_cluster/_product/_resource/index.vue' /* webpackChunkName: "pages/c/_cluster/_product/_resource/index" */)),

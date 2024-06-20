@@ -1,8 +1,6 @@
 import { formatPercent } from '@shell/utils/string';
-import { CAPI as CAPI_ANNOTATIONS, NODE_ROLES, RKE, SYSTEM_LABELS } from '@shell/config/labels-annotations.js';
-import {
-  CAPI, MANAGEMENT, METRIC, POD
-} from '@shell/config/types';
+import { NODE_ROLES, RKE, SYSTEM_LABELS } from '@shell/config/labels-annotations.js';
+import { MANAGEMENT, METRIC, POD } from '@shell/config/types';
 import { parseSi } from '@shell/utils/units';
 import findLast from 'lodash/findLast';
 
@@ -429,18 +427,6 @@ export default class ClusterNode extends SteveModel {
     ];
 
     return !cloudProviders.includes(this.provider);
-  }
-
-  // You need to preload CAPI.MACHINEs to use this
-  get provisionedMachine() {
-    const namespace = this.metadata?.annotations?.[CAPI_ANNOTATIONS.CLUSTER_NAMESPACE];
-    const name = this.metadata?.annotations?.[CAPI_ANNOTATIONS.MACHINE_NAME];
-
-    if ( namespace && name ) {
-      return this.$rootGetters['management/byId'](CAPI.MACHINE, `${ namespace }/${ name }`);
-    }
-
-    return null;
   }
 
   get isFromNorman() {

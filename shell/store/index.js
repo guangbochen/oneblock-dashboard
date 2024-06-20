@@ -6,10 +6,8 @@ import { SETTING } from '@shell/config/settings';
 import {
   COUNT,
   DEFAULT_WORKSPACE,
-  FLEET,
   MANAGEMENT,
   NAMESPACE,
-  UI, VIRTUAL_HARVESTER_PROVIDER, OB
 } from '@shell/config/types';
 import { BY_TYPE } from '@shell/plugins/dashboard-store/classify';
 import Steve from '@shell/plugins/steve';
@@ -542,19 +540,6 @@ export const getters = {
     return false;
   },
 
-  isVirtualCluster(state, getters) {
-    const cluster = getters['currentCluster'];
-
-    return cluster?.status?.provider === VIRTUAL_HARVESTER_PROVIDER;
-  },
-
-  isStandaloneHarvester(state, getters) {
-    const clusters = getters['management/all'](MANAGEMENT.CLUSTER);
-    const cluster = clusters.find((c) => c.id === 'local') || {};
-
-    return getters['isSingleProduct'];
-  },
-
   showTopLevelMenu(getters) {
     return getters['isMultiCluster'] || !getters['isSingleProduct'];
   },
@@ -713,12 +698,6 @@ export const actions = {
       promises['namespaces'] = dispatch('management/findAll', { type: NAMESPACE });
     }
 
-    const fleetSchema = getters['management/schemaFor'](FLEET.WORKSPACE);
-
-    if (fleetSchema?.links?.collection) {
-      promises['workspaces'] = dispatch('management/findAll', { type: FLEET.WORKSPACE });
-    }
-
     res = await allHash(promises);
     dispatch('i18n/init');
     const isMultiCluster = getters['isMultiCluster'];
@@ -871,7 +850,9 @@ export const actions = {
       throw new ClusterNotFoundError(id);
     }
 
-    const clusterBase = `/k8s/clusters/${ escape(id) }/v1`;
+    // TODO: This is a workaround for the fact that we don't have a way to get the cluster base URL from the API.
+    // const clusterBase = `/k8s/clusters/${ encodeURI(id) }/v1`;
+    const clusterBase = '/v1'
 
     // Update the Steve client URLs
     commit('cluster/applyConfig',
@@ -881,13 +862,12 @@ export const actions = {
       dispatch('cluster/loadSchemas', true),
     ]);
 
-    //TODO, comment out since we only have one cluster for now
-    // dispatch('cluster/subscribe');
+    dispatch('cluster/subscribe');
 
     const projectArgs = {
       type: MANAGEMENT.PROJECT,
       opt:  {
-        url:            `${ MANAGEMENT.PROJECT }/${ escape(id) }`,
+        url:            `${ MANAGEMENT.PROJECT }/${ encodeURI(id) }`,
         watchNamespace: id
       }
     };
@@ -910,7 +890,6 @@ export const actions = {
       projects:   fetchProjects(),
       counts:     dispatch('cluster/findAll', { type: COUNT }),
       namespaces: dispatch('cluster/findAll', { type: NAMESPACE }),
-      navLinks:   !!getters['cluster/schemaFor'](UI.NAV_LINK) && dispatch('cluster/findAll', { type: UI.NAV_LINK }),
     });
 
     await dispatch('cleanNamespaces');
@@ -923,8 +902,8 @@ export const actions = {
       all:     allNamespaces,
     });
 
-    if (getters['currentCluster'] && getters['currentCluster'].isHarvester) {
-      await dispatch('cluster/findAll', { type: OB.SETTING });
+    if (getters['currentCluster']) {
+      await dispatch('cluster/findAll', { type: MANAGEMENT.SETTING });
     }
 
     commit('clusterReady', true);
@@ -996,14 +975,10 @@ export const actions = {
     commit('management/reset');
     commit('prefs/reset');
 
-    // await dispatch('cluster/unsubscribe');
+    await dispatch('cluster/unsubscribe');
     commit('clusterReady', false);
     commit('clusterId', null);
     commit('cluster/reset');
-
-    // await dispatch('rancher/unsubscribe');
-    // commit('rancher/reset');
-    // commit('catalog/reset');
 
     const router = state.$router;
     const route = router.currentRoute;

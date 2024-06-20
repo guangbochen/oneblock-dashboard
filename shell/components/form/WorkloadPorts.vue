@@ -6,9 +6,7 @@ import { removeAt, findBy } from '@shell/utils/array';
 import { clone } from '@shell/utils/object';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
-import { OB as OB_LABELS_ANNOTATIONS } from '@shell/config/labels-annotations';
-import { LLMOS_NAME as HARVESTER } from '@shell/config/features';
-import { CAPI, SERVICE } from '@shell/config/types';
+import { SERVICE } from '@shell/config/types';
 
 export default {
   components: {
@@ -48,8 +46,6 @@ export default {
       if (row.hostPort || row.hostIP) {
         row._showHost = true;
       }
-
-      row._ipam = '';
 
       return row;
     });
@@ -119,56 +115,12 @@ export default {
     nodePortServicePorts() {
       return ((this.services.filter((svc) => svc.spec.type === 'NodePort') || [])[0] || {})?.spec?.ports;
     },
-
-    ipamOptions() {
-      return [{
-        label: 'DHCP',
-        value: 'dhcp',
-      }, {
-        label: 'Pool',
-        value: 'pool',
-      }];
-    },
-
-    ipamIndex() {
-      return this.rows.findIndex((row) => row._serviceType === 'LoadBalancer' && row.protocol === 'TCP');
-    },
-
-    serviceWithIpam() {
-      return this.services.find((s) => s?.metadata?.annotations[OB_LABELS_ANNOTATIONS.CLOUD_PROVIDER_IPAM]);
-    },
-
-    showIpam() {
-      let cloudProvider;
-      const version = this.provisioningCluster?.kubernetesVersion;
-
-      if (this.provisioningCluster?.isRke2) {
-        const machineSelectorConfig = this.provisioningCluster?.spec?.rkeConfig?.machineSelectorConfig || {};
-        const agentConfig = (machineSelectorConfig[0] || {}).config;
-
-        cloudProvider = agentConfig?.['cloud-provider-name'];
-      } else if (this.provisioningCluster?.isRke1) {
-        const currentCluster = this.$store.getters['currentCluster'];
-
-        cloudProvider = currentCluster?.spec?.rancherKubernetesEngineConfig?.cloudProvider?.name;
-      }
-
-      return cloudProvider === HARVESTER &&
-              isHarvesterSatisfiesVersion(version);
-    },
-
-    provisioningCluster() {
-      const out = this.$store.getters['management/all'](CAPI.RANCHER_CLUSTER).find((c) => c?.status?.clusterName === this.currentCluster.metadata.name);
-
-      return out;
-    },
   },
 
   created() {
     this.queueUpdate = debounce(this.update, 500);
     this.rows.map((row) => {
       this.setServiceType(row);
-      this.setIpam(row);
     });
   },
 
@@ -183,7 +135,6 @@ export default {
         hostIP:        null,
         _showHost:     false,
         _serviceType:  '',
-        _ipam:         'dhcp',
       });
 
       this.queueUpdate();
@@ -248,12 +199,6 @@ export default {
 
       return '';
     },
-
-    setIpam(row) {
-      if (this.serviceWithIpam && row._serviceType === 'LoadBalancer' && row.protocol === 'TCP') {
-        row._ipam = this.serviceWithIpam?.metadata?.annotations[OB_LABELS_ANNOTATIONS.CLOUD_PROVIDER_IPAM];
-      }
-    },
   },
 };
 </script>
@@ -274,7 +219,6 @@ export default {
         'show-host':row._showHost,
         'loadBalancer': row._serviceType === 'LoadBalancer',
         'tcp': row.protocol === 'TCP',
-        'show-ipam': showIpam,
       }"
     >
       <div class="service-type">
@@ -381,29 +325,6 @@ export default {
         />
       </div>
 
-      <div v-if="showIpam && row._serviceType === 'LoadBalancer' && row.protocol === 'TCP'">
-        <div v-if="idx === ipamIndex">
-          <LabeledSelect
-            v-model="row._ipam"
-            :mode="mode"
-            :options="ipamOptions"
-            :label="t('servicesPage.harvester.ipam.label')"
-            :disabled="mode === 'edit'"
-            @input="queueUpdate"
-          />
-        </div>
-        <div v-else>
-          <LabeledSelect
-            v-model="rows[ipamIndex]._ipam"
-            :mode="mode"
-            :options="ipamOptions"
-            :label="t('servicesPage.harvester.ipam.label')"
-            :disabled="true"
-            @input="queueUpdate"
-          />
-        </div>
-      </div>
-
       <div
         v-if="showRemove"
         class="remove"
@@ -456,18 +377,6 @@ $checkbox: 75;
 
   &.show-host{
     grid-template-columns: 20% 20% 145px 90px 140px .5fr .5fr;
-  }
-
-  &.show-ipam.loadBalancer.tcp{
-    grid-template-columns: 20% 20% 145px 90px .5fr 140px .5fr;
-  }
-
-  &.show-ipam.show-host.loadBalancer{
-    grid-template-columns: 20% 10% 135px 90px 105px .5fr .5fr .5fr;
-  }
-
-  &.show-ipam.show-host.loadBalancer.tcp{
-    grid-template-columns: 12% 10% 135px 90px 105px .5fr .5fr 100px .5fr;
   }
 }
 

@@ -6,7 +6,6 @@ import {
   RBAC,
   MANAGEMENT,
   NAMESPACE,
-  // NORMAN,
   VIRTUAL_TYPES,
 } from '@shell/config/types';
 
@@ -46,33 +45,29 @@ export function init(store) {
     weight:              3,
     showNamespaceFilter: true,
     icon:                'compass',
-    typeStoreMap:        {
-      [MANAGEMENT.PROJECT]:                       'management',
-      [MANAGEMENT.CLUSTER_ROLE_TEMPLATE_BINDING]: 'management',
-      [MANAGEMENT.PROJECT_ROLE_TEMPLATE_BINDING]: 'management'
-    }
+    typeStoreMap:        {}
   });
 
-  basicType(['cluster-dashboard', 'cluster-tools']);
   basicType([
     'cluster-dashboard',
-    'projects-namespaces',
     'namespaces',
     NODE,
-    VIRTUAL_TYPES.CLUSTER_MEMBERS,
     EVENT,
   ], 'cluster');
+
   basicType([
     LIMIT_RANGE,
     NETWORK_POLICY,
     POD_DISRUPTION_BUDGET,
     RESOURCE_QUOTA,
   ], 'policy');
+
   basicType([
     SERVICE,
     INGRESS,
     HPA,
   ], 'serviceDiscovery');
+
   basicType([
     PV,
     PVC,
@@ -80,6 +75,7 @@ export function init(store) {
     SECRET,
     CONFIG_MAP
   ], 'storage');
+
   basicType([
     WORKLOAD,
     WORKLOAD_TYPES.DEPLOYMENT,
@@ -103,26 +99,9 @@ export function init(store) {
     componentForType(WORKLOAD_TYPES[key], WORKLOAD);
   }
 
-  ignoreType(MANAGEMENT.GLOBAL_DNS_PROVIDER); // Old, managed in multi-cluster-apps
   ignoreType('events.k8s.io.event'); // Old, moved into core
   ignoreType('extensions.ingress'); // Old, moved into networking
-  ignoreType(MANAGEMENT.PROJECT);
   ignoreType(NAMESPACE);
-  ignoreType(MANAGEMENT.CLUSTER_ROLE_TEMPLATE_BINDING);
-  ignoreType(MANAGEMENT.PROJECT_ROLE_TEMPLATE_BINDING);
-
-  ignoreGroup('harvesterhci.io', (getters) => {
-    return getters['currentCluster']?.isHarvester && getters['isExplorer'];
-  });
-  ignoreGroup('kubevirt.io', (getters) => {
-    return getters['currentCluster']?.isHarvester && getters['isExplorer'];
-  });
-  ignoreGroup('network.harvesterhci.io', (getters) => {
-    return getters['currentCluster']?.isHarvester && getters['isExplorer'];
-  });
-  ignoreGroup('node.harvesterhci.io', (getters) => {
-    return getters['currentCluster']?.isHarvester && getters['isExplorer'];
-  });
 
   mapGroup(/^(core)?$/, 'core');
   mapGroup('apps', 'apps');
@@ -135,33 +114,14 @@ export function init(store) {
   mapGroup('admissionregistration.k8s.io', 'admission');
   mapGroup('crd.projectcalico.org', 'Calico');
   mapGroup(/^(.+\.)?cert-manager\.(k8s\.)?io$/, 'Cert Manager');
-  // mapGroup(/^(.+\.)?(gateway|gloo)\.solo\.io$/, 'Gloo');
-  // mapGroup(/^(.*\.)?monitoring\.coreos\.com$/, 'Monitoring');
-  // mapGroup(/^(.*\.)?tekton\.dev$/, 'Tekton');
-  // mapGroup(/^(.*\.)?tigera\.io$/, 'Tigera');
-  // mapGroup(/^(.*\.)?longhorn(\.rancher)?\.io$/, 'Longhorn');
-  // mapGroup(/^(.*\.)?(fleet|gitjob)\.cattle\.io$/, 'Fleet');
   mapGroup(/^(.*\.)?(k3s)\.cattle\.io$/, 'K3s');
-  mapGroup(/^(.*\.)?(helm)\.cattle\.io$/, 'Helm');
   mapGroup(/^(.*\.)?upgrade\.cattle\.io$/, 'Upgrade Controller');
-  // mapGroup(/^(.*\.)?cis\.cattle\.io$/, 'CIS');
   mapGroup(/^(.*\.)?traefik\.containo\.us$/, 'Træfik');
-  // mapGroup(/^(catalog|management|project|ui)\.cattle\.io$/, 'Rancher');
-  // mapGroup(/^(.*\.)?istio\.io$/, 'Istio');
-  // mapGroup('split.smi-spec.io', 'SMI');
-  // mapGroup(/^(.*\.)*knative\.(io|dev)$/, 'Knative');
-  // mapGroup('argoproj.io', 'Argo');
-  // mapGroup('logging.banzaicloud.io', 'Logging');
-  // mapGroup(/^(.*\.)?resources\.cattle\.io$/, 'Backup-Restore');
   mapGroup(/^(.*\.)?cluster\.x-k8s\.io$/, 'clusterProvisioning');
   mapGroup(/^(aks|eks|gke|rke|rke-machine-config|rke-machine|provisioning)\.cattle\.io$/, 'clusterProvisioning');
 
   configureType(NODE, { isCreatable: false, isEditable: true });
   configureType(WORKLOAD_TYPES.JOB, { isEditable: false, match: WORKLOAD_TYPES.JOB });
-  configureType(MANAGEMENT.CLUSTER_ROLE_TEMPLATE_BINDING, { isEditable: false });
-  configureType(MANAGEMENT.PROJECT_ROLE_TEMPLATE_BINDING, { isEditable: false, depaginate: true });
-  configureType(MANAGEMENT.PROJECT, { displayName: store.getters['i18n/t']('namespace.project.label') });
-  // configureType(NORMAN.PROJECT_ROLE_TEMPLATE_BINDING, { depaginate: true });
 
   configureType(EVENT, { limit: 500 });
   weightType(EVENT, -1, true);
@@ -188,11 +148,6 @@ export function init(store) {
       params: { resource: WORKLOAD },
     },
   });
-
-  /** This CRD is installed on provisioned clusters because rancher webhook, used for both local and provisioned clusters, expects it to be there
-   * Creating instances of this resource on downstream clusters wont do anything - Only show them for the local cluster
-   */
-  configureType(MANAGEMENT.PSA, { localOnly: true });
 
   headers(PV, [STATE, NAME_COL, RECLAIM_POLICY, PERSISTENT_VOLUME_CLAIM, PERSISTENT_VOLUME_SOURCE, PV_REASON, AGE]);
   headers(CONFIG_MAP, [NAME_COL, NAMESPACE_COL, KEYS, AGE]);
@@ -222,10 +177,6 @@ export function init(store) {
   headers(WORKLOAD_TYPES.CRON_JOB, [STATE, NAME_COL, NAMESPACE_COL, WORKLOAD_IMAGES, WORKLOAD_ENDPOINTS, 'Schedule', 'Last Schedule', POD_RESTARTS, AGE, WORKLOAD_HEALTH_SCALE]);
   headers(WORKLOAD_TYPES.REPLICATION_CONTROLLER, [STATE, NAME_COL, NAMESPACE_COL, WORKLOAD_IMAGES, WORKLOAD_ENDPOINTS, 'Ready', 'Current', 'Desired', POD_RESTARTS, AGE, WORKLOAD_HEALTH_SCALE]);
   headers(POD, [STATE, NAME_COL, NAMESPACE_COL, POD_IMAGES, 'Ready', 'Restarts', 'IP', NODE_COL, AGE]);
-  headers(MANAGEMENT.PSA, [STATE, NAME_COL, {
-    ...DESCRIPTION,
-    width: undefined
-  }, AGE]);
   headers(STORAGE_CLASS, [STATE, NAME_COL, STORAGE_CLASS_PROVISIONER, STORAGE_CLASS_DEFAULT, AGE]);
 
   headers(RBAC.ROLE, [
@@ -240,18 +191,6 @@ export function init(store) {
     NAME_COL,
     AGE,
   ]);
-
-  configureType(MANAGEMENT.CLUSTER_ROLE_TEMPLATE_BINDING, {
-    listGroups: [
-      {
-        icon:       'icon-role-binding',
-        value:      'node',
-        field:      'roleDisplay',
-        hideColumn: ROLE.name,
-        tooltipKey: 'resourceTable.groupBy.role'
-      }
-    ]
-  });
 
   headers(MANAGEMENT.USER, [
     STATE,
@@ -274,21 +213,6 @@ export function init(store) {
   });
 
   virtualType({
-    labelKey:   'members.clusterAndProject',
-    group:      'cluster',
-    namespaced: false,
-    name:       VIRTUAL_TYPES.CLUSTER_MEMBERS,
-    icon:       'globe',
-    weight:     -1,
-    route:      { name: 'c-cluster-product-members' },
-    exact:      true,
-    ifHaveType: {
-      type:  MANAGEMENT.CLUSTER_ROLE_TEMPLATE_BINDING,
-      store: 'management'
-    }
-  });
-
-  virtualType({
     label:          store.getters['i18n/t'](`typeLabel.${ WORKLOAD }`, { count: 2 }),
     group:          store.getters['i18n/t'](`typeLabel.${ WORKLOAD }`, { count: 2 }),
     namespaced:     true,
@@ -304,18 +228,6 @@ export function init(store) {
   });
 
   virtualType({
-    labelKey:         'projectNamespaces.label',
-    group:            'cluster',
-    icon:             'globe',
-    namespaced:       false,
-    ifRancherCluster: true,
-    name:             VIRTUAL_TYPES.PROJECT_NAMESPACES,
-    weight:           98,
-    route:            { name: 'c-cluster-product-projectsnamespaces' },
-    exact:            true,
-  });
-
-  virtualType({
     label:            store.getters['i18n/t'](`typeLabel.${ NAMESPACE }`, { count: 2 }),
     group:            'cluster',
     icon:             'globe',
@@ -328,15 +240,8 @@ export function init(store) {
   });
 
   // Ignore these types as they are managed through the settings product
-  // ignoreType(MANAGEMENT.FEATURE);
   ignoreType(MANAGEMENT.SETTING);
-
-  // Don't show Tokens/API Keys in the side navigation
-  // ignoreType(MANAGEMENT.TOKEN);
-  // ignoreType(NORMAN.TOKEN);
 
   // Ignore these types as they are managed through the auth product
   ignoreType(MANAGEMENT.USER);
-  // ignoreType(MANAGEMENT.GLOBAL_ROLE);
-  // ignoreType(MANAGEMENT.ROLE_TEMPLATE);
 }

@@ -78,7 +78,6 @@ export const SCOPED_RESOURCES = {
         'Features',
         'FleetWorkspaces',
         'GlobalRoles',
-        'GlobalRoleBindings',
         'Groups',
         'GroupMembers',
         'KontainerDrivers',

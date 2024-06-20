@@ -61,7 +61,7 @@ export default {
 
   computed: {
     ...mapGetters(['clusterReady', 'isExplorer', 'isRancher', 'currentCluster',
-      'currentProduct', 'backToRancherLink', 'backToRancherGlobalLink', 'pageActions', 'isSingleProduct', 'isRancherInHarvester', 'showTopLevelMenu']),
+      'currentProduct', 'backToRancherLink', 'backToRancherGlobalLink', 'pageActions', 'isSingleProduct', 'showTopLevelMenu']),
     ...mapGetters('type-map', ['activeProducts']),
 
     appName() {
@@ -341,7 +341,7 @@ export default {
       :class="{'isSingleProduct': isSingleProduct }"
     >
       <n-link
-        v-if="isSingleProduct && !isRancherInHarvester"
+        v-if="isSingleProduct"
         :to="singleProductLogoRoute"
       >
         <img
@@ -361,7 +361,7 @@ export default {
         class="cluster cluster-clipped"
       >
         <div
-          v-if="isSingleProduct && !isRancherInHarvester"
+          v-if="isSingleProduct"
           class="product-name"
         >
           <!-- {{ t(isSingleProduct.productNameKey) }} -->

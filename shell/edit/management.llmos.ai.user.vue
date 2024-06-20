@@ -1,7 +1,7 @@
 <script>
 import { MANAGEMENT } from '@shell/config/types';
 import CreateEditView from '@shell/mixins/create-edit-view';
-import GlobalRoleBindings from '@shell/components/GlobalRoleBindings.vue';
+// import GlobalRoleBindings from '@shell/components/GlobalRoleBindings.vue';
 import ChangePassword from '@shell/components/form/ChangePassword';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import CruResource from '@shell/components/CruResource';
@@ -11,7 +11,7 @@ import Loading from '@shell/components/Loading';
 
 export default {
   components: {
-    ChangePassword, GlobalRoleBindings, CruResource, LabeledInput, Loading
+    ChangePassword, CruResource, LabeledInput, Loading
   },
   mixins: [
     CreateEditView

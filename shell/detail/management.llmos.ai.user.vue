@@ -18,23 +18,7 @@ export default {
     CreateEditView
   ],
   async fetch() {
-    const canSeeGlobalRoles = !!this.$store.getters[`management/canList`](MANAGEMENT.GLOBAL_ROLE);
-
-    if (canSeeGlobalRoles) {
-      this.globalBindings = await this.fetchGlobalRoleBindings(this.value.id);
-    }
-
-    this.canSeeRoleTemplates = !!this.$store.getters[`management/canList`](MANAGEMENT.ROLE_TEMPLATE);
-
-    if (this.canSeeRoleTemplates) {
-      // Upfront fetch, avoid async computes
-      await Promise.all([
-        await this.$store.dispatch('management/find', { type: MANAGEMENT.USER, id: this.value.id }),
-        await this.$store.dispatch('management/findAll', { type: MANAGEMENT.ROLE_TEMPLATE }),
-        await this.$store.dispatch('management/findAll', { type: MANAGEMENT.CLUSTER_ROLE_TEMPLATE_BINDING }),
-        await this.$store.dispatch('management/findAll', { type: MANAGEMENT.PROJECT_ROLE_TEMPLATE_BINDING })
-      ]);
-    }
+    await this.$store.dispatch('management/find', { type: MANAGEMENT.USER, id: this.value.id })
   },
   data() {
     const role = {
@@ -108,119 +92,8 @@ export default {
       isAdmin:             false,
     };
   },
-  computed: {
-    clusterBindings() {
-      return this.canSeeRoleTemplates ? this.fetchClusterRoles(this.value.id) : null;
-    },
-    projectBindings() {
-      return this.canSeeRoleTemplates ? this.fetchProjectRoles(this.value.id) : null;
-    }
-
-  },
-  methods: {
-    async fetchGlobalRoleBindings(userId) {
-      try {
-        const roles = await this.$store.dispatch('management/findAll', { type: MANAGEMENT.GLOBAL_ROLE });
-
-        const out = await Promise.all(roles
-          .filter((r) => !r.isSpecial)
-          .map((r) => this.$store.dispatch(`rancher/clone`, { resource: r }))
-        );
-
-        out.forEach((r) => {
-          r.hasBound = false;
-        });
-
-        const globalRoleBindings = await this.$store.dispatch('management/findAll', { type: MANAGEMENT.GLOBAL_ROLE_BINDING });
-
-        globalRoleBindings
-          .filter((binding) => binding.userName === userId)
-          .forEach((binding) => {
-            const globalRole = roles.find((r) => r.id === binding.globalRoleName);
-
-            if (globalRole.id === 'admin') {
-              this.isAdmin = true;
-            }
-
-            if (globalRole.isSpecial) {
-              this.getEnabledRoles(globalRole, out).forEach((r) => {
-                r.hasBound = true;
-                r.bound = binding?.metadata.creationTimestamp;
-              });
-            } else {
-              const entry = out.find((o) => o.id === binding.globalRoleName);
-
-              if (entry) {
-                entry.hasBound = true;
-                entry.bound = binding?.metadata.creationTimestamp;
-              }
-            }
-          });
-
-        return out;
-      } catch (e) {
-        // Swallow the error. It's probably due to the user not having the correct permissions to read global roles
-        console.error('Failed to fetch global role bindings: ', e); // eslint-disable-line no-console
-      }
-    },
-
-    fetchClusterRoles(userId) {
-      const templateBindings = this.$store.getters['management/all'](MANAGEMENT.CLUSTER_ROLE_TEMPLATE_BINDING);
-      const userTemplateBindings = templateBindings.filter((binding) => binding.userName === userId);
-
-      // Upfront load clusters
-      userTemplateBindings.map((b) => this.$store.dispatch('management/find', { type: MANAGEMENT.CLUSTER, id: b.clusterName }));
-
-      return userTemplateBindings;
-    },
-
-    fetchProjectRoles(userId) {
-      const templateBindings = this.$store.getters['management/all'](MANAGEMENT.PROJECT_ROLE_TEMPLATE_BINDING );
-      const userTemplateBindings = templateBindings.filter((binding) => binding.userName === userId);
-
-      // Upfront load projects
-      userTemplateBindings.map((b) => this.$store.dispatch('management/find', { type: MANAGEMENT.PROJECT, id: b.projectId }));
-
-      return userTemplateBindings;
-    },
-
-    // Global Permissions Helpers (brought over from ember)
-    hasPermission(globalRoleRules, permission) {
-      return globalRoleRules.find((gRule) => {
-        return ((gRule.apiGroups || []).includes('*') || (gRule.apiGroups || []).includes(permission.apiGroup)) &&
-        ((gRule.resources || []).includes('*') || (gRule.resources || []).includes(permission.resource)) &&
-        ((gRule.verbs || []).includes('*') || (gRule.verbs || []).includes(permission.verb));
-      })
-      ;
-    },
-    containsRule(globalRoleRules, rule) {
-      const apiGroups = (rule.apiGroups || []);
-      const resources = (rule.resources || []);
-      const verbs = (rule.verbs || []);
-      const permissions = [];
-
-      apiGroups.forEach((apiGroup) => resources.forEach((resource) => verbs.forEach((verb) => permissions.push({
-        apiGroup,
-        resource,
-        verb
-      }))));
-
-      return permissions.every((permission) => this.hasPermission(globalRoleRules, permission));
-    },
-    getEnabledRoles(globalRole, out) {
-      const globalRoleRules = globalRole.rules || [];
-
-      return out.filter((r) => {
-        // If the global role doesn't contain any rules... don't show the user as having the role (confusing)
-        if (!r?.rules?.length) {
-          return false;
-        }
-
-        return r.rules.every((rule) => this.containsRule(globalRoleRules, rule));
-      });
-    },
-
-  }
+  computed: {},
+  methods: {}
 
 };
 </script>

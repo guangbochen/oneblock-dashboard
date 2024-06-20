@@ -62,7 +62,7 @@ export default {
 
   computed: {
     ...mapState(['managementReady', 'clusterReady']),
-    ...mapGetters(['clusterId', 'currentProduct', 'isRancherInHarvester', 'showTopLevelMenu']),
+    ...mapGetters(['clusterId', 'currentProduct', 'showTopLevelMenu']),
 
     afterLoginRoute: mapPref(AFTER_LOGIN_ROUTE),
 
@@ -77,7 +77,7 @@ export default {
       }
 
       // Only show for Cluster Explorer or Global Apps (not configuration)
-      const canSetAsHome = product.inStore === 'cluster' || (product.inStore === 'management' && product.category !== 'configuration') || this.isRancherInHarvester;
+      const canSetAsHome = product.inStore === 'cluster' || (product.inStore === 'management' && product.category !== 'configuration');
 
       if (canSetAsHome) {
         pageActions.push({

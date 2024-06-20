@@ -1,11 +1,5 @@
 import { DSL } from '@shell/store/type-map';
-import { MANAGEMENT, HELM } from '@shell/config/types';
-import {
-  STATE,
-  FEATURE_DESCRIPTION,
-  RESTART,
-  NAME_UNLINKED,
-} from '@shell/config/table-headers';
+import { MANAGEMENT } from '@shell/config/types';
 
 export const NAME = 'settings';
 
@@ -15,12 +9,10 @@ export function init(store) {
     basicType,
     configureType,
     virtualType,
-    headers,
-    hideBulkActions,
   } = DSL(store, NAME);
 
   product({
-    ifHaveType:          new RegExp(`${ MANAGEMENT.SETTING }|${ MANAGEMENT.FEATURE }`, 'i'),
+    ifHaveType:          new RegExp(`${ MANAGEMENT.SETTING }`, 'i'),
     inStore:             'management',
     icon:                'globe',
     removable:           false,
@@ -41,22 +33,6 @@ export function init(store) {
       params: {
         product:  NAME,
         resource: MANAGEMENT.SETTING
-      }
-    }
-  });
-
-  virtualType({
-    ifHaveType: MANAGEMENT.FEATURE,
-    labelKey:   'featureFlags.label',
-    name:       'features',
-    namespaced: false,
-    weight:     99,
-    icon:       'folder',
-    route:      {
-      name:   'c-cluster-product-resource',
-      params: {
-        product:  NAME,
-        resource: MANAGEMENT.FEATURE
       }
     }
   });
@@ -83,10 +59,8 @@ export function init(store) {
 
   basicType([
     'settings',
-    'features',
     'brand',
     'banners',
-    'performance',
     'links'
   ]);
 
@@ -97,37 +71,4 @@ export function init(store) {
     showState:   false,
     canYaml:     false,
   });
-
-  configureType(MANAGEMENT.FEATURE, {
-    isCreatable: false,
-    isRemovable: false,
-    showAge:     false,
-    showState:   true,
-    canYaml:     false,
-  });
-
-  configureType(MANAGEMENT.PROJECT, {
-    isCreatable: true,
-    isRemovable: true,
-    showAge:     false,
-    showState:   false,
-    canYaml:     true,
-  });
-
-  configureType(HELM.PROJECTHELMCHART, {
-    isCreatable: true,
-    isRemovable: true,
-    showAge:     true,
-    showState:   true,
-    canYaml:     true,
-  });
-
-  headers(MANAGEMENT.FEATURE, [
-    STATE,
-    NAME_UNLINKED,
-    FEATURE_DESCRIPTION,
-    RESTART,
-  ]);
-
-  hideBulkActions(MANAGEMENT.FEATURE, true);
 }

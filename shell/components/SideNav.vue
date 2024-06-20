@@ -11,9 +11,7 @@ import { addObjects, replaceWith, clear, addObject } from '@shell/utils/array';
 import { sortBy } from '@shell/utils/sort';
 import { ucFirst } from '@shell/utils/string';
 
-import {
-  OB, UI, SCHEMA, COUNT
-} from '@shell/config/types';
+import { SCHEMA, COUNT } from '@shell/config/types';
 import { LLMOS_NAME as HARVESTER } from '@shell/config/features';
 import { NAME as EXPLORER } from '@shell/config/product/explorer';
 import { BASIC, FAVORITE, USED } from '@shell/store/type-map';
@@ -115,15 +113,11 @@ export default {
 
   computed: {
     ...mapState(['managementReady', 'clusterReady']),
-    ...mapGetters(['productId', 'clusterId', 'currentProduct', 'isSingleProduct', 'namespaceMode', 'isExplorer', 'isVirtualCluster']),
+    ...mapGetters(['productId', 'clusterId', 'currentProduct', 'isSingleProduct', 'namespaceMode', 'isExplorer']),
     ...mapGetters({ locale: 'i18n/selectedLocaleLabel', availableLocales: 'i18n/availableLocales' }),
     ...mapGetters('type-map', ['activeProducts']),
 
     favoriteTypes: mapPref(FAVORITE_TYPES),
-
-    showClusterTools() {
-      return this.isExplorer
-    },
 
     supportLink() {
       const product = this.currentProduct;
@@ -148,10 +142,6 @@ export default {
       return this.isSingleProduct?.aboutPage;
     },
 
-    harvesterVersion() {
-      return this.$store.getters['cluster/byId'](OB.SETTING, 'server-version')?.value || 'unknown';
-    },
-
     showProductFooter() {
       if (this.isVirtualProduct) {
         return true;
@@ -165,11 +155,11 @@ export default {
     },
 
     allNavLinks() {
-      if ( !this.clusterId || !this.$store.getters['cluster/schemaFor'](UI.NAV_LINK) ) {
+      if (!this.clusterId) {
         return [];
       }
 
-      return this.$store.getters['cluster/all'](UI.NAV_LINK);
+      return [];
     },
 
     allSchemas() {
@@ -439,21 +429,6 @@ export default {
         />
       </template>
     </div>
-    <!-- Cluster tools -->
-    <n-link
-      v-if="showClusterTools"
-      tag="div"
-      class="tools"
-      :to="{name: 'c-cluster-explorer-tools', params: {cluster: clusterId}}"
-    >
-      <a
-        class="tools-button"
-        @click="collapseAll()"
-      >
-        <i class="icon icon-gear" />
-        <span>{{ t('nav.clusterTools') }}</span>
-      </a>
-    </n-link>
     <!-- SideNav footer area (seems to be tied to harvester) -->
     <div
       v-if="showProductFooter"
@@ -519,13 +494,6 @@ export default {
       </nuxt-link>
       <template v-else>
         <span>{{ displayVersion }}</span>
-        <span
-          v-if="isVirtualCluster && isExplorer"
-          v-tooltip="{content: harvesterVersion, placement: 'top'}"
-          class="clip text-muted ml-5"
-        >
-          (Harvester-{{ harvesterVersion }})
-        </span>
       </template>
     </div>
   </nav>

@@ -142,7 +142,7 @@ export default class Namespace extends SteveModel {
   }
 
   get listLocation() {
-    return { name: this.$rootGetters['isRancher'] ? 'c-cluster-product-projectsnamespaces' : 'c-cluster-product-resource' };
+    return 'c-cluster-product-resource';
   }
 
   get _detailLocation() {

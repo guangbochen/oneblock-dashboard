@@ -73,45 +73,6 @@ export const METRIC = {
   POD:  'metrics.k8s.io.pod',
 };
 
-export const CATALOG = {
-  CLUSTER_REPO: 'catalog.cattle.io.clusterrepo',
-  OPERATION:    'catalog.cattle.io.operation',
-  APP:          'catalog.cattle.io.app',
-  REPO:         'catalog.cattle.io.repo',
-};
-
-// UI Plugin type
-export const UI_PLUGIN = 'catalog.cattle.io.uiplugin';
-
-export const HELM = { PROJECTHELMCHART: 'helm.cattle.io.projecthelmchart' };
-
-export const MONITORING = {
-  ALERTMANAGER:       'monitoring.coreos.com.alertmanager',
-  ALERTMANAGERCONFIG: 'monitoring.coreos.com.alertmanagerconfig',
-  PODMONITOR:         'monitoring.coreos.com.podmonitor',
-  PROMETHEUS:         'monitoring.coreos.com.prometheus',
-  PROMETHEUSRULE:     'monitoring.coreos.com.prometheusrule',
-  SERVICEMONITOR:     'monitoring.coreos.com.servicemonitor',
-  THANOSRULER:        'monitoring.coreos.com.thanosruler',
-  SPOOFED:            {
-    RECEIVER:                         'monitoring.coreos.com.receiver',
-    RECEIVER_SPEC:                    'monitoring.coreos.com.receiver.spec',
-    RECEIVER_EMAIL:                   'monitoring.coreos.com.receiver.email',
-    RECEIVER_SLACK:                   'monitoring.coreos.com.receiver.slack',
-    RECEIVER_WEBHOOK:                 'monitoring.coreos.com.receiver.webhook',
-    RECEIVER_PAGERDUTY:               'monitoring.coreos.com.receiver.pagerduty',
-    RECEIVER_OPSGENIE:                'monitoring.coreos.com.receiver.opsgenie',
-    RECEIVER_HTTP_CONFIG:             'monitoring.coreos.com.receiver.httpconfig',
-    RESPONDER:                        'monitoring.coreos.com.receiver.responder',
-    ROUTE:                            'monitoring.coreos.com.route',
-    ROUTE_SPEC:                       'monitoring.coreos.com.route.spec',
-    ALERTMANAGERCONFIG_RECEIVER_SPEC: 'monitoring.coreos.com.v1alpha1.alertmanagerconfig.spec.receivers',
-    ALERTMANAGERCONFIG_ROUTE_SPEC:    'monitoring.coreos.com.v1alpha1.alertmanagerconfig.spec.route'
-  }
-};
-
-export const SNAPSHOT = 'rke.cattle.io.etcdsnapshot';
-
 // --------------------------------------
 // 2. Only if Rancher is installed
 // --------------------------------------
@@ -119,99 +80,19 @@ export const SNAPSHOT = 'rke.cattle.io.etcdsnapshot';
 // Rancher Management API (via Steve)
 // Base: /v1
 export const MANAGEMENT = {
-  AUTH_CONFIG:                   'management.cattle.io.authconfig',
-  // CATALOG_TEMPLATE:              'management.cattle.io.catalogtemplate',
-  // CATALOG:                       'management.cattle.io.catalog',
-  CLUSTER:                       'management.cattle.io.cluster',
-  CLUSTER_ROLE_TEMPLATE_BINDING: 'management.cattle.io.clusterroletemplatebinding',
-  FEATURE:                       'management.cattle.io.feature',
-  // GROUP:                         'management.cattle.io.group',
-  // KONTAINER_DRIVER:              'management.cattle.io.kontainerdriver',
-  // MULTI_CLUSTER_APP:             'management.cattle.io.multiclusterapp',
-  // NODE:                          'management.cattle.io.node',
-  // NODE_DRIVER:                   'management.cattle.io.nodedriver',
-  // NODE_POOL:                     'management.cattle.io.nodepool',
-  // NODE_TEMPLATE:                 'management.cattle.io.nodetemplate',
-  PROJECT:                       'management.cattle.io.project',
-  PROJECT_ROLE_TEMPLATE_BINDING: 'management.cattle.io.projectroletemplatebinding',
-  ROLE_TEMPLATE:                 'management.cattle.io.roletemplate',
   SETTING:                       'management.llmos.ai.setting',
   USER:                          'management.llmos.ai.user',
-  TOKEN:                         'management.cattle.io.token',
-  GLOBAL_ROLE:                   'management.cattle.io.globalrole',
-  GLOBAL_ROLE_BINDING:           'management.cattle.io.globalrolebinding',
-  PSA:                           'management.cattle.io.podsecurityadmissionconfigurationtemplate',
-  MANAGED_CHART:                 'management.cattle.io.managedchart',
-  USER_NOTIFICATION:             'management.cattle.io.rancherusernotification',
-  GLOBAL_DNS_PROVIDER:           'management.cattle.io.globaldnsprovider',
-  // RKE_TEMPLATE:                  'management.cattle.io.clustertemplate',
-  // RKE_TEMPLATE_REVISION:         'management.cattle.io.clustertemplaterevision',
+  CLUSTER:                       'management.cattle.io.cluster',
+
+  //TODO, remove
+  PROJECT:                       'management.cattle.io.project',
 };
-
-export const CAPI = {
-  CAPI_CLUSTER:         'cluster.x-k8s.io.cluster',
-  MACHINE_DEPLOYMENT:   'cluster.x-k8s.io.machinedeployment',
-  MACHINE_SET:          'cluster.x-k8s.io.machineset',
-  MACHINE:              'cluster.x-k8s.io.machine',
-  RANCHER_CLUSTER:      'provisioning.cattle.io.cluster',
-  MACHINE_CONFIG_GROUP: 'rke-machine-config.cattle.io',
-};
-
-// --------------------------------------
-// 3. Optional add-on packages in a cluster
-// --------------------------------------
-// Base: /k8s/clusters/<id>/v1/
-
-export const FLEET = {
-  BUNDLE:                   'fleet.cattle.io.bundle',
-  BUNDLE_DEPLOYMENT:        'fleet.cattle.io.bundledeployment',
-  CLUSTER:                  'fleet.cattle.io.cluster',
-  CLUSTER_GROUP:            'fleet.cattle.io.clustergroup',
-  DASHBOARD:                'fleet.cattle.io.dashboard',
-  GIT_REPO:                 'fleet.cattle.io.gitrepo',
-  WORKSPACE:                'management.cattle.io.fleetworkspace',
-  TOKEN:                    'fleet.cattle.io.clusterregistrationtoken',
-  BUNDLE_NAMESPACE_MAPPING: 'fleet.cattle.io.bundlenamespacemapping',
-  GIT_REPO_RESTRICTION:     'fleet.cattle.io.gitreporestriction'
-};
-
-export const GATEKEEPER = {
-  CONSTRAINT_TEMPLATE: 'templates.gatekeeper.sh.constrainttemplate',
-  SPOOFED:             { CONSTRAINT: 'constraints.gatekeeper.sh.constraint' }
-};
-
-export const ISTIO = {
-  VIRTUAL_SERVICE:  'networking.istio.io.virtualservice',
-  DESTINATION_RULE: 'networking.istio.io.destinationrule',
-  GATEWAY:          'networking.istio.io.gateway'
-};
-
-export const UI = { NAV_LINK: 'ui.cattle.io.navlink' };
 
 export const VIRTUAL_TYPES = {
-  CLUSTER_MEMBERS:    'cluster-members',
-  PROJECT_NAMESPACES: 'projects-namespaces',
   NAMESPACES:         'namespaces'
 };
 
-// harvester
-export const OB = {
-  CLUSTER:          'harvesterhci.io.management.cluster',
-  DASHBOARD:        'harvesterhci.io.dashboard',
-  IMAGE:            'harvesterhci.io.virtualmachineimage',
-  SETTING:          'harvesterhci.io.setting',
-  HARVESTER_CONFIG: 'rke-machine-config.cattle.io.harvesterconfig',
-};
-
-export const VIRTUAL_HARVESTER_PROVIDER = 'llmos';
-
-export const ADDRESSES = {
-  HOSTNAME:    'Hostname',
-  INTERNAL_IP: 'InternalIP',
-  EXTERNAL_IP: 'ExternalIP'
-};
-
-export const DEFAULT_WORKSPACE = 'fleet-default';
+export const DEFAULT_WORKSPACE = 'default';
 
 export const AUTH_TYPE = {
   _NONE:  '_none',
@@ -219,5 +100,3 @@ export const AUTH_TYPE = {
   _SSH:   '_ssh',
   _S3:    '_S3'
 };
-
-export const LOCAL_CLUSTER = 'local';

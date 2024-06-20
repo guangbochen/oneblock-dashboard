@@ -9,10 +9,8 @@ import {
   SERVICE,
   PVC,
   SERVICE_ACCOUNT,
-  CAPI,
   POD,
   LIST_WORKLOAD_TYPES,
-  OB,
 } from '@shell/config/types';
 import Tab from '@shell/components/Tabbed/Tab';
 import CreateEditView from '@shell/mixins/create-edit-view';
@@ -150,14 +148,6 @@ export default {
 
     // User might not have access to these resources - so check before trying to fetch
     const fetches = {};
-
-    if (this.$store.getters[`management/canList`](CAPI.RANCHER_CLUSTER)) {
-      fetches.rancherClusters = this.$store.dispatch('management/findAll', { type: CAPI.RANCHER_CLUSTER });
-    }
-
-    if (this.$store.getters[`management/canList`](OB.HARVESTER_CONFIG)) {
-      fetches.harvesterConfigs = this.$store.dispatch('management/findAll', { type: OB.HARVESTER_CONFIG });
-    }
 
     await allHash(fetches);
 

@@ -195,7 +195,7 @@ export default {
       const scopes = Object.keys(this.scopedResources);
 
       scopes.forEach((scope) => {
-        if (scope === 'globalScopedApiGroups' && this.value.type !== MANAGEMENT.GLOBAL_ROLE) {
+        if (scope === 'globalScopedApiGroups') {
           // If we are not in the global role creation form,
           // skip adding the global-scoped resources.
           return;

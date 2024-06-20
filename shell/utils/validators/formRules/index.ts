@@ -1,14 +1,11 @@
 import { RBAC } from '@shell/config/types';
-import { OB } from '@shell/config/labels-annotations';
 import isEmpty from 'lodash/isEmpty';
 import has from 'lodash/has';
 import isUrl from 'is-url';
-// import uniq from 'lodash/uniq';
 import cronstrue from 'cronstrue';
 import { Translation } from '@shell/types/t';
 import { isHttps, isLocalhost, hasTrailingForwardSlash } from '@shell/utils/validators/setting';
 
-// import uniq from 'lodash/uniq';
 export type Validator<T = undefined | string> = (val: any, arg?: any) => T;
 
 export type ValidatorFactory = (arg1: any, arg2?: any) => Validator
@@ -421,29 +418,6 @@ export default function(t: Translation, { key = 'Value' }: ValidationOptions): {
     return undefined;
   };
 
-  const imageUrl: Validator = (val) => {
-    const VM_IMAGE_FILE_FORMAT = ['qcow', 'qcow2', 'raw', 'img', 'iso'];
-
-    if (!val || val === '') {
-      return undefined;
-    }
-
-    const urlSlug = val.split('/').pop();
-    const fileExtension = urlSlug.split('.').pop().toLowerCase();
-
-    if (!VM_IMAGE_FILE_FORMAT.includes(fileExtension)) {
-      return t('harvester.validation.image.ruleTip');
-    }
-
-    return undefined;
-  };
-
-  const fileRequired: Validator = (val = {}) => {
-    if (!val[OB.IMAGE_NAME]) {
-      return t('validation.required', { key: t('harvester.image.fileName') });
-    }
-  };
-
   const subDomain: Validator = (val) => {
     const matchedChars = val?.match(/[^a-z0-9.-]/g);
 
@@ -470,10 +444,8 @@ export default function(t: Translation, { key = 'Value' }: ValidationOptions): {
     dnsLabelIanaServiceName,
     dnsLabelRestricted,
     externalName,
-    fileRequired,
     groupsAreValid,
     hostname,
-    imageUrl,
     interval,
     https,
     localhost,

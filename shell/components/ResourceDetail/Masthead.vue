@@ -1,11 +1,10 @@
 <script>
 import { KUBERNETES, PROJECT } from '@shell/config/labels-annotations';
-import { FLEET, NAMESPACE, MANAGEMENT, HELM } from '@shell/config/types';
+import { NAMESPACE, MANAGEMENT } from '@shell/config/types';
 import ButtonGroup from '@shell/components/ButtonGroup';
 import { BadgeState } from '@components/BadgeState';
 import { Banner } from '@components/Banner';
 import { get } from '@shell/utils/object';
-// import { NAME as FLEET_NAME } from '@shell/config/product/fleet';
 import { HIDE_SENSITIVE } from '@shell/store/prefs';
 import {
   AS, _DETAIL, _CONFIG, _YAML, MODE, _CREATE, _EDIT, _VIEW, _UNFLAG, _GRAPH
@@ -117,10 +116,6 @@ export default {
 
     isProject() {
       return this.schema?.id === MANAGEMENT.PROJECT;
-    },
-
-    isProjectHelmChart() {
-      return this.schema?.id === HELM.PROJECTHELMCHART;
     },
 
     hasMultipleNamespaces() {
@@ -359,10 +354,6 @@ export default {
 
     displayName() {
       let displayName = this.value.nameDisplay;
-
-      if (this.isProjectHelmChart) {
-        displayName = this.value.projectDisplayName;
-      }
 
       return this.shouldHifenize ? ` - ${ displayName }` : displayName;
     },

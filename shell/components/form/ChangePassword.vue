@@ -43,7 +43,6 @@ export default {
       pCanShowMismatchedPassword: false,
       pIsRandomGenerated:         false,
       form:                       {
-        deleteKeys:        false,
         currentP:          '',
         newP:              '',
         genP:              '',
@@ -227,9 +226,6 @@ export default {
     async save(user) {
       if (this.isChange) {
         await this.changePassword();
-        if (this.form.deleteKeys) {
-          await this.deleteKeys();
-        }
       } else if (this.isEdit) {
         return this.setPassword(user);
       }
@@ -260,35 +256,6 @@ export default {
         throw err;
       }
     },
-
-    async deleteKeys() {
-      try {
-        const tokens = await this.$store.dispatch('rancher/findAll', {
-          type: MANAGEMENT.TOKEN,
-          opt:  {
-            // Ensure we have any new tokens since last fetched... and that we don't attempt to delete previously deleted tokens
-            force: true
-          }
-        });
-
-        await Promise.all(tokens.reduce((res, token) => {
-          if (!token.current) {
-            res.push(token.remove());
-          }
-
-          return res;
-        }, []));
-      } catch (err) {
-        if (err.message) {
-          this.errorMessages = [err.message];
-        } else if (err.length > 1) {
-          this.errorMessages = [this.t('changePassword.errors.failedDeleteKeys')];
-        } else {
-          this.errorMessages = [this.t('changePassword.errors.failedDeleteKey')];
-        }
-        throw err;
-      }
-    },
   },
 };
 </script>
@@ -302,7 +269,6 @@ export default {
       <div class="fields">
         <Checkbox
           v-if="isChange"
-          v-model="form.deleteKeys"
           label-key="changePassword.deleteKeys.label"
           class="mt-10"
         />

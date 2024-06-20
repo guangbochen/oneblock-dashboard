@@ -2,7 +2,6 @@
 import DashboardMetrics from '@shell/components/DashboardMetrics';
 import { mapGetters } from 'vuex';
 import {
-  CAPI,
   ENDPOINTS,
   EVENT,
   NAMESPACE,
@@ -14,7 +13,6 @@ import {
   PV,
   WORKLOAD_TYPES,
   COUNT,
-  CATALOG,
   SECRET
 } from '@shell/config/types';
 import { setPromiseResult } from '@shell/utils/promise';
@@ -308,10 +306,6 @@ export default {
       return createMemoryValues(this.currentCluster?.status?.capacity?.memory, this.metricAggregations?.memory);
     },
 
-    hasMonitoring() {
-      return !!this.clusterCounts?.[0]?.counts?.[CATALOG.APP]?.namespaces?.['cattle-monitoring-system'];
-    },
-
     canAccessNodes() {
       return !!this.clusterCounts?.[0]?.counts?.[NODE];
     },
@@ -388,16 +382,6 @@ export default {
     tabChange(neu) {
       this.selectedTab = neu?.selectedName;
     },
-
-    async goToHarvesterCluster() {
-      try {
-        const provClusters = await this.$store.dispatch('management/findAll', { type: CAPI.RANCHER_CLUSTER });
-        const provCluster = provClusters.find((p) => p.mgmt.id === this.currentCluster.id);
-
-        await provCluster.goToHarvesterCluster();
-      } catch {
-      }
-    }
   },
 };
 </script>
@@ -551,14 +535,6 @@ export default {
             </n-link>
           </span>
           <EventsTable />
-        </Tab>
-        <Tab
-          v-if="hasMonitoring"
-          name="cluster-alerts"
-          :label="t('clusterIndexPage.sections.alerts.label')"
-          :weight="1"
-        >
-          <AlertTable v-if="selectedTab === 'cluster-alerts'" />
         </Tab>
         <Tab
           name="cluster-certs"

@@ -1,6 +1,6 @@
 
 import { findBy } from '@shell/utils/array';
-import { TARGET_WORKLOADS, UI_MANAGED, OB as OB_LABELS_ANNOTATIONS } from '@shell/config/labels-annotations';
+import { TARGET_WORKLOADS, UI_MANAGED } from '@shell/config/labels-annotations';
 import { WORKLOAD_TYPES, SERVICE } from '@shell/config/types';
 import { clone, get } from '@shell/utils/object';
 import SteveModel from '@shell/plugins/steve/steve-class';
@@ -305,12 +305,6 @@ export default class WorkloadService extends SteveModel {
         loadBalancerProxy = loadBalancer;
       } else {
         loadBalancerProxy = await this.$dispatch(`cluster/create`, loadBalancer, { root: true });
-      }
-
-      const portsWithIpam = ports.filter((p) => p._ipam) || [];
-
-      if (portsWithIpam.length > 0) {
-        loadBalancerProxy.metadata.annotations[OB_LABELS_ANNOTATIONS.CLOUD_PROVIDER_IPAM] = portsWithIpam[0]._ipam;
       }
 
       toSave.push(loadBalancerProxy);

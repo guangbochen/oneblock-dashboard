@@ -67,8 +67,6 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['isStandaloneHarvester']),
-
     isCreate() {
       return this.mode === _CREATE;
     },
@@ -99,7 +97,7 @@ export default {
     },
 
     showResourceQuota() {
-      return (!this.isStandaloneHarvester) && Object.keys(this.project?.spec?.resourceQuota?.limit || {}).length > 0;
+      return Object.keys(this.project?.spec?.resourceQuota?.limit || {}).length > 0;
     },
 
     showContainerResourceLimit() {
@@ -230,7 +228,7 @@ export default {
           v-model="value"
           :mode="mode"
           :project="project"
-          :types="isStandaloneHarvester ? HARVESTER_TYPES : RANCHER_TYPES"
+          :types="RANCHER_TYPES"
         />
       </Tab>
       <Tab
