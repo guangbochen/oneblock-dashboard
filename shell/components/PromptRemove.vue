@@ -7,8 +7,6 @@ import { Checkbox } from '@components/Form/Checkbox';
 import { alternateLabel } from '@shell/utils/platform';
 import { uniq } from '@shell/utils/array';
 import AsyncButton from '@shell/components/AsyncButton';
-import { CATALOG as CATALOG_ANNOTATIONS } from '@shell/config/labels-annotations';
-import { CATALOG } from '@shell/config/types';
 import { LabeledInput } from '@components/Form/LabeledInput';
 
 export default {
@@ -165,9 +163,7 @@ export default {
       if (show) {
         const selected = this.toRemove[0];
 
-        if (this.currentRouter?.currentRoute?.name === 'c-cluster-explorer-tools' &&
-            selected.type === CATALOG.APP &&
-            selected.spec?.chart?.metadata?.annotations[CATALOG_ANNOTATIONS.AUTO_INSTALL]) {
+        if (this.currentRouter?.currentRoute?.name === 'c-cluster-explorer-tools') {
           this.chartsToRemoveIsApp = true;
         }
 

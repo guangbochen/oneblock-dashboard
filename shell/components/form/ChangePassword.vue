@@ -3,7 +3,7 @@ import { mapGetters } from 'vuex';
 import { Banner } from '@components/Banner';
 import { Checkbox } from '@components/Form/Checkbox';
 import Password from '@shell/components/form/Password';
-import { NORMAN } from '@shell/config/types';
+import { MANAGEMENT } from '@shell/config/types';
 import { _CREATE, _EDIT } from '@shell/config/query-params';
 
 // Component handles three use cases
@@ -27,9 +27,8 @@ export default {
   async fetch() {
     if (this.isChange) {
       // Fetch the username for hidden input fields. The value itself is not needed if create or changing another user's password
-      const users = await this.$store.dispatch('rancher/findAll', {
-        type: NORMAN.USER,
-        opt:  { url: '/v3/users', filter: { me: true } }
+      const users = await this.$store.dispatch('management/findAll', {
+        type: MANAGEMENT.USER,
       });
       const user = users?.[0];
 

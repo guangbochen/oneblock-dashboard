@@ -7,7 +7,6 @@ import { STATE, SIMPLE_NAME, IMAGE_NAME } from '@shell/config/table-headers';
 import { sortableNumericSuffix } from '@shell/utils/sort';
 import { findBy } from '@shell/utils/array';
 import DashboardMetrics from '@shell/components/DashboardMetrics';
-import V1WorkloadMetrics from '@shell/mixins/v1-workload-metrics';
 import { mapGetters } from 'vuex';
 import { allDashboardsExist } from '@shell/utils/grafana';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
@@ -31,7 +30,7 @@ export default {
     LabeledSelect,
   },
 
-  mixins: [CreateEditView, V1WorkloadMetrics],
+  mixins: [CreateEditView],
 
   async fetch() {
     this.showMetrics = await allDashboardsExist(this.$store, this.currentCluster.id, [POD_METRICS_DETAIL_URL, POD_METRICS_SUMMARY_URL]);
@@ -272,12 +271,6 @@ export default {
         :options="metricsOptions"
         @input="selectionChanged($event)"
       />
-      <div id="ember-anchor">
-        <EmberPage
-          inline="ember-anchor"
-          :src="v1Metrics"
-        />
-      </div>
     </Tab>
     <Tab
       v-if="showMetrics"

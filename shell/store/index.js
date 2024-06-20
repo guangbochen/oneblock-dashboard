@@ -8,12 +8,11 @@ import {
   DEFAULT_WORKSPACE,
   FLEET,
   MANAGEMENT,
-  NAMESPACE, NORMAN,
+  NAMESPACE,
   UI, VIRTUAL_HARVESTER_PROVIDER, OB
 } from '@shell/config/types';
 import { BY_TYPE } from '@shell/plugins/dashboard-store/classify';
 import Steve from '@shell/plugins/steve';
-import { STEVE_MODEL_TYPES } from '@shell/plugins/steve/getters';
 import { CLUSTER as CLUSTER_PREF, LAST_NAMESPACE, NAMESPACE_FILTERS, WORKSPACE } from '@shell/store/prefs';
 import { BOTH, CLUSTER_LEVEL, NAMESPACED } from '@shell/store/type-map';
 import { filterBy, findBy } from '@shell/utils/array';
@@ -51,12 +50,6 @@ export const plugins = [
     baseUrl:        '', // URL is dynamically set for the selected cluster
     supportsStream: false, // true, -- Disabled due to report that it's sometimes much slower in Chrome
     supportsGc:     true, // Enable garbage collection for this store only
-  }),
-  Steve({
-    namespace:      STORE.RANCHER,
-    baseUrl:        '/v3',
-    supportsStream: false, // The norman API doesn't support streaming
-    modelBaseClass: STEVE_MODEL_TYPES.NORMAN,
   }),
 ];
 
@@ -696,12 +689,6 @@ export const actions = {
     }
 
     console.log('Loading management...'); // eslint-disable-line no-console
-
-    try {
-      await dispatch('rancher/findAll', { type: NORMAN.PRINCIPAL, opt: { url: 'principals' } });
-    } catch (e) {
-      // Maybe not Rancher
-    }
 
     let res = await allHashSettled({
       mgmtSubscribe:  dispatch('management/subscribe'),

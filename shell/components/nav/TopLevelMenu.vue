@@ -11,7 +11,6 @@ import { ucFirst } from '@shell/utils/string';
 import { KEY } from '@shell/utils/platform';
 import { getVersionInfo } from '@shell/utils/version';
 import { SETTING } from '@shell/config/settings';
-import { filterOnlyKubernetesClusters, filterHiddenLocalCluster } from '@shell/utils/cluster';
 import Pinned from '@shell/components/nav/Pinned';
 
 export default {
@@ -24,14 +23,12 @@ export default {
 
   data() {
     const { displayVersion, fullVersion } = getVersionInfo(this.$store);
-    // const hasProvCluster = this.$store.getters[`management/schemaFor`](CAPI.RANCHER_CLUSTER);
 
     return {
       shown:             false,
       displayVersion,
       fullVersion,
       clusterFilter:     '',
-      // hasProvCluster,
       maxClustersToShow: MENU_MAX_CLUSTERS,
       emptyCluster:      BLANK_CLUSTER,
       showPinClusters:   false,
@@ -39,12 +36,7 @@ export default {
     };
   },
 
-  fetch() {
-    // if (this.hasProvCluster) {
-    //   // this.$store.dispatch('management/findAll', { type: CAPI.RANCHER_CLUSTER });
-    //   this.$store.dispatch('management/findAll', { type: MANAGEMENT.CLUSTER });
-    // }
-  },
+  fetch() {},
 
   computed: {
     ...mapGetters(['clusterId']),
@@ -88,39 +80,16 @@ export default {
     },
 
     clusters() {
-      const all = this.$store.getters['management/all'](MANAGEMENT.CLUSTER);
-      let kubeClusters = filterHiddenLocalCluster(filterOnlyKubernetesClusters(all, this.$store), this.$store);
-      let pClusters = null;
-
-      if (this.hasProvCluster) {
-        // pClusters = this.$store.getters['management/all'](CAPI.RANCHER_CLUSTER);
-        pClusters = this.$store.getters['management/all'](MANAGEMENT.CLUSTER);
-        const available = pClusters.reduce((p, c) => {
-          p[c.mgmt] = true;
-
-          return p;
-        }, {});
-
-        // Filter to only show mgmt clusters that exist for the available provisioning clusters
-        // Addresses issue where a mgmt cluster can take some time to get cleaned up after the corresponding
-        // provisioning cluster has been deleted
-        kubeClusters = kubeClusters.filter((c) => !!available[c]);
-      }
-
+      let kubeClusters = this.$store.getters['management/all'](MANAGEMENT.CLUSTER);
       return kubeClusters?.map((x) => {
-        console.log('debug x', x, x.isReady, pCluster)
-        const pCluster = pClusters?.find((c) => c.mgmt?.id === x.id);
-
         return {
           id:              x.id,
           label:           x.nameDisplay,
-          // ready:           x.isReady && !pCluster?.hasError,
-          ready:           true,
+          ready:           x.isReady,
           osLogo:          x.providerOsLogo,
           providerNavLogo: x.providerMenuLogo,
           badge:           x.badge,
           isLocal:         x.isLocal,
-          isHarvester:     x.isHarvester,
           pinned:          x.pinned,
           pin:             () => x.pin(),
           unpin:           () => x.unpin()
@@ -349,7 +318,7 @@ export default {
             /><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" /></svg>
           </div>
           <div class="side-menu-logo">
-            <BrandImage file-name="rancher-logo.svg" />
+            <BrandImage file-name="llmos-logo.svg" />
           </div>
         </div>
 

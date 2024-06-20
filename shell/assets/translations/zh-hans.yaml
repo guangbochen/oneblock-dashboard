@@ -4439,17 +4439,6 @@ promptRemove:
 promptRemoveApp:
   removeCrd: "删除与此应用关联的 CRD"
 
-promptRestore:
-  title: 还原快照
-  name: 名称
-  date: 日期
-  fromS3: 从 S3 恢复
-  label: 快照
-  placeholder: 选择要恢复的快照
-  notification:
-    title: 还原快照
-    message: 快照 { selectedSnapshot } 恢复已开始...
-
 promptRollback:
   modalTitle: 回滚 {workloadName}
   dropdownTitle: 回滚到修订版

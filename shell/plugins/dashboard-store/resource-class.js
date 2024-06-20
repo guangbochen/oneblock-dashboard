@@ -1,4 +1,3 @@
-import { NORMAN_NAME } from '@shell/config/labels-annotations';
 import {
   _CLONE,
   _CONFIG,
@@ -678,7 +677,7 @@ export default class Resource {
   }
 
   get nameDisplay() {
-    return this.displayName || this.spec?.displayName || this.metadata?.annotations?.[NORMAN_NAME] || this.name || this.metadata?.name || this.id;
+    return this.displayName || this.spec?.displayName || this.name || this.metadata?.name || this.id;
   }
 
   get nameSort() {

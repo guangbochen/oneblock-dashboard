@@ -11,7 +11,6 @@ import { Checkbox } from '@components/Form/Checkbox';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import ColorInput from '@shell/components/form/ColorInput';
 import { parseColor, textColor } from '@shell/utils/color';
-import { NORMAN } from '@shell/config/types';
 
 export default {
   name:       'AddCustomBadgeDialog',

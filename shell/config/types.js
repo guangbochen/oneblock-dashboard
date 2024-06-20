@@ -6,36 +6,6 @@
 // Base: /v1
 export const STEVE = { PREFERENCE: 'userpreference' };
 
-// Old APIs via Norman
-// Base: /v3
-export const NORMAN = {
-  APP:                           'app',
-  AUTH_CONFIG:                   'authconfig',
-  ETCD_BACKUP:                   'etcdbackup',
-  CLUSTER:                       'cluster',
-  CLUSTER_TOKEN:                 'clusterregistrationtoken',
-  CLUSTER_ROLE_TEMPLATE_BINDING: 'clusterRoleTemplateBinding',
-  CLOUD_CREDENTIAL:              'cloudcredential',
-  FLEET_WORKSPACES:              'fleetworkspace',
-  GLOBAL_ROLE:                   'globalRole',
-  GLOBAL_ROLE_BINDING:           'globalRoleBinding',
-
-  NODE_POOL:                     'nodePool',
-  // Note - This allows access to node resources, not schema's or custom components (both are accessed via 'type' which clashes with kube node)
-  NODE:                          'node',
-  PRINCIPAL:                     'principal',
-  PROJECT:                       'project',
-  PROJECT_ROLE_TEMPLATE_BINDING: 'projectroletemplatebinding',
-  SPOOFED:                       { GROUP_PRINCIPAL: 'group.principal' },
-  ROLE_TEMPLATE:                 'roleTemplate',
-  TOKEN:                         'token',
-  USER:                          'user',
-};
-
-// Public (via Norman)
-// Base: /v3-public
-export const PUBLIC = { AUTH_PROVIDER: 'authprovider' };
-
 // Common native k8s types (via Steve)
 // Base: /k8s/clusters/<id>/v1/
 export const API_GROUP = 'apiGroups';

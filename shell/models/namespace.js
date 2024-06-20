@@ -1,15 +1,14 @@
 import SYSTEM_NAMESPACES from '@shell/config/system-namespaces';
 import {
-  PROJECT, SYSTEM_NAMESPACE, ISTIO as ISTIO_LABELS, FLEET, RESOURCE_QUOTA
+  PROJECT, SYSTEM_NAMESPACE, ISTIO as ISTIO_LABELS, RESOURCE_QUOTA
 } from '@shell/config/labels-annotations';
-import { ISTIO, MANAGEMENT } from '@shell/config/types';
+import { MANAGEMENT } from '@shell/config/types';
 
-import { get, set } from '@shell/utils/object';
+import { set } from '@shell/utils/object';
 import { escapeHtml } from '@shell/utils/string';
 import { insertAt, isArray } from '@shell/utils/array';
 import SteveModel from '@shell/plugins/steve/steve-class';
 import Vue from 'vue';
-import { HARVESTER_NAME as HARVESTER } from '@shell/config/features';
 import { hasPSALabels, getPSATooltipsDescription, getPSALabels } from '@shell/utils/pod-security-admission';
 import { PSAIconsDisplay, PSALabelsNamespaceVersion } from '@shell/config/pod-security-admission';
 
@@ -37,28 +36,6 @@ export default class Namespace extends SteveModel {
     const out = super._availableActions;
 
     insertAt(out, 0, { divider: true });
-    if (this.istioInstalled) {
-      insertAt(out, 0, {
-        action:     'enableAutoInjection',
-        label:      this.t('namespace.enableAutoInjection'),
-        bulkable:   true,
-        bulkAction: 'enableAutoInjection',
-        enabled:    !this.injectionEnabled,
-        icon:       'icon icon-plus',
-        weight:     2
-
-      });
-      insertAt(out, 0, {
-        action:     'disableAutoInjection',
-        label:      this.t('namespace.disableAutoInjection'),
-        bulkable:   true,
-        bulkAction: 'disableAutoInjection',
-        enabled:    this.injectionEnabled,
-        icon:       'icon icon-minus',
-        weight:     1,
-      });
-    }
-
     if (this.$rootGetters['isRancher'] && !this.$rootGetters['isSingleProduct']) {
       insertAt(out, 0, {
         action:     'move',
@@ -98,10 +75,6 @@ export default class Namespace extends SteveModel {
     return false;
   }
 
-  get isFleetManaged() {
-    return get(this, `metadata.labels."${ FLEET.MANAGED }"`) === 'true';
-  }
-
   // These are namespaces that are created by rancher to serve purposes in the background but the user shouldn't have
   // to worry themselves about them.
   get isObscure() {
@@ -139,12 +112,6 @@ export default class Namespace extends SteveModel {
     return this.project?.nameSort || '';
   }
 
-  get istioInstalled() {
-    const schema = this.$rootGetters['cluster/schemaFor'](ISTIO.GATEWAY);
-
-    return !!schema;
-  }
-
   get injectionEnabled() {
     return this.labels[ISTIO_LABELS.AUTO_INJECTION] === 'enabled';
   }
@@ -175,15 +142,7 @@ export default class Namespace extends SteveModel {
   }
 
   get listLocation() {
-    const listLocation = { name: this.$rootGetters['isRancher'] ? 'c-cluster-product-projectsnamespaces' : 'c-cluster-product-resource' };
-
-    // Harvester uses these resource directly... but has different routes. listLocation covers routes leading back to route
-    if (this.$rootGetters['currentProduct'].inStore === HARVESTER) {
-      listLocation.name = `${ HARVESTER }-${ listLocation.name }`.replace('-product', '');
-      listLocation.params = { resource: 'namespace' };
-    }
-
-    return listLocation;
+    return { name: this.$rootGetters['isRancher'] ? 'c-cluster-product-projectsnamespaces' : 'c-cluster-product-resource' };
   }
 
   get _detailLocation() {

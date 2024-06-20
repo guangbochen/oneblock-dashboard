@@ -49,7 +49,7 @@ export default {
     },
 
     pathToBrandedImage() {
-      if (this.fileName === 'rancher-logo.svg') {
+      if (this.fileName === 'llmos-logo.svg') {
         if (this.theme === 'dark' && this.uiLogoDark) {
           return this.uiLogoDark;
         }

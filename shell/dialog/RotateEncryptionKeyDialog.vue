@@ -1,5 +1,5 @@
 <script>
-import { SNAPSHOT, NORMAN } from '@shell/config/types';
+import { SNAPSHOT } from '@shell/config/types';
 import AsyncButton from '@shell/components/AsyncButton';
 import { Card } from '@components/Card';
 import { Banner } from '@components/Banner';
@@ -62,14 +62,6 @@ export default {
     },
 
     async getEtcdBackups() {
-      if ( this.cluster.isRke1) {
-        let etcdBackups = await this.$store.dispatch('rancher/findAll', { type: NORMAN.ETCD_BACKUP });
-
-        etcdBackups = etcdBackups.filter((backup) => backup.clusterId === this.cluster.metadata.name);
-
-        return etcdBackups;
-      }
-
       if (this.cluster.isRke2) {
         let etcdBackups = await this.$store.dispatch('management/findAll', { type: SNAPSHOT });
 

@@ -1,7 +1,7 @@
 import { formatPercent } from '@shell/utils/string';
 import { CAPI as CAPI_ANNOTATIONS, NODE_ROLES, RKE, SYSTEM_LABELS } from '@shell/config/labels-annotations.js';
 import {
-  CAPI, MANAGEMENT, METRIC, NORMAN, POD
+  CAPI, MANAGEMENT, METRIC, POD
 } from '@shell/config/types';
 import { parseSi } from '@shell/utils/units';
 import findLast from 'lodash/findLast';
@@ -331,15 +331,15 @@ export default class ClusterNode extends SteveModel {
     return null;
   }
 
-  get norman() {
-    return this.$rootGetters['rancher/byId'](NORMAN.NODE, this.normanNodeId);
-  }
+  // get norman() {
+  //   return this.$rootGetters['rancher/byId'](NORMAN.NODE, this.normanNodeId);
+  // }
 
-  get managementNode() {
-    return this.$rootGetters['management/all'](MANAGEMENT.NODE).find((mNode) => {
-      return mNode.id.startsWith(this.clusterId) && mNode.status.nodeName === this.id;
-    });
-  }
+  // get managementNode() {
+  //   return this.$rootGetters['management/all'](MANAGEMENT.NODE).find((mNode) => {
+  //     return mNode.id.startsWith(this.clusterId) && mNode.status.nodeName === this.id;
+  //   });
+  // }
 
   drain(resources) {
     this.$dispatch('promptModal', {

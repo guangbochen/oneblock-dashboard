@@ -26,14 +26,11 @@ import {
   ROLES,
   STATE,
 } from '@shell/config/table-headers';
-
-// import { haveV1Monitoring, monitoringStatus, canViewGrafanaLink } from '@shell/utils/monitoring';
 import Tabbed from '@shell/components/Tabbed';
 import Tab from '@shell/components/Tabbed/Tab';
 import { allDashboardsExist } from '@shell/utils/grafana';
 import EtcdInfoBanner from '@shell/components/EtcdInfoBanner';
 import metricPoller from '@shell/mixins/metric-poller';
-import EmberPage from '@shell/components/EmberPage';
 import ResourceSummary, { resourceCounts } from '@shell/components/ResourceSummary';
 import HardwareResourceGauge from '@shell/components/HardwareResourceGauge';
 import { isEmpty } from '@shell/utils/object';
@@ -73,7 +70,6 @@ export default {
     Tabbed,
     AlertTable,
     Banner,
-    EmberPage,
     ConfigBadge,
     EventsTable,
     SimpleBox,
@@ -166,14 +162,6 @@ export default {
       return this.$store.getters['management/all'](MANAGEMENT.CLUSTER);
     },
 
-    // hasV1Monitoring() {
-    //   return haveV1Monitoring(this.$store.getters);
-    // },
-
-    // v1MonitoringURL() {
-    //   return `/k/${ this.currentCluster.id }/monitoring`;
-    // },
-
     displayProvider() {
       const other = 'other';
 
@@ -188,10 +176,6 @@ export default {
       }
 
       return this.t(`cluster.provider.${ provider }`);
-    },
-
-    isHarvesterCluster() {
-      return this.currentCluster?.isHarvester;
     },
 
     isRKE() {
@@ -435,15 +419,7 @@ export default {
     >
       <div>
         <label>{{ t('glance.provider') }}: </label>
-        <span v-if="isHarvesterCluster">
-          <a
-            role="button"
-            @click="goToHarvesterCluster"
-          >
-            {{ displayProvider }}
-          </a>
-        </span>
-        <span v-else>
+        <span>
           {{ displayProvider }}
         </span>
       </div>
@@ -561,17 +537,6 @@ export default {
         <div>{{ t(status.labelKey) }}</div>
       </div>
     </div>
-
-<!--    <div-->
-<!--      v-if="hasV1Monitoring"-->
-<!--      id="ember-anchor"-->
-<!--      class="mt-20"-->
-<!--    >-->
-<!--      <EmberPage-->
-<!--        inline="ember-anchor"-->
-<!--        :src="v1MonitoringURL"-->
-<!--      />-->
-<!--    </div>-->
 
     <div class="mt-30">
       <Tabbed @changed="tabChange">

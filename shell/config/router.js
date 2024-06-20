@@ -119,10 +119,6 @@ export const routerOptions = {
     component: () => interopDefault(import('../pages/c/_cluster/_product/index.vue' /* webpackChunkName: "pages/c/_cluster/_product/index" */)),
     name:      'c-cluster-product'
   }, {
-    path:      '/c/:cluster/:product/members',
-    component: () => interopDefault(import('../pages/c/_cluster/_product/members/index.vue' /* webpackChunkName: "pages/c/_cluster/_product/members/index" */)),
-    name:      'c-cluster-product-members'
-  }, {
     path:      '/c/:cluster/:product/namespaces',
     component: () => interopDefault(import('../pages/c/_cluster/_product/namespaces.vue' /* webpackChunkName: "pages/c/_cluster/_product/namespaces" */)),
     name:      'c-cluster-product-namespaces'

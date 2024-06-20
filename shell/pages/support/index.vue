@@ -2,11 +2,10 @@
 import BannerGraphic from '@shell/components/BannerGraphic';
 import IndentedPanel from '@shell/components/IndentedPanel';
 import CommunityLinks from '@shell/components/CommunityLinks';
-import { CATALOG, MANAGEMENT } from '@shell/config/types';
+import { MANAGEMENT } from '@shell/config/types';
 import { getVendor } from '@shell/config/private-label';
 import { SETTING } from '@shell/config/settings';
 import { addParam } from '@shell/utils/url';
-// import { isRancherPrime } from '@shell/config/version';
 import { hasCspAdapter } from 'mixins/brand';
 
 export default {
@@ -41,9 +40,6 @@ export default {
       return setting;
     };
 
-    if ( this.$store.getters['management/canList'](CATALOG.APP) ) {
-      this.apps = await this.$store.dispatch('management/findAll', { type: CATALOG.APP });
-    }
     this.brandSetting = await fetchOrCreateSetting(SETTING.BRAND, '');
     this.serverUrlSetting = await fetchOrCreateSetting(SETTING.SERVER_URL, '');
     this.uiIssuesSetting = await this.$store.dispatch('management/find', { type: MANAGEMENT.SETTING, id: SETTING.ISSUES });

@@ -39,7 +39,7 @@ const MINIMUM_TIME_NOTIFIED = 3000;
 
 const workerQueues = {};
 
-const supportedStores = [STORE.CLUSTER, STORE.RANCHER, STORE.MANAGEMENT];
+const supportedStores = [STORE.CLUSTER, STORE.MANAGEMENT];
 
 const isWaitingForDestroy = (storeName, store) => {
   return store.$workers[storeName]?.waitingForDestroy && store.$workers[storeName].waitingForDestroy();

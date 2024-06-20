@@ -1,6 +1,5 @@
 <script>
 import CreateEditView from '@shell/mixins/create-edit-view';
-import SelectPrincipal from '@shell/components/auth/SelectPrincipal';
 import { MANAGEMENT } from '@shell/config/types';
 import Loading from '@shell/components/Loading';
 import { Card } from '@components/Card';
@@ -15,7 +14,6 @@ export default {
     Checkbox,
     Loading,
     RadioGroup,
-    SelectPrincipal
   },
 
   mixins: [CreateEditView],
@@ -258,17 +256,6 @@ export default {
 <template>
   <Loading v-if="$fetchState.pending" />
   <div v-else>
-    <div class="row mt-10">
-      <div class="col span-12">
-        <SelectPrincipal
-          project
-          class="mb-20"
-          :mode="mode"
-          :retain-selection="true"
-          @add="onAdd"
-        />
-      </div>
-    </div>
     <Card
       class="m-0"
       :show-highlight-border="false"

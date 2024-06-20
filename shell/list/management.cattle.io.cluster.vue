@@ -1,7 +1,7 @@
 <script>
 import ResourceTable from '@shell/components/ResourceTable';
 import { MANAGEMENT } from '@shell/config/types';
-import { filterOnlyKubernetesClusters } from '@shell/utils/cluster';
+// import { filterOnlyKubernetesClusters } from '@shell/utils/cluster';
 import ResourceFetch from '@shell/mixins/resource-fetch';
 export default {
   name:       'ListMgmtClusters',
@@ -28,7 +28,8 @@ export default {
   },
   computed: {
     filteredRows() {
-      return filterOnlyKubernetesClusters(this.rows, this.$store);
+      return this.rows
+      // return filterOnlyKubernetesClusters(this.rows, this.$store);
     }
   },
   // override with relevant info for the loading indicator since this doesn't use it's own masthead

@@ -201,10 +201,6 @@ export default {
     commit('action-menu/togglePromptMove', resources, { root: true });
   },
 
-  promptRestore({ commit, state }, resources ) {
-    commit('action-menu/togglePromptRestore', resources, { root: true });
-  },
-
   assignTo({ commit, state }, resources = []) {
     commit('action-menu/toggleAssignTo', resources, { root: true });
   },

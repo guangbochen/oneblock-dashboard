@@ -7,7 +7,6 @@ import { clone } from '@shell/utils/object';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import { OB as OB_LABELS_ANNOTATIONS } from '@shell/config/labels-annotations';
-import { isHarvesterSatisfiesVersion } from '@shell/utils/cluster';
 import { HARVESTER_NAME as HARVESTER } from '@shell/config/features';
 import { CAPI, SERVICE } from '@shell/config/types';
 

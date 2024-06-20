@@ -233,13 +233,6 @@ export const AGE = {
   align:     'left'
 };
 
-export const AGE_NORMAN = {
-  ...AGE,
-  getValue: (row) => row.created,
-  value:    'created',
-  sort:     'created:desc',
-};
-
 export const CREATION_DATE = {
   name:      'date',
   labelKey:  'tableHeaders.date',

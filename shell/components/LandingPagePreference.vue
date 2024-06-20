@@ -5,7 +5,7 @@ import { RadioGroup, RadioButton } from '@components/Form/Radio';
 
 import Select from '@shell/components/form/Select';
 import { MANAGEMENT } from '@shell/config/types';
-import { filterHiddenLocalCluster, filterOnlyKubernetesClusters } from '@shell/utils/cluster';
+import { filterHiddenLocalCluster } from '@shell/utils/cluster';
 
 export default {
   components: {
@@ -72,7 +72,7 @@ export default {
     routeDropdownOptions() {
       // Drop-down shows list of clusters that can ber set as login landing page
       const out = [];
-      const kubeClusters = filterHiddenLocalCluster(filterOnlyKubernetesClusters(this.clusters, this.$store), this.$store);
+      const kubeClusters = this.clusters
 
       kubeClusters.forEach((c) => {
         if (c.isReady) {

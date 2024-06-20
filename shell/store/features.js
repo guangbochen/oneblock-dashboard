@@ -25,22 +25,9 @@ export const mapFeature = function(name) {
 //    This is mainly useful for development before the flag has been created in the API..
 
 export const MULTI_CLUSTER = create('multi-cluster-management', true);
-export const LEGACY = create('legacy', false);
-export const RKE2 = create('rke2', true);
 export const UNSUPPORTED_STORAGE_DRIVERS = create('unsupported-storage-drivers', false);
-export const FLEET = create('continuous-delivery', true);
-export const HARVESTER = create('harvester', true);
-export const HARVESTER_CONTAINER = create('harvester-baremetal-container-workload', false);
-export const FLEET_WORKSPACE_BACK = create('provisioningv2-fleet-workspace-back-population', false);
-
-// Not currently used.. no point defining ones we don't use
-// export const EMBEDDED_CLUSTER_API = create('embedded-cluster-api', true);
-// export const ISTIO_VIRTUAL_SERVICE_UI = create('istio-virtual-service-ui', true);
-// export const PROVISIONINGV2 = create('provisioningv2', true);
-// export const AUTH = create('auth', true);
 
 // --------------------
-
 export const getters = {
   get: (state, getters, rootState, rootGetters) => (name) => {
     const definition = definitions[name];

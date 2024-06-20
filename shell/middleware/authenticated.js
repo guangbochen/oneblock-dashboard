@@ -4,17 +4,15 @@ import {
   SETUP, TIMED_OUT, UPGRADED, _FLAGGED, _UNFLAG
 } from '@shell/config/query-params';
 import { SETTING } from '@shell/config/settings';
-import { MANAGEMENT, NORMAN, DEFAULT_WORKSPACE } from '@shell/config/types';
+import { MANAGEMENT } from '@shell/config/types';
 import { _ALL_IF_AUTHED } from '@shell/plugins/dashboard-store/actions';
 import { applyProducts } from '@shell/store/type-map';
-import { findBy } from '@shell/utils/array';
 import { ClusterNotFoundError, RedirectToError } from '@shell/utils/error';
 import { get } from '@shell/utils/object';
 import { setFavIcon, haveSetFavIcon } from '@shell/utils/favicon';
 import dynamicPluginLoader from '@shell/pkg/dynamic-plugin-loader';
 import { AFTER_LOGIN_ROUTE, WORKSPACE } from '@shell/store/prefs';
 import { BACK_TO } from '@shell/config/local-storage';
-// import { NAME as FLEET_NAME } from '@shell/config/product/fleet.js';
 import { canViewResource } from '@shell/utils/auth';
 
 const getPackageFromRoute = (route) => {
@@ -30,9 +28,9 @@ const getPackageFromRoute = (route) => {
 const getResourceFromRoute = (to) => {
   let resource = to.params?.resource;
 
-  if (!resource) {
-    resource = findMeta(to, 'resource');
-  }
+  // if (!resource) {
+  //   resource = findMeta(to, 'resource');
+  // }
 
   return resource;
 };
@@ -56,9 +54,9 @@ function findMeta(route, key) {
 export function getClusterFromRoute(to) {
   let cluster = to.params?.cluster;
 
-  if (!cluster) {
-    cluster = findMeta(to, 'cluster');
-  }
+  // if (!cluster) {
+  //   cluster = findMeta(to, 'cluster');
+  // }
 
   return cluster;
 }
@@ -75,9 +73,9 @@ export function getProductFromRoute(to) {
   }
 
   // If still no product, see if the route indicates the product via route metadata
-  if (!product) {
-    product = findMeta(to, 'product');
-  }
+  // if (!product) {
+  //   product = findMeta(to, 'product');
+  // }
 
   return product;
 }
@@ -270,13 +268,13 @@ export default async function({
 
   if ( store.getters['auth/enabled'] !== false && !store.getters['auth/loggedIn'] ) {
     // `await` so we have one successfully request whilst possibly logged in (ensures fromHeader is populated from `x-api-cattle-auth`)
-    await store.dispatch('auth/getUser');
+    // await store.dispatch('auth/getUser');
 
-    const v3User = store.getters['auth/v3User'] || {};
-
-    if (v3User?.mustChangePassword) {
-      return redirect({ name: 'auth-setup' });
-    }
+    // const v3User = store.getters['auth/v3User'] || {};
+    //
+    // if (v3User?.mustChangePassword) {
+    //   return redirect({ name: 'auth-setup' });
+    // }
 
     // In newer versions the API calls return the auth state instead of having to make a new call all the time.
     const fromHeader = store.getters['auth/fromHeader'];
@@ -507,18 +505,19 @@ export default async function({
 }
 
 async function findMe(store) {
+  return ""
   // First thing we do in loadManagement is fetch principals anyway.... so don't ?me=true here
-  const principals = await store.dispatch('rancher/findAll', {
-    type: NORMAN.PRINCIPAL,
-    opt:  {
-      url:                  '/v3/principals',
-      redirectUnauthorized: false,
-    }
-  });
-
-  const me = findBy(principals, 'me', true);
-
-  return me;
+  // const principals = await store.dispatch('rancher/findAll', {
+  //   type: NORMAN.PRINCIPAL,
+  //   opt:  {
+  //     url:                  '/v3/principals',
+  //     redirectUnauthorized: false,
+  //   }
+  // });
+  //
+  // const me = findBy(principals, 'me', true);
+  //
+  // return me;
 }
 
 async function tryInitialSetup(store, password = 'admin') {

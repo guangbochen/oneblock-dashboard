@@ -1,4 +1,4 @@
-import { CATALOG, CLUSTER_BADGE } from '@shell/config/labels-annotations';
+import { CLUSTER_BADGE } from '@shell/config/labels-annotations';
 import { NODE, FLEET, MANAGEMENT, CAPI } from '@shell/config/types';
 import { insertAt, addObject, removeObject } from '@shell/utils/array';
 import { downloadFile } from '@shell/utils/download';
@@ -8,11 +8,7 @@ import jsyaml from 'js-yaml';
 import { eachLimit } from '@shell/utils/promise';
 import { addParams } from '@shell/utils/url';
 import { isEmpty } from '@shell/utils/object';
-import { HARVESTER_NAME as HARVESTER } from '@shell/config/features';
-import { isHarvesterCluster } from '@shell/utils/cluster';
 import HybridModel from '@shell/plugins/steve/hybrid-class';
-// import { LINUX, WINDOWS } from '@shell/store/catalog';
-// import { KONTAINER_TO_DRIVER } from './management.cattle.io.kontainerdriver';
 import { PINNED_CLUSTERS } from '@shell/store/prefs';
 import { copyTextToClipboard } from '@shell/utils/clipboard';
 
@@ -255,10 +251,6 @@ export default class MgmtCluster extends HybridModel {
     return this.spec?.internal === true;
   }
 
-  get isHarvester() {
-    return isHarvesterCluster(this);
-  }
-
   get isHostedKubernetesProvider() {
     const providers = ['AKS', 'EKS', 'GKE'];
 
@@ -268,9 +260,6 @@ export default class MgmtCluster extends HybridModel {
   get providerLogo() {
     let provider = this.status?.provider || 'kubernetes';
 
-    if (this.isHarvester) {
-      provider = HARVESTER;
-    }
     // Only interested in the part before the period
     const prv = provider.split('.')[0];
     // Allow overrides if needed
@@ -317,7 +306,7 @@ export default class MgmtCluster extends HybridModel {
   }
 
   get scope() {
-    return this.isLocal ? CATALOG._MANAGEMENT : CATALOG._DOWNSTREAM;
+    return this.isLocal ? "management" : "downstream";
   }
 
   setClusterNameLabel(andSave) {

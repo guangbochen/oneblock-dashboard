@@ -36,7 +36,7 @@ const proxy = {
   '/api':            proxyWsOpts(api), // Management k8s API
   '/apis':           proxyWsOpts(api), // Management k8s API
   '/v1':             proxyWsOpts(api), // Management Steve API
-  '/v3':             proxyWsOpts(api), // Rancher API
+  // '/v3':             proxyWsOpts(api), // Rancher API
   // '/v3-public':      proxyOpts(api), // Rancher Unauthed API
   '/api-ui':         proxyOpts(api), // Browser API UI
   '/meta':           proxyMetaOpts(api), // Browser API UI
@@ -89,8 +89,6 @@ console.log(`Running Dashboard web server on port ${ PORT }`); // eslint-disable
 appServer.on('upgrade', (req, socket, head) => {
   if (req.url.startsWith('/v1')) {
     return proxies['/v1'].upgrade(req, socket, head);
-  } else if (req.url.startsWith('/v3')) {
-    return proxies['/v3'].upgrade(req, socket, head);
   } else if (req.url.startsWith('/k8s/')) {
     return proxies['/k8s'].upgrade(req, socket, head);
   } else {

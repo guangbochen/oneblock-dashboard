@@ -1,8 +1,7 @@
 
 <script>
 import CreateEditView from '@shell/mixins/create-edit-view';
-import SelectPrincipal from '@shell/components/auth/SelectPrincipal';
-import { MANAGEMENT, NORMAN } from '@shell/config/types';
+import { MANAGEMENT } from '@shell/config/types';
 import { RadioGroup } from '@components/Form/Radio';
 import { Card } from '@components/Card';
 import Loading from '@shell/components/Loading';
@@ -21,7 +20,6 @@ export default {
     Checkbox,
     Loading,
     RadioGroup,
-    SelectPrincipal
   },
 
   mixins: [CreateEditView],
@@ -230,19 +228,6 @@ export default {
     v-else
     class="cluster-permissions-editor"
   >
-    <div class="row mt-10">
-      <div class="col span-12">
-        <SelectPrincipal
-          v-focus
-          class="mb-20"
-          :mode="mode"
-          :retain-selection="true"
-          data-testid="cluster-member-select"
-          @add="onAdd"
-        />
-      </div>
-    </div>
-
     <Card
       class="m-0"
       :show-highlight-border="false"

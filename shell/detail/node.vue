@@ -11,7 +11,6 @@ import {
   VALUE
 } from '@shell/config/table-headers';
 import ResourceTabs from '@shell/components/form/ResourceTabs';
-import EmberPage from '@shell/components/EmberPage';
 import { METRIC, POD } from '@shell/config/types';
 import createEditView from '@shell/mixins/create-edit-view';
 import { formatSi, exponentNeeded, UNITS } from '@shell/utils/units';
@@ -20,10 +19,9 @@ import { mapGetters } from 'vuex';
 import { allDashboardsExist } from '@shell/utils/grafana';
 import Loading from '@shell/components/Loading';
 import metricPoller from '@shell/mixins/metric-poller';
-// import { haveV1Monitoring } from '@shell/utils/monitoring';
 
-const NODE_METRICS_DETAIL_URL = '/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/d/rancher-node-detail-1/rancher-node-detail?orgId=1';
-const NODE_METRICS_SUMMARY_URL = '/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/d/rancher-node-1/rancher-node?orgId=1';
+// const NODE_METRICS_DETAIL_URL = '/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/d/rancher-node-detail-1/rancher-node-detail?orgId=1';
+// const NODE_METRICS_SUMMARY_URL = '/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/d/rancher-node-1/rancher-node?orgId=1';
 
 export default {
   name: 'DetailNode',
@@ -36,7 +34,6 @@ export default {
     ResourceTabs,
     Tab,
     ResourceTable,
-    EmberPage,
   },
 
   mixins: [createEditView, metricPoller],
@@ -49,7 +46,7 @@ export default {
   },
 
   async fetch() {
-    this.showMetrics = await allDashboardsExist(this.$store, this.currentCluster.id, [NODE_METRICS_DETAIL_URL, NODE_METRICS_SUMMARY_URL]);
+    // this.showMetrics = await allDashboardsExist(this.$store, this.currentCluster.id, [NODE_METRICS_DETAIL_URL, NODE_METRICS_SUMMARY_URL]);
 
     // if (haveV1Monitoring(this.$store.getters)) {
     //   const v3Nodes = await this.$store.dispatch('rancher/request', {
@@ -91,8 +88,8 @@ export default {
         EFFECT
       ],
       podTableHeaders: this.$store.getters['type-map/headersFor'](podSchema),
-      NODE_METRICS_DETAIL_URL,
-      NODE_METRICS_SUMMARY_URL,
+      // NODE_METRICS_DETAIL_URL,
+      // NODE_METRICS_SUMMARY_URL,
       showMetrics:     false
     };
   },
@@ -267,15 +264,15 @@ export default {
         name="node-metrics"
         :weight="3"
       >
-        <template #default="props">
-          <DashboardMetrics
-            v-if="props.active"
-            :detail-url="NODE_METRICS_DETAIL_URL"
-            :summary-url="NODE_METRICS_SUMMARY_URL"
-            :vars="graphVars"
-            graph-height="825px"
-          />
-        </template>
+<!--        <template #default="props">-->
+<!--          <DashboardMetrics-->
+<!--            v-if="props.active"-->
+<!--            :detail-url="NODE_METRICS_DETAIL_URL"-->
+<!--            :summary-url="NODE_METRICS_SUMMARY_URL"-->
+<!--            :vars="graphVars"-->
+<!--            graph-height="825px"-->
+<!--          />-->
+<!--        </template>-->
       </Tab>
       <Tab
         name="info"
@@ -319,19 +316,6 @@ export default {
           :table-actions="false"
           :search="false"
         />
-      </Tab>
-      <Tab
-        v-if="v1MonitoringUrl"
-        name="v1Metrics"
-        :label="t('node.detail.tab.metrics')"
-        :weight="0"
-      >
-        <div id="ember-anchor">
-          <EmberPage
-            inline="ember-anchor"
-            :src="v1MonitoringUrl"
-          />
-        </div>
       </Tab>
     </ResourceTabs>
   </div>

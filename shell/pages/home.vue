@@ -9,16 +9,10 @@ import CommunityLinks from '@shell/components/CommunityLinks';
 import SingleClusterInfo from '@shell/components/SingleClusterInfo';
 import { mapGetters, mapState } from 'vuex';
 import { MANAGEMENT } from '@shell/config/types';
-// import { NAME as MANAGER } from '@shell/config/product/manager';
-import { STATE } from '@shell/config/table-headers';
-import { MODE, _IMPORT } from '@shell/config/query-params';
-import { createMemoryFormat, formatSi, parseSi, createMemoryValues } from '@shell/utils/units';
 import { getVersionInfo, markSeenReleaseNotes } from '@shell/utils/version';
 import PageHeaderActions from '@shell/mixins/page-actions';
 import { getVendor } from '@shell/config/private-label';
 import { mapFeature, MULTI_CLUSTER } from '@shell/store/features';
-import { filterOnlyKubernetesClusters, filterHiddenLocalCluster } from '@shell/utils/cluster';
-import { BLANK_CLUSTER } from '@shell/store/store-types.js';
 
 import { RESET_CARDS_ACTION, SET_LOGIN_ACTION } from '@shell/config/page-actions';
 
@@ -38,30 +32,9 @@ export default {
   mixins: [PageHeaderActions],
 
   fetch() {
-    // if ( this.$store.getters['management/schemaFor'](CAPI.LLMOS_CLUSTER) ) {
-    //   this.$store.dispatch('management/findAll', { type: CAPI.LLMOS_CLUSTER });
-    // }
-
     if ( this.$store.getters['management/schemaFor'](MANAGEMENT.CLUSTER) ) {
       this.$store.dispatch('management/findAll', { type: MANAGEMENT.CLUSTER });
     }
-
-    // if ( this.$store.getters['management/canList'](CAPI.MACHINE) ) {
-    //   this.$store.dispatch('management/findAll', { type: CAPI.MACHINE });
-    // }
-
-    // if ( this.$store.getters['management/canList'](MANAGEMENT.NODE) ) {
-    //   this.$store.dispatch('management/findAll', { type: MANAGEMENT.NODE });
-    // }
-
-    // We need to fetch node pools and node templates in order to correctly show the provider for RKE1 clusters
-    // if ( this.$store.getters['management/canList'](MANAGEMENT.NODE_POOL) ) {
-    //   this.$store.dispatch('management/findAll', { type: MANAGEMENT.NODE_POOL });
-    // }
-
-    // if ( this.$store.getters['management/canList'](MANAGEMENT.NODE_TEMPLATE) ) {
-    //   this.$store.dispatch('management/findAll', { type: MANAGEMENT.NODE_TEMPLATE });
-    // }
   },
 
   data() {
@@ -93,61 +66,6 @@ export default {
       return this.$store.getters['management/all'](MANAGEMENT.CLUSTER);
     },
 
-    provClusters() {
-      // return this.$store.getters['management/all'](CAPI.RANCHER_CLUSTER);
-      return this.$store.getters['management/all'](MANAGEMENT.CLUSTER);
-    },
-
-    // User can go to Cluster Management if they can see the cluster schema
-    canManageClusters() {
-      const schema = this.$store.getters['management/schemaFor'](MANAGEMENT.CLUSTER);
-
-      return !!schema;
-    },
-
-    canCreateCluster() {
-      const schema = this.$store.getters['management/schemaFor'](MANAGEMENT.CLUSTER);
-
-      return !!schema?.collectionMethods.find((x) => x.toLowerCase() === 'post');
-    },
-
-    manageLocation() {
-      return {
-        name:   'c-cluster-product-resource',
-        params: {
-          // product:  MANAGER,
-          cluster:  BLANK_CLUSTER,
-          resource: MANAGEMENT.CLUSTER,
-          // resource: CAPI.RANCHER_CLUSTER
-        },
-      };
-    },
-
-    createLocation() {
-      return {
-        name:   'c-cluster-product-resource-create',
-        params: {
-          product:  MANAGER,
-          cluster:  BLANK_CLUSTER,
-          resource: MANAGEMENT.CLUSTER,
-          // resource: CAPI.RANCHER_CLUSTER
-        },
-      };
-    },
-
-    importLocation() {
-      return {
-        name:   'c-cluster-product-resource-create',
-        params: {
-          product:  MANAGER,
-          cluster:  BLANK_CLUSTER,
-          resource: MANAGEMENT.CLUSTER,
-          // resource: CAPI.RANCHER_CLUSTER
-        },
-        query: { [MODE]: _IMPORT }
-      };
-    },
-
     afterLoginRoute: mapPref(AFTER_LOGIN_ROUTE),
     homePageCards:   mapPref(HIDE_HOME_PAGE_CARDS),
 
@@ -157,12 +75,7 @@ export default {
 
     clusterHeaders() {
       return [
-        // STATE,
         {
-          // name:     'state',
-          // labelKey: 'tableHeaders.name',
-          // value:    'status.conditions[0]',
-          // sort:     ['status.conditions[0].status'],
           name:      'state',
           labelKey:  'tableHeaders.state',
           sort:      ['stateSort', 'nameSort'],
@@ -184,51 +97,17 @@ export default {
           value:     'status.provider',
           name:      'Provider',
           sort:      ['status.provider'],
-          // formatter: 'ClusterProvider'
         },
         {
           label: this.t('landing.clusters.kubernetesVersion'),
           value: 'status.version.gitVersion',
           name:  'Kubernetes Version'
         },
-        // {
-        //   label: this.t('tableHeaders.cpu'),
-        //   value: '',
-        //   name:  'cpu',
-        //   sort:  ['status.allocatable.cpu', 'status.available.cpu']
-        //
-        // },
-        // {
-        //   label: this.t('tableHeaders.memory'),
-        //   value: '',
-        //   name:  'memory',
-        //   sort:  ['status.allocatable.memory', 'status.available.memory']
-        //
-        // },
-        // {
-        //   label:        this.t('tableHeaders.pods'),
-        //   name:         'pods',
-        //   value:        '',
-        //   sort:         ['status.allocatable.pods', 'status.requested.pods'],
-        //   formatter:    'PodsUsage',
-        //   delayLoading: true
-        // },
       ];
     },
 
     kubeClusters() {
-      // console.log('kubeClusters', this.$store.getters['management/all'](MANAGEMENT.CLUSTER));
-      // return this.$store.getters['management/all'](MANAGEMENT.CLUSTER);
-      console.log(this.provClusters)
-      const filteredClusters = filterHiddenLocalCluster(filterOnlyKubernetesClusters(this.provClusters || [], this.$store), this.$store);
-
-      return filteredClusters.map((provCluster) => {
-        const mgmtCluster = this.mgmtClusters?.find((c) => provCluster.mgmt?.id === c.id);
-
-        provCluster.description = provCluster.description || mgmtCluster?.description;
-
-        return provCluster;
-      });
+      return this.mgmtClusters
     }
   },
 
@@ -239,12 +118,7 @@ export default {
   },
 
   // Forget the types when we leave the page
-  beforeDestroy() {
-    // this.$store.dispatch('management/forgetType', CAPI.MACHINE);
-    // this.$store.dispatch('management/forgetType', MANAGEMENT.NODE);
-    // this.$store.dispatch('management/forgetType', MANAGEMENT.NODE_POOL);
-    // this.$store.dispatch('management/forgetType', MANAGEMENT.NODE_TEMPLATE);
-  },
+  beforeDestroy() {},
 
   methods: {
     /**
@@ -260,29 +134,7 @@ export default {
       case SET_LOGIN_ACTION:
         this.afterLoginRoute = 'home';
         break;
-
-      // no default
       }
-    },
-
-    cpuUsed(cluster) {
-      return parseSi(cluster.status.requested?.cpu);
-    },
-
-    cpuAllocatable(cluster) {
-      return parseSi(cluster.status.allocatable?.cpu);
-    },
-    memoryAllocatable(cluster) {
-      const parsedAllocatable = (parseSi(cluster.status.allocatable?.memory) || 0).toString();
-      const format = createMemoryFormat(parsedAllocatable);
-
-      return formatSi(parsedAllocatable, format);
-    },
-
-    memoryReserved(cluster) {
-      const memValues = createMemoryValues(cluster?.status?.allocatable?.memory, cluster?.status?.requested?.memory);
-
-      return `${ memValues.useful }/${ memValues.total } ${ memValues.units }`;
     },
 
     showUserPrefs() {
@@ -370,37 +222,7 @@ export default {
                     />
                   </div>
                 </template>
-                <template
-                  v-if="canCreateCluster || canManageClusters"
-                  #header-middle
-                >
-                  <div class="table-heading">
-                    <n-link
-                      v-if="canManageClusters"
-                      :to="manageLocation"
-                      class="btn btn-sm role-secondary"
-                      data-testid="cluster-management-manage-button"
-                    >
-                      {{ t('cluster.manageAction') }}
-                    </n-link>
-                    <n-link
-                      v-if="canCreateCluster"
-                      :to="importLocation"
-                      class="btn btn-sm role-primary"
-                      data-testid="cluster-create-import-button"
-                    >
-                      {{ t('cluster.importAction') }}
-                    </n-link>
-                    <n-link
-                      v-if="canCreateCluster"
-                      :to="createLocation"
-                      class="btn btn-sm role-primary"
-                      data-testid="cluster-create-button"
-                    >
-                      {{ t('generic.create') }}
-                    </n-link>
-                  </div>
-                </template>
+
                 <template #col:name="{row}">
                   <td>
                     <div class="list-cluster-name">
@@ -412,30 +234,9 @@ export default {
                         </n-link>
                       </span>
                       <span v-else>{{ row.spec.displayName }}</span>
-<!--                      <i-->
-<!--                        v-if="row.unavailableMachines"-->
-<!--                        v-clean-tooltip="row.unavailableMachines"-->
-<!--                        class="conditions-alert-icon icon-alert icon"-->
-<!--                      />-->
                     </div>
                   </td>
                 </template>
-<!--                <template #col:cpu="{row}">-->
-<!--                  <td v-if="row.mgmt && cpuAllocatable(row.mgmt)">-->
-<!--                    {{ `${cpuAllocatable(row.mgmt)} ${t('landing.clusters.cores', {count:cpuAllocatable(row.mgmt) })}` }}-->
-<!--                  </td>-->
-<!--                  <td v-else>-->
-<!--                    &mdash;-->
-<!--                  </td>-->
-<!--                </template>-->
-<!--                <template #col:memory="{row}">-->
-<!--                  <td v-if="row.mgmt && memoryAllocatable(row.mgmt) && !memoryAllocatable(row.mgmt).match(/^0 [a-zA-z]/)">-->
-<!--                    {{ memoryAllocatable(row.mgmt) }}-->
-<!--                  </td>-->
-<!--                  <td v-else>-->
-<!--                    &mdash;-->
-<!--                  </td>-->
-<!--                </template>-->
               </SortableTable>
 
             </div>
@@ -447,7 +248,6 @@ export default {
             </div>
           </div>
         </div>
-<!--        <CommunityLinks class="col span-3 side-panel" />-->
       </div>
     </IndentedPanel>
   </div>

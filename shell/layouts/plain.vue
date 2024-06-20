@@ -3,13 +3,10 @@ import { mapPref, THEME_SHORTCUT } from '@shell/store/prefs';
 import ActionMenu from '@shell/components/ActionMenu';
 import Header from '@shell/components/nav/Header';
 import PromptRemove from '@shell/components/PromptRemove';
-import AssignTo from '@shell/components/AssignTo';
 import IndentedPanel from '@shell/components/IndentedPanel';
 import Brand from '@shell/mixins/brand';
 import FixedBanner from '@shell/components/FixedBanner';
 import GrowlManager from '@shell/components/GrowlManager';
-import AwsComplianceBanner from '@shell/components/AwsComplianceBanner';
-import AzureWarning from '@shell/components/auth/AzureWarning';
 import BrowserTabVisibility from '@shell/mixins/browser-tab-visibility';
 import Inactivity from '@shell/components/Inactivity';
 import { mapGetters } from 'vuex';
@@ -18,14 +15,11 @@ export default {
 
   components: {
     ActionMenu,
-    AssignTo,
     Header,
     IndentedPanel,
     PromptRemove,
     FixedBanner,
     GrowlManager,
-    AwsComplianceBanner,
-    AzureWarning,
     Inactivity
   },
 
@@ -60,8 +54,6 @@ export default {
 <template>
   <div class="dashboard-root">
     <FixedBanner :header="true" />
-    <AwsComplianceBanner />
-    <AzureWarning />
 
     <div
       class="dashboard-content"
@@ -74,7 +66,6 @@ export default {
         </IndentedPanel>
         <ActionMenu />
         <PromptRemove />
-        <AssignTo />
         <button
           v-if="themeShortcut"
           v-shortkey.once="['shift','t']"

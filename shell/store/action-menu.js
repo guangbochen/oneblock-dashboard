@@ -8,7 +8,6 @@ export const state = function() {
     event:             null,
     showPromptMove:    false,
     showPromptRemove:  false,
-    showPromptRestore: false,
     showAssignTo:      false,
     showPromptUpdate:  false,
     showModal:         false,
@@ -94,19 +93,6 @@ export const mutations = {
       state.showPromptMove = !state.showPromptMove;
       state.toMove = Array.isArray(resources) ? resources : [resources];
     }
-  },
-
-  togglePromptRestore(state, resources) {
-    if (!resources) {
-      state.showPromptRestore = false;
-      resources = [];
-    } else {
-      state.showPromptRestore = !state.showPromptRestore;
-      if (!isArray(resources)) {
-        resources = [resources];
-      }
-    }
-    state.toRestore = resources;
   },
 
   toggleAssignTo(state, resources) {

@@ -2,7 +2,6 @@
 import Loading from '@shell/components/Loading';
 import { Banner } from '@components/Banner';
 import { computeDashboardUrl } from '@shell/utils/grafana';
-import { CATALOG } from '@shell/config/types';
 
 export default {
   components: { Banner, Loading },
@@ -40,14 +39,6 @@ export default {
   },
   async fetch() {
     const inStore = this.$store.getters['currentProduct'].inStore;
-
-    if (this.$store.getters[`${ inStore }/canList`](CATALOG.APP)) {
-      try {
-        const res = await this.$store.dispatch(`${ inStore }/find`, { type: CATALOG.APP, id: 'cattle-monitoring-system/rancher-monitoring' });
-
-        this.monitoringVersion = res?.currentVersion;
-      } catch (err) {}
-    }
   },
   data() {
     return {

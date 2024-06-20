@@ -9,15 +9,11 @@ import ActionMenu from '@shell/components/ActionMenu';
 import GrowlManager from '@shell/components/GrowlManager';
 import WindowManager from '@shell/components/nav/WindowManager';
 import PromptRemove from '@shell/components/PromptRemove';
-import PromptRestore from '@shell/components/PromptRestore';
 import PromptModal from '@shell/components/PromptModal';
-import AssignTo from '@shell/components/AssignTo';
 import Header from '@shell/components/nav/Header';
 import Inactivity from '@shell/components/Inactivity';
 import Brand from '@shell/mixins/brand';
 import FixedBanner from '@shell/components/FixedBanner';
-import AwsComplianceBanner from '@shell/components/AwsComplianceBanner';
-import AzureWarning from '@shell/components/auth/AzureWarning';
 import DraggableZone from '@shell/components/DraggableZone';
 import { MANAGEMENT } from '@shell/config/types';
 import isEqual from 'lodash/isEqual';
@@ -35,16 +31,12 @@ export default {
 
   components: {
     PromptRemove,
-    PromptRestore,
-    AssignTo,
     PromptModal,
     Header,
     ActionMenu,
     GrowlManager,
     WindowManager,
     FixedBanner,
-    AwsComplianceBanner,
-    AzureWarning,
     DraggableZone,
     Inactivity,
     SideNav,
@@ -232,8 +224,6 @@ export default {
 <template>
   <div class="dashboard-root">
     <FixedBanner :header="true" />
-    <AwsComplianceBanner v-if="managementReady" />
-    <AzureWarning v-if="managementReady" />
     <div
       v-if="managementReady"
       class="dashboard-content"
@@ -251,8 +241,6 @@ export default {
         <nuxt class="outlet" />
         <ActionMenu />
         <PromptRemove />
-        <PromptRestore />
-        <AssignTo />
         <PromptModal />
         <button
           v-if="noLocaleShortcut"

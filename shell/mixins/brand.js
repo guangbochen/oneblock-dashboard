@@ -1,5 +1,5 @@
 import { mapGetters } from 'vuex';
-import { CATALOG, MANAGEMENT } from '@shell/config/types';
+import { MANAGEMENT } from '@shell/config/types';
 import { SETTING } from '@shell/config/settings';
 import { findBy } from '@shell/utils/array';
 import { createCssVars } from '@shell/utils/color';
@@ -14,13 +14,6 @@ export const hasCspAdapter = (apps) => {
 
 export default {
   async fetch() {
-    // For the login page, the schemas won't be loaded - we don't need the apps in this case
-    try {
-      if (this.$store.getters['management/canList'](CATALOG.APP)) {
-        this.apps = await this.$store.dispatch('management/findAll', { type: CATALOG.APP });
-      }
-    } catch (e) {}
-
     // Ensure we read the settings even when we are not authenticated
     try {
       this.globalSettings = await this.$store.dispatch('management/findAll', {

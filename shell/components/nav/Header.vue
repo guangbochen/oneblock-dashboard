@@ -1,7 +1,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import debounce from 'lodash/debounce';
-import { NORMAN, STEVE } from '@shell/config/types';
+import { STEVE } from '@shell/config/types';
 import { ucFirst } from '@shell/utils/string';
 import { isAlternate, isMac } from '@shell/utils/platform';
 import Import from '@shell/components/Import';
@@ -72,10 +72,6 @@ export default {
       return this.$store.getters['auth/enabled'];
     },
 
-    principal() {
-      return this.$store.getters['rancher/byId'](NORMAN.PRINCIPAL, this.$store.getters['auth/principalId']) || {};
-    },
-
     kubeConfigEnabled() {
       return true;
     },
@@ -102,9 +98,9 @@ export default {
 
     showAccountAndApiKeyLink() {
       // Keep this simple for the moment and only check if the user can see tokens... plus the usual isRancher/isSingleProduct
-      const canSeeTokens = this.$store.getters['rancher/schemaFor'](NORMAN.TOKEN, false, false);
+      // const canSeeTokens = this.$store.getters['rancher/schemaFor'](NORMAN.TOKEN, false, false);
 
-      return canSeeTokens && (this.isRancher || this.isSingleProduct);
+      return (this.isRancher || this.isSingleProduct);
     },
 
     showPageActions() {
@@ -395,7 +391,7 @@ export default {
           >
             <BrandImage
               class="side-menu-logo-img"
-              file-name="rancher-logo.svg"
+              file-name="llmos-logo.svg"
             />
           </div>
         </template>
@@ -433,7 +429,7 @@ export default {
       >
         <BrandImage
           class="side-menu-logo-img"
-          file-name="rancher-logo.svg"
+          file-name="llmos-logo.svg"
         />
       </div>
     </div>
@@ -640,17 +636,14 @@ export default {
           :container="false"
         >
           <div class="user-image text-right hand">
-            <img
-              v-if="principal && principal.avatarSrc"
-              :src="principal.avatarSrc"
-              :class="{'avatar-round': principal.roundAvatar}"
-              width="36"
-              height="36"
-            >
-            <i
-              v-else
-              class="icon icon-user icon-3x avatar"
-            />
+<!--            <img-->
+<!--              v-if="principal && principal.avatarSrc"-->
+<!--              :src="principal.avatarSrc"-->
+<!--              :class="{'avatar-round': principal.roundAvatar}"-->
+<!--              width="36"-->
+<!--              height="36"-->
+<!--            >-->
+            <i class="icon icon-user icon-2x avatar p-5" />
           </div>
           <template
             slot="popover"
@@ -666,12 +659,12 @@ export default {
                 class="user-info"
               >
                 <div class="user-name">
-                  <i class="icon icon-lg icon-user" /> {{ principal.loginName }}
+<!--                  <i class="icon icon-lg icon-user" /> {{ principal.loginName }}-->
                 </div>
                 <div class="text-small pt-5 pb-5">
-                  <template v-if="principal.loginName !== principal.name">
-                    {{ principal.name }}
-                  </template>
+<!--                  <template v-if="principal.loginName !== principal.name">-->
+<!--                    {{ principal.name }}-->
+<!--                  </template>-->
                 </div>
               </li>
               <nuxt-link

@@ -116,12 +116,7 @@ export default {
 
       plSetting = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.PL);
     } catch (e) {
-      // Older versions used Norman API to get these
-      plSetting = await store.dispatch('rancher/find', {
-        type: 'setting',
-        id:   SETTING.PL,
-        opt:  { url: `/v3/settings/${ SETTING.PL }` }
-      });
+      console.log('Error getting PL setting', e);
     }
 
     if (plSetting.value?.length && plSetting.value !== getVendor()) {
@@ -130,11 +125,11 @@ export default {
 
     const productName = plSetting.default;
 
-    const principals = await store.dispatch('rancher/findAll', { type: NORMAN.PRINCIPAL, opt: { url: '/v3/principals' } });
-    const me = findBy(principals, 'me', true);
+    // const principals = await store.dispatch('rancher/findAll', { type: NORMAN.PRINCIPAL, opt: { url: '/v3/principals' } });
+    // const me = findBy(principals, 'me', true);
 
     const current = route.query[SETUP] || store.getters['auth/initialPass'];
-    const v3User = store.getters['auth/v3User'] ?? {};
+    // const v3User = store.getters['auth/v3User'] ?? {};
 
     const mcmFeature = await store.dispatch('management/find', {
       type: MANAGEMENT.FEATURE, id: 'multi-cluster-management', opt: { url: `/v1/${ MANAGEMENT.FEATURE }/multi-cluster-management` }
@@ -176,7 +171,7 @@ export default {
       telemetry,
 
       eula: false,
-      principals,
+      // principals,
 
       errors: []
     };

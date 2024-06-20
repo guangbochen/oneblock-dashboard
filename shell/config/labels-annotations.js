@@ -1,4 +1,4 @@
-export const NORMAN_NAME = 'field.cattle.io/name';
+// export const NORMAN_NAME = 'field.cattle.io/name';
 export const DESCRIPTION = 'field.cattle.io/description';
 export const HOSTNAME = 'kubernetes.io/hostname';
 export const TIMESTAMP = 'cattle.io/timestamp';
@@ -59,57 +59,49 @@ export const CAPI = {
   // UI_CUSTOM_PROVIDER:   'ui.rancher/provider'
 };
 
-export const CATALOG = {
-  CERTIFIED: 'catalog.cattle.io/certified',
-  _RANCHER:  'rancher',
-  _PARTNER:  'partner',
-  _OTHER:    'other',
-
-  EXPERIMENTAL: 'catalog.cattle.io/experimental',
-  NAMESPACE:    'catalog.cattle.io/namespace',
-  RELEASE_NAME: 'catalog.cattle.io/release-name',
-  FEATURED:     'catalog.cattle.io/featured',
-
-  REQUIRES_GVK:     'catalog.cattle.io/requires-gvr',
-  PROVIDES:         'catalog.cattle.io/provides-gvr',
-  AUTO_INSTALL_GVK: 'catalog.cattle.io/auto-install-gvr',
-  AUTO_INSTALL:     'catalog.cattle.io/auto-install',
-  HIDDEN:           'catalog.cattle.io/hidden',
-  REQUESTS_CPU:     'catalog.cattle.io/requests-cpu',
-  REQUESTS_MEMORY:  'catalog.cattle.io/requests-memory',
-
-  SCOPE:       'catalog.cattle.io/scope',
-  _MANAGEMENT: 'management',
-  _DOWNSTREAM: 'downstream',
-
-  TYPE:          'catalog.cattle.io/type',
-  _APP:          'app',
-  _CLUSTER_TPL:  'cluster-template',
-  _CLUSTER_TOOL: 'cluster-tool',
-
-  COMPONENT:        'catalog.cattle.io/ui-component',
-  SOURCE_REPO_TYPE: 'catalog.cattle.io/ui-source-repo-type',
-  SOURCE_REPO_NAME: 'catalog.cattle.io/ui-source-repo',
-  COLOR:            'catalog.cattle.io/ui-color',
-  DISPLAY_NAME:     'catalog.cattle.io/display-name',
-
-  SUPPORTED_OS: 'catalog.cattle.io/os',
-  PERMITTED_OS: 'catalog.cattle.io/permits-os',
-  DEPLOYED_OS:  'catalog.cattle.io/deploys-on-os',
-
-  MIGRATED: 'apps.cattle.io/migrated',
-  MANAGED:  'catalog.cattle.io/managed',
-
-  HIDDEN_REPO: 'clusterrepo.cattle.io/hidden'
-};
-
-export const FLEET = {
-  CLUSTER_DISPLAY_NAME: 'management.cattle.io/cluster-display-name',
-  CLUSTER_NAME:         'management.cattle.io/cluster-name',
-  BUNDLE_ID:            'fleet.cattle.io/bundle-id',
-  MANAGED:              'fleet.cattle.io/managed',
-  CLUSTER:              'fleet.cattle.io/cluster'
-};
+// export const CATALOG = {
+//   CERTIFIED: 'catalog.cattle.io/certified',
+//   _RANCHER:  'rancher',
+//   _PARTNER:  'partner',
+//   _OTHER:    'other',
+//
+//   EXPERIMENTAL: 'catalog.cattle.io/experimental',
+//   NAMESPACE:    'catalog.cattle.io/namespace',
+//   RELEASE_NAME: 'catalog.cattle.io/release-name',
+//   FEATURED:     'catalog.cattle.io/featured',
+//
+//   REQUIRES_GVK:     'catalog.cattle.io/requires-gvr',
+//   PROVIDES:         'catalog.cattle.io/provides-gvr',
+//   AUTO_INSTALL_GVK: 'catalog.cattle.io/auto-install-gvr',
+//   AUTO_INSTALL:     'catalog.cattle.io/auto-install',
+//   HIDDEN:           'catalog.cattle.io/hidden',
+//   REQUESTS_CPU:     'catalog.cattle.io/requests-cpu',
+//   REQUESTS_MEMORY:  'catalog.cattle.io/requests-memory',
+//
+//   SCOPE:       'catalog.cattle.io/scope',
+//   _MANAGEMENT: 'management',
+//   _DOWNSTREAM: 'downstream',
+//
+//   TYPE:          'catalog.cattle.io/type',
+//   _APP:          'app',
+//   _CLUSTER_TPL:  'cluster-template',
+//   _CLUSTER_TOOL: 'cluster-tool',
+//
+//   COMPONENT:        'catalog.cattle.io/ui-component',
+//   SOURCE_REPO_TYPE: 'catalog.cattle.io/ui-source-repo-type',
+//   SOURCE_REPO_NAME: 'catalog.cattle.io/ui-source-repo',
+//   COLOR:            'catalog.cattle.io/ui-color',
+//   DISPLAY_NAME:     'catalog.cattle.io/display-name',
+//
+//   SUPPORTED_OS: 'catalog.cattle.io/os',
+//   PERMITTED_OS: 'catalog.cattle.io/permits-os',
+//   DEPLOYED_OS:  'catalog.cattle.io/deploys-on-os',
+//
+//   MIGRATED: 'apps.cattle.io/migrated',
+//   MANAGED:  'catalog.cattle.io/managed',
+//
+//   HIDDEN_REPO: 'clusterrepo.cattle.io/hidden'
+// };
 
 export const RBAC = { PRODUCT: 'management.cattle.io/ui-product' };
 
@@ -131,7 +123,6 @@ export const ANNOTATIONS_TO_IGNORE_REGEX = [
 
 export const ANNOTATIONS_TO_FOLD = [
   /^kubectl\.kubernetes\.io\/.*$/,
-  /^objectset\.rio\.cattle\.io\/.*$/,
 ];
 
 export const OB = {
