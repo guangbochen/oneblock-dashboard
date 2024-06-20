@@ -460,6 +460,7 @@ export default {
   },
 
   load(ctx, { data, existing }) {
+    console.log(`Load 123: [${ ctx.state.config.namespace }] ${ data.type } ${ data.id }`);
     const { getters, commit } = ctx;
 
     let type = normalizeType(data.type);

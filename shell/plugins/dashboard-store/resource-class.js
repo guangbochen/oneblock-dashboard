@@ -897,6 +897,7 @@ export default class Resource {
     // get menu actions available by plugins configuration
     const currentRoute = this.currentRouter().app._route;
     const extensionMenuActions = getApplicableExtensionEnhancements(this.$rootState, ExtensionPoint.ACTION, ActionLocation.TABLE, currentRoute, this);
+    console.log('test 123:', this.canCustomEdit, this.canUpdate)
 
     const all = [
       { divider: true },

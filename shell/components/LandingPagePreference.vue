@@ -1,11 +1,8 @@
 <script>
 import { mapPref, AFTER_LOGIN_ROUTE } from '@shell/store/prefs';
-import { mapFeature, MULTI_CLUSTER } from '@shell/store/features';
 import { RadioGroup, RadioButton } from '@components/Form/Radio';
-
 import Select from '@shell/components/form/Select';
 import { MANAGEMENT } from '@shell/config/types';
-import { filterHiddenLocalCluster } from '@shell/utils/cluster';
 
 export default {
   components: {
@@ -30,7 +27,6 @@ export default {
 
   computed: {
     afterLoginRoute: mapPref(AFTER_LOGIN_ROUTE),
-    mcm:             mapFeature(MULTI_CLUSTER),
 
     routeFromDropdown: {
       get() {

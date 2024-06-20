@@ -12,7 +12,6 @@ import { MANAGEMENT } from '@shell/config/types';
 import { getVersionInfo, markSeenReleaseNotes } from '@shell/utils/version';
 import PageHeaderActions from '@shell/mixins/page-actions';
 import { getVendor } from '@shell/config/private-label';
-import { mapFeature, MULTI_CLUSTER } from '@shell/store/features';
 
 import { RESET_CARDS_ACTION, SET_LOGIN_ACTION } from '@shell/config/page-actions';
 
@@ -60,11 +59,6 @@ export default {
   computed: {
     ...mapState(['managementReady']),
     ...mapGetters(['currentCluster', 'defaultClusterId', 'releaseNotesUrl']),
-    mcm: mapFeature(MULTI_CLUSTER),
-
-    mgmtClusters() {
-      return this.$store.getters['management/all'](MANAGEMENT.CLUSTER);
-    },
 
     afterLoginRoute: mapPref(AFTER_LOGIN_ROUTE),
     homePageCards:   mapPref(HIDE_HOME_PAGE_CARDS),
@@ -72,43 +66,6 @@ export default {
     showSetLoginBanner() {
       return this.homePageCards?.setLoginPage;
     },
-
-    clusterHeaders() {
-      return [
-        {
-          name:      'state',
-          labelKey:  'tableHeaders.state',
-          sort:      ['stateSort', 'nameSort'],
-          value:     'status.conditions[0].status',
-          getValue:  (row) => row.status.conditions[0]?.status,
-          width:     100,
-          default:   'unknown',
-          formatter: 'BadgeStateFormatter',
-        },
-        {
-          name:     'name',
-          labelKey: 'tableHeaders.name',
-          value:    'displayName',
-          getValue:      (row) => row.mgmt?.displayName,
-          sort:     ['nameSort'],
-        },
-        {
-          label:     this.t('landing.clusters.provider'),
-          value:     'status.provider',
-          name:      'Provider',
-          sort:      ['status.provider'],
-        },
-        {
-          label: this.t('landing.clusters.kubernetesVersion'),
-          value: 'status.version.gitVersion',
-          name:  'Kubernetes Version'
-        },
-      ];
-    },
-
-    kubeClusters() {
-      return this.mgmtClusters
-    }
   },
 
   async created() {
@@ -201,49 +158,7 @@ export default {
             </div>
           </div>
           <div class="row panel">
-            <div v-if="mcm" class="col span-12">
-              <SortableTable
-                :table-actions="false"
-                :row-actions="false"
-                key-field="id"
-                :rows="kubeClusters"
-                :headers="clusterHeaders"
-                :loading="!kubeClusters"
-              >
-                <template #header-left>
-                  <div class="row table-heading">
-                    <h2 class="mb-0">
-                      {{ t('landing.clusters.title') }}
-                    </h2>
-                    <BadgeState
-                      v-if="kubeClusters"
-                      :label="kubeClusters.length.toString()"
-                      color="role-tertiary ml-20 mr-20"
-                    />
-                  </div>
-                </template>
-
-                <template #col:name="{row}">
-                  <td>
-                    <div class="list-cluster-name">
-                      <span v-if="row.mgmt?.isReady && !row.hasError">
-                        <n-link
-                          :to="{ name: 'c-cluster-explorer', params: { cluster: row.mgmt.id }}"
-                        >
-                          {{ row.spec.displayName }}
-                        </n-link>
-                      </span>
-                      <span v-else>{{ row.spec.displayName }}</span>
-                    </div>
-                  </td>
-                </template>
-              </SortableTable>
-
-            </div>
-            <div
-              v-else
-              class="col span-12"
-            >
+            <div class="col span-12">
               <SingleClusterInfo />
             </div>
           </div>

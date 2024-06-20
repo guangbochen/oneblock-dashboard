@@ -235,8 +235,8 @@ export default {
         await this.$store.dispatch('loadManagement');
 
         if ( this.mustChangePassword ) {
-          await this.$store.dispatch('rancher/request', {
-            url:    '/v3/users?action=changepassword',
+          await this.$store.dispatch('management/request', {
+            url:    '/v1/management.llmos.ai.user?action=changepassword',
             method: 'post',
             data:   {
               currentPassword: this.current,

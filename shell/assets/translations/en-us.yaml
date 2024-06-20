@@ -1139,8 +1139,6 @@ cluster:
     rancher-vsphere:
       label: vSphere
       note: '<b>Important:</b> Configure the vSphere Cloud Provider and Storage Provider options in the Add-On Config tab.'
-    harvester:
-      label: Harvester
   copyConfig: Copy KubeConfig to Clipboard
   copiedConfig: Copied KubeConfig to Clipboard
   custom:
@@ -1270,75 +1268,9 @@ cluster:
           <li><b>Service Accounts:</b> Service Account User (roles/iam.serviceAccountUser)</li>
           </ul>
           More info on roles can be found <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam-integration" target="_blank" rel="noopener noreferrer nofollow">here</a>.
-    harvester:
-      namespace: Namespace
-      cpu: CPUs
-      memory: Memory
-      disk: Disk
-      image: Image
-      network:
-        title: Networks
-        network: Network
-        addNetwork: Add Network
-        networkName: Network Name
-        macAddress: Mac Address
-        macFormat: 'Invalid MAC address format.'
-      volume:
-        title: Volumes
-        volume: Volume
-        imageVolume: Image Volume
-        addVolume: Add Volume
-        addVMImage: Add VM Image
-        storageClass: Storage Class
-      sshUser: SSH User
-      userData:
-        label: User Data Template
-        title: "User Data:"
-      networkData:
-        label: Network Data Template
-        title: "Network Data:"
-      kubeconfigContent:
-        label: KubeconfigContent
-      placeholder: 'Namespace/Name'
-      cluster: Imported Harvester Cluster
-      installGuestAgent: Install guest agent
   description:
     label: Cluster Description
     placeholder: Any text you want that better describes this cluster
-  harvester:
-    importNotice: Import Harvester Clusters via
-    warning:
-      label: This is a Harvester Cluster - enable the Harvester feature flag to manage it
-      state: Warning
-      cloudProvider:
-        incompatible:
-          You cannot select the Harvester cloud provider as the current Harvester version is not compatible with the selected RKE2 Kubernetes version, click <a target="_blank" rel="noopener noreferrer nofollow" href="https://www.suse.com/suse-harvester/support-matrix/all-supported-versions">here</a> to see which Kubernetes versions are supported.
-    clusterWarning: |-
-      There {count, plural,
-      =1 {is 1 Harvester cluster that is not shown}
-      other {are # Harvester clusters that are not shown}
-      }
-    registration:
-      step1: "1. Go to the <code>Advanced / Settings</code> page of the target Harvester's UI."
-      step2: '2. Find the <code>cluster-registration-url</code> setting and click the <code><i class="icon icon-actions" ></i></code> -> <code>Edit Setting</code> button.'
-      step3: "3. Input the following registration URL and click the <code>Save</code> button."
-      step4: "Registration URL"
-    machinePool:
-      cpu:
-        placeholder: e.g. 2
-      memory:
-        placeholder: e.g. 4
-      disk:
-        placeholder: e.g. 4
-      namespace:
-        placeholder: e.g. default
-      image:
-        placeholder: Please select a image
-      network:
-        placeholder: Please select a network
-      sshUser:
-        placeholder: e.g. ubuntu
-        toolTip: SSH user to login with the selected OS image.
   haveOneOwner: There must be at least one member with the Owner role.
   import:
     warningBanner: 'You should not import a cluster which has already been connected to another instance of Rancher as it will lead to data corruption.'
@@ -2143,25 +2075,8 @@ fleet:
   cluster:
     summary: Resource Summary
     nonReady: Non-Ready Bundles
-  clusters:
-    harvester: |-
-      There {count, plural,
-      =1 {is 1 Harvester cluster that is hidden as this can not be used with Continuous Delivery}
-      other {are # Harvester clusters that are hidden as they can not be used with Continuous Delivery}
-      }
-  tokens:
-    harvester: |-
-      {count, plural,
-      =1 {1 token is hidden as it belongs to a Harvester cluster that can not be used with Continuous Delivery}
-      other {# tokens are hidden as they belong to Harvester clusters that can not be used with Continuous Delivery}
-      }
   bundles:
     resources: Resources
-    harvester: |-
-      {count, plural,
-      =1 {1 bundle is hidden as it belongs to a Harvester cluster that can not be used with Continuous Delivery}
-      other {# bundles are hidden as they belong to Harvester clusters that can not be used with Continuous Delivery}
-      }
   fleetSummary:
     noClustersGitRepo: This git repo is not targeting any clusters
     state:
@@ -4940,17 +4855,6 @@ servicesPage:
     placeholder: e.g. my.database.example.com
     input:
       label: DNS Name
-  harvester:
-    title: Add-on Config
-    ipam:
-      label: IPAM
-    useShareIP:
-      label: Use Share IP
-    useIpam:
-      label: Use IPAM
-    shareIP:
-      label: Share IP LB
-
   ips:
     define: Service Ports
     clusterIpHelpText: The Cluster IP address must be within the CIDR range configured for the API server.

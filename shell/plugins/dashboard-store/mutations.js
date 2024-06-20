@@ -402,6 +402,7 @@ export default {
   },
 
   reset(state) {
+    console.log('### Mutation reset 123');
     resetStore(state, this.commit);
   },
 

@@ -237,8 +237,8 @@ export default {
 
     async setPassword(user) {
       // Error handling is catered for by caller
-      await this.$store.dispatch('rancher/resourceAction', {
-        type:       NORMAN.USER,
+      await this.$store.dispatch('management/resourceAction', {
+        type:       MANAGEMENT.USER,
         actionName: 'setpassword',
         resource:   user,
         body:       { newPassword: this.isRandomGenerated ? this.form.genP : this.form.newP },
@@ -247,8 +247,8 @@ export default {
 
     async changePassword() {
       try {
-        await this.$store.dispatch('rancher/collectionAction', {
-          type:       NORMAN.USER,
+        await this.$store.dispatch('managemenet/collectionAction', {
+          type:       MANAGEMENT.USER,
           actionName: 'changepassword',
           body:       {
             currentPassword: this.form.currentP,
@@ -264,7 +264,7 @@ export default {
     async deleteKeys() {
       try {
         const tokens = await this.$store.dispatch('rancher/findAll', {
-          type: NORMAN.TOKEN,
+          type: MANAGEMENT.TOKEN,
           opt:  {
             // Ensure we have any new tokens since last fetched... and that we don't attempt to delete previously deleted tokens
             force: true

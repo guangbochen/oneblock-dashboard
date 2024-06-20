@@ -10,7 +10,6 @@ import { RadioGroup } from '@components/Form/Radio';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import { _CREATE, _VIEW } from '@shell/config/query-params';
 import { PROVISIONER_OPTIONS } from '@shell/models/storage.k8s.io.storageclass';
-import { mapFeature, UNSUPPORTED_STORAGE_DRIVERS } from '@shell/store/features';
 import { CSI_DRIVER } from '@shell/config/types';
 
 export default {
@@ -84,7 +83,6 @@ export default {
   },
 
   computed: {
-    showUnsupportedStorage: mapFeature(UNSUPPORTED_STORAGE_DRIVERS),
 
     modeOverride() {
       return this.isCreate ? _CREATE : _VIEW;
@@ -102,7 +100,7 @@ export default {
 
       PROVISIONER_OPTIONS.forEach((opt) => {
         provisionerOptionsDrivers.push(opt.value);
-        if (this.showUnsupportedStorage || opt.supported) {
+        if (opt.supported) {
           let label = this.t(opt.labelKey);
 
           if (opt.value.includes('kubernetes')) {

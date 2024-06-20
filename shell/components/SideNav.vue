@@ -12,9 +12,9 @@ import { sortBy } from '@shell/utils/sort';
 import { ucFirst } from '@shell/utils/string';
 
 import {
-  OB, CATALOG, UI, SCHEMA, COUNT
+  OB, UI, SCHEMA, COUNT
 } from '@shell/config/types';
-import { HARVESTER_NAME as HARVESTER } from '@shell/config/features';
+import { LLMOS_NAME as HARVESTER } from '@shell/config/features';
 import { NAME as EXPLORER } from '@shell/config/product/explorer';
 import { BASIC, FAVORITE, USED } from '@shell/store/type-map';
 import { NAME as NAVLINKS } from '@shell/config/product/navlinks';
@@ -122,9 +122,7 @@ export default {
     favoriteTypes: mapPref(FAVORITE_TYPES),
 
     showClusterTools() {
-      return this.isExplorer &&
-             this.$store.getters['cluster/canList'](CATALOG.CLUSTER_REPO) &&
-             this.$store.getters['cluster/canList'](CATALOG.APP);
+      return this.isExplorer
     },
 
     supportLink() {

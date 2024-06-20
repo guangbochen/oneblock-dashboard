@@ -21,7 +21,6 @@ let store = {};
 
   resolveStoreModules(require('../store/action-menu.js'), 'action-menu.js');
   resolveStoreModules(require('../store/auth.js'), 'auth.js');
-  resolveStoreModules(require('../store/features.js'), 'features.js');
   resolveStoreModules(require('../store/growl.js'), 'growl.js');
   resolveStoreModules(require('../store/i18n.js'), 'i18n.js');
   resolveStoreModules(require('../store/prefs.js'), 'prefs.js');
@@ -36,7 +35,6 @@ let store = {};
     module.hot.accept([
       '../store/action-menu.js',
       '../store/auth.js',
-      '../store/features.js',
       '../store/growl.js',
       '../store/i18n.js',
       '../store/index.js',

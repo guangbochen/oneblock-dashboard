@@ -233,7 +233,6 @@ export const state = () => {
     serverVersion:           null,
     systemNamespaces:        [],
     isSingleProduct:         undefined,
-    isRancherInHarvester:    false,
     targetRoute:             null
   };
 };
@@ -543,10 +542,6 @@ export const getters = {
     return false;
   },
 
-  isRancherInHarvester(state) {
-    return state.isRancherInHarvester;
-  },
-
   isVirtualCluster(state, getters) {
     const cluster = getters['currentCluster'];
 
@@ -557,11 +552,11 @@ export const getters = {
     const clusters = getters['management/all'](MANAGEMENT.CLUSTER);
     const cluster = clusters.find((c) => c.id === 'local') || {};
 
-    return getters['isSingleProduct'] && cluster.isHarvester && !getters['isRancherInHarvester'];
+    return getters['isSingleProduct'];
   },
 
   showTopLevelMenu(getters) {
-    return getters['isRancherInHarvester'] || getters['isMultiCluster'] || !getters['isSingleProduct'];
+    return getters['isMultiCluster'] || !getters['isSingleProduct'];
   },
 
   targetRoute(state) {
@@ -589,10 +584,6 @@ export const mutations = {
   },
   clusterReady(state, ready) {
     state.clusterReady = ready;
-  },
-
-  isRancherInHarvester(state, neu) {
-    state.isRancherInHarvester = neu;
   },
 
   updateNamespaces(state, { filters, all }) {
@@ -693,7 +684,6 @@ export const actions = {
     let res = await allHashSettled({
       mgmtSubscribe:  dispatch('management/subscribe'),
       mgmtSchemas:    dispatch('management/loadSchemas', true),
-      rancherSchemas: dispatch('rancher/loadSchemas', true),
     });
 
     const promises = {
@@ -702,12 +692,9 @@ export const actions = {
         type: MANAGEMENT.CLUSTER,
         opt:  { url: MANAGEMENT.CLUSTER }
       }),
-
-      // Features checks on its own if they are available
-      features: dispatch('features/loadServer'),
     };
 
-    const isRancher = res.rancherSchemas.status === 'fulfilled' && !!getters['management/schemaFor'](MANAGEMENT.PROJECT);
+    const isRancher = !!getters['management/schemaFor'](MANAGEMENT.PROJECT);
 
     if ( isRancher ) {
       promises['prefs'] = dispatch('prefs/loadServer');
@@ -738,14 +725,6 @@ export const actions = {
 
     // If the local cluster is a Harvester cluster and 'rancher-manager-support' is true, it means that the embedded Rancher is being used.
     const localCluster = res.clusters?.find((c) => c.id === 'local');
-
-    if (localCluster?.isHarvester) {
-      const harvesterSetting = await dispatch('cluster/findAll', { type: OB.SETTING, opt: { url: `/v1/harvester/${ OB.SETTING }s` } });
-      const rancherManagerSupport = harvesterSetting.find((setting) => setting.id === 'rancher-manager-support');
-      const isRancherInHarvester = (rancherManagerSupport?.value || rancherManagerSupport?.default) === 'true';
-
-      commit('isRancherInHarvester', isRancherInHarvester);
-    }
 
     const pl = res.settings?.find((x) => x.id === 'ui-pl')?.value;
     const brand = res.settings?.find((x) => x.id === SETTING.BRAND)?.value;
@@ -902,7 +881,8 @@ export const actions = {
       dispatch('cluster/loadSchemas', true),
     ]);
 
-    dispatch('cluster/subscribe');
+    //TODO, comment out since we only have one cluster for now
+    // dispatch('cluster/subscribe');
 
     const projectArgs = {
       type: MANAGEMENT.PROJECT,
@@ -1016,14 +996,14 @@ export const actions = {
     commit('management/reset');
     commit('prefs/reset');
 
-    await dispatch('cluster/unsubscribe');
+    // await dispatch('cluster/unsubscribe');
     commit('clusterReady', false);
     commit('clusterId', null);
     commit('cluster/reset');
 
-    await dispatch('rancher/unsubscribe');
-    commit('rancher/reset');
-    commit('catalog/reset');
+    // await dispatch('rancher/unsubscribe');
+    // commit('rancher/reset');
+    // commit('catalog/reset');
 
     const router = state.$router;
     const route = router.currentRoute;
@@ -1060,7 +1040,7 @@ export const actions = {
     Object.defineProperty(this, '$plugin', { value: nuxt.app.$plugin });
 
     dispatch('management/rehydrateSubscribe');
-    dispatch('cluster/rehydrateSubscribe');
+    // dispatch('cluster/rehydrateSubscribe');
 
     if ( rootState.isRancher ) {
       dispatch('rancher/rehydrateSubscribe');

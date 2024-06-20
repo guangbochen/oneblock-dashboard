@@ -1,12 +1,9 @@
 import { DSL } from '@shell/store/type-map';
-// import { MANAGEMENT, NORMAN } from '@shell/config/types';
 import { MANAGEMENT } from '@shell/config/types';
 import { uniq } from '@shell/utils/array';
 import {
-  GROUP_NAME, GROUP_ROLE_NAME,
   RBAC_BUILTIN, RBAC_DEFAULT, STATE, NAME as HEADER_NAME, AGE, SIMPLE_NAME
 } from '@shell/config/table-headers';
-import { MULTI_CLUSTER } from '@shell/store/features';
 
 export const NAME = 'auth';
 
@@ -17,11 +14,9 @@ export function init(store) {
   const {
     product,
     basicType,
-    weightType,
     configureType,
     componentForType,
     headers,
-    mapType,
     spoofedType,
     virtualType,
   } = DSL(store, NAME);
@@ -29,7 +24,6 @@ export function init(store) {
   product({
     ifHaveType:          new RegExp(`${ MANAGEMENT.USER }|${ MANAGEMENT.AUTH_CONFIG }`, 'i'),
     ifHaveVerb:          'GET',
-    ifFeature:           MULTI_CLUSTER,
     inStore:             'management',
     icon:                'user',
     removable:           false,
@@ -67,13 +61,11 @@ export function init(store) {
 
   spoofedType({
     labelKey:          'typeLabel."group.principal"',
-    // type:              NORMAN.SPOOFED.GROUP_PRINCIPAL,
     weight:            101,
     ifHaveType:        MANAGEMENT.GLOBAL_ROLE_BINDING,
     collectionMethods: [],
     schemas:           [
       {
-        // id:                NORMAN.SPOOFED.GROUP_PRINCIPAL,
         type:              'schema',
         collectionMethods: [],
         resourceFields:    {},
@@ -163,30 +155,12 @@ export function init(store) {
     location:    null,
   });
 
-  componentForType(`${ MANAGEMENT.AUTH_CONFIG }/github`, 'auth/github');
-  componentForType(`${ MANAGEMENT.AUTH_CONFIG }/openldap`, 'auth/ldap/index');
-  componentForType(`${ MANAGEMENT.AUTH_CONFIG }/freeipa`, 'auth/ldap/index');
-  componentForType(`${ MANAGEMENT.AUTH_CONFIG }/activedirectory`, 'auth/ldap/index');
-  componentForType(`${ MANAGEMENT.AUTH_CONFIG }/ping`, 'auth/saml');
-  componentForType(`${ MANAGEMENT.AUTH_CONFIG }/shibboleth`, 'auth/saml');
-  componentForType(`${ MANAGEMENT.AUTH_CONFIG }/okta`, 'auth/saml');
-  componentForType(`${ MANAGEMENT.AUTH_CONFIG }/keycloak`, 'auth/saml');
-  componentForType(`${ MANAGEMENT.AUTH_CONFIG }/adfs`, 'auth/saml');
-  componentForType(`${ MANAGEMENT.AUTH_CONFIG }/googleoauth`, 'auth/googleoauth');
-  componentForType(`${ MANAGEMENT.AUTH_CONFIG }/azuread`, 'auth/azuread');
-  componentForType(`${ MANAGEMENT.AUTH_CONFIG }/keycloakoidc`, 'auth/oidc');
-
   basicType([
     'config',
     USERS_VIRTUAL_TYPE,
-    // NORMAN.SPOOFED.GROUP_PRINCIPAL,
     ROLES_VIRTUAL_TYPE
   ]);
 
-  // headers(NORMAN.SPOOFED.GROUP_PRINCIPAL, [
-  //   GROUP_NAME,
-  //   GROUP_ROLE_NAME
-  // ]);
 
   // A lot of the built in roles have nicer names returned by nameDisplay. In both tables we want to show both nicer and base names
   const DISPLAY_NAME = {

@@ -14,10 +14,6 @@ const intlCache = {};
 let lastLoaded = 0;
 
 export const state = function() {
-  // const translationContext = require.context('@shell/assets/translations', true, /.*/);
-  // const available = translationContext.keys().map(path => path.replace(/^.*\/([^\/]+)\.[^.]+$/, '$1'));
-  // Using require.context() forces them to all be in the same webpack chunk name... just hardcode the list for now so zh-hans
-  // gets generated as it's own chunk instead of being loaded all the time.
   const available = [DEFAULT_LOCALE, 'zh-hans'];
 
   const out = {

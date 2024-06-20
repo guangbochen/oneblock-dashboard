@@ -110,17 +110,6 @@ export const MONITORING = {
   }
 };
 
-// export const LONGHORN = {
-//   ENGINES:       'longhorn.io.engine',
-//   ENGINE_IMAGES: 'longhorn.io.engineimage',
-//   NODES:         'longhorn.io.node',
-//   REPLICAS:      'longhorn.io.replica',
-//   SETTINGS:      'longhorn.io.setting',
-//   VOLUMES:       'longhorn.io.volume',
-// };
-
-// export const LONGHORN_DRIVER = 'driver.longhorn.io';
-//
 export const SNAPSHOT = 'rke.cattle.io.etcdsnapshot';
 
 // --------------------------------------
@@ -195,53 +184,6 @@ export const ISTIO = {
   VIRTUAL_SERVICE:  'networking.istio.io.virtualservice',
   DESTINATION_RULE: 'networking.istio.io.destinationrule',
   GATEWAY:          'networking.istio.io.gateway'
-};
-
-export const LOGGING = {
-  // LOGGING:        'logging.banzaicloud.io.logging',
-  CLUSTER_FLOW:   'logging.banzaicloud.io.clusterflow',
-  CLUSTER_OUTPUT: 'logging.banzaicloud.io.clusteroutput',
-  FLOW:           'logging.banzaicloud.io.flow',
-  OUTPUT:         'logging.banzaicloud.io.output',
-  SPOOFED:        {
-    FILTERS:            'logging.banzaicloud.io.output.filters',
-    FILTER:             'logging.banzaicloud.io.output.filter',
-    CONCAT:             'logging.banzaicloud.io.output.filters.concat',
-    DEDOT:              'logging.banzaicloud.io.output.filters.dedot',
-    DETECTEXCEPTIONS:   'logging.banzaicloud.io.output.filters.detectExceptions',
-    GEOIP:              'logging.banzaicloud.io.output.filters.geoip',
-    GREP:               'logging.banzaicloud.io.output.filters.grep',
-    PARSER:             'logging.banzaicloud.io.output.filters.parser',
-    PROMETHEUS:         'logging.banzaicloud.io.output.filters.prometheus',
-    RECORD_MODIFIER:    'logging.banzaicloud.io.output.filters.record_modifier',
-    RECORD_TRANSFORMER: 'logging.banzaicloud.io.output.filters.record_transformer',
-    STDOUT:             'logging.banzaicloud.io.output.filters.stdout',
-    SUMOLOGIC:          'logging.banzaicloud.io.output.filters.sumologic',
-    TAG_NORMALISER:     'logging.banzaicloud.io.output.filters.tag_normaliser',
-    THROTTLE:           'logging.banzaicloud.io.output.filters.throttle',
-    RECORD:             'logging.banzaicloud.io.output.filters.record',
-    REGEXPSECTION:      'logging.banzaicloud.io.output.filters.regexpsection',
-    EXCLUDESECTION:     'logging.banzaicloud.io.output.filters.excludesection',
-    ORSECTION:          'logging.banzaicloud.io.output.filters.orsection',
-    ANDSECTION:         'logging.banzaicloud.io.output.filters.andsection',
-    PARSESECTION:       'logging.banzaicloud.io.output.filters.parsesection',
-    METRICSECTION:      'logging.banzaicloud.io.output.filters.metricsection',
-    REPLACE:            'logging.banzaicloud.io.output.filters.replace',
-    SINGLEPARSESECTION: 'logging.banzaicloud.io.output.filters.replace.singleparsesection'
-  }
-};
-
-export const BACKUP_RESTORE = {
-  RESOURCE_SET: 'resources.cattle.io.resourceset',
-  BACKUP:       'resources.cattle.io.backup',
-  RESTORE:      'resources.cattle.io.restore',
-};
-
-export const CIS = {
-  CLUSTER_SCAN:         'cis.cattle.io.clusterscan',
-  CLUSTER_SCAN_PROFILE: 'cis.cattle.io.clusterscanprofile',
-  BENCHMARK:            'cis.cattle.io.clusterscanbenchmark',
-  REPORT:               'cis.cattle.io.clusterscanreport'
 };
 
 export const UI = { NAV_LINK: 'ui.cattle.io.navlink' };

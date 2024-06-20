@@ -17,7 +17,6 @@ import Socket, {
   EVENT_CONNECTED,
   EVENT_DISCONNECTED,
   EVENT_MESSAGE,
-  //  EVENT_FRAME_TIMEOUT,
   EVENT_CONNECT_ERROR,
   EVENT_DISCONNECT_ERROR,
   NO_WATCH,
@@ -275,12 +274,13 @@ function queueChange({ getters, state, rootGetters }, { data, revision }, load, 
     return;
   }
 
-  // console.log(`${ label } Event [${ state.config.namespace }]`, data.type, data.id); // eslint-disable-line no-console
+  console.log(`${ label } Event [${ state.config.namespace }]`, data.type, data.id); // eslint-disable-line no-console
 
   if (!namespaceHandler.validChange({ getters, rootGetters }, type, data)) {
     return;
   }
 
+  console.log("---", namespaceHandler.validChange({ getters, rootGetters }, type, data), load)
   if ( load ) {
     state.queue.push({
       action: 'dispatch',
@@ -902,6 +902,7 @@ const defaultActions = {
 
   'ws.resource.create'(ctx, msg) {
     ctx.state.debugSocket && console.info(`Resource Create [${ ctx.getters.storeName }]`, msg.resourceType, msg); // eslint-disable-line no-console
+    console.log(`Resource Create [${ ctx.getters.storeName }]`, msg.resourceType, msg)
     queueChange(ctx, msg, true, 'Create');
   },
 

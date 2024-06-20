@@ -125,11 +125,9 @@
 // )
 import { AGE, NAME, NAMESPACE as NAMESPACE_COL, STATE } from '@shell/config/table-headers';
 import {
-  CATALOG,
   COUNT,
   SCHEMA,
   MANAGEMENT,
-  NAMESPACE
 } from '@shell/config/types';
 import { VIEW_IN_API, EXPANDED_GROUPS, FAVORITE_TYPES } from '@shell/store/prefs';
 import {
@@ -175,8 +173,6 @@ export const IF_HAVE = {
 };
 
 export function DSL(store, product, module = 'type-map') {
-  // store.commit(`${ module }/product`, { name: product });
-
   return {
     product(inOpt) {
       const opt = {

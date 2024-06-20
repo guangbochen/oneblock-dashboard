@@ -19,7 +19,6 @@ import Loading from '@shell/components/Loading';
 import { _CREATE, _VIEW } from '@shell/config/query-params';
 import { clone } from '@shell/utils/object';
 import InfoBox from '@shell/components/InfoBox';
-import { mapFeature, UNSUPPORTED_STORAGE_DRIVERS } from '@shell/store/features';
 import ResourceManager from '@shell/mixins/resource-manager';
 
 export default {
@@ -91,7 +90,6 @@ export default {
   },
 
   computed: {
-    showUnsupportedStorage: mapFeature(UNSUPPORTED_STORAGE_DRIVERS),
     ...mapGetters(['currentProduct', 'currentCluster']),
 
     readWriteOnce: {
@@ -145,7 +143,7 @@ export default {
       return this.plugin === 'local';
     },
     plugins() {
-      return VOLUME_PLUGINS.filter((plugin) => this.showUnsupportedStorage || plugin.supported);
+      return VOLUME_PLUGINS.filter((plugin) => plugin.supported);
     }
   },
 

@@ -1,9 +1,4 @@
-import { base64Encode } from '@shell/utils/crypto';
 import { randomStr } from '@shell/utils/string';
-
-export const BASE_SCOPES = {
-  github:       ['read:org'],
-};
 
 const KEY = 'rc_nonce';
 const ERR_NONCE = 'nonce';
@@ -107,35 +102,9 @@ export const actions = {
     return out;
   },
 
-  /**
-   * Save nonce details. Information it contains will be used to validate auth requests/responses
-   * Note - this may be structurally different than the nonce we encode and send
-   */
-  saveNonce(ctx, opt) {
-    const strung = JSON.stringify(opt);
-
-    this.$cookies.set(KEY, strung, {
-      path:     '/',
-      sameSite: true,
-      secure:   true,
-    });
-
-    return strung;
-  },
-
-  /**
-   * Convert the nonce into something we can send
-   */
-  encodeNonce(ctx, nonce) {
-    const stringify = JSON.stringify(nonce);
-
-    return base64Encode(stringify, 'url');
-  },
-
-
   async login({ dispatch }, { provider, body }) {
     try {
-      await dispatch('rancher/request', {
+      await dispatch('management/request', {
         url:                  '/v1-public/auth?action=login',
         method:               'post',
         data:                 { ...body },
@@ -162,7 +131,7 @@ export const actions = {
     await this.$plugin.logout();
 
     try {
-      await dispatch('rancher/request', {
+      await dispatch('management/request', {
         url:                  '/v1-public/auth?action=logout',
         method:               'post',
         data:                 {},

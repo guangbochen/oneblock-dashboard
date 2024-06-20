@@ -188,14 +188,6 @@ export default class User extends HybridModel {
   }
 
   get canDelete() {
-    return this.norman?.hasLink('remove') && !this.isCurrentUser;
-  }
-
-  get canUpdate() {
-    return this.norman?.hasLink('update');
-  }
-
-  remove() {
-    return this.norman?.remove();
+    return this.hasLink('remove') && !this.isCurrentUser;
   }
 }

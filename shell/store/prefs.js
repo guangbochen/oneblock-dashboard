@@ -74,8 +74,6 @@ export const LOGS_RANGE = create('logs-range', '30 minutes', { parseJSON });
 export const HIDE_REPOS = create('hide-repos', [], { parseJSON });
 export const HIDE_DESC = create('hide-desc', [], { parseJSON });
 export const HIDE_SENSITIVE = create('hide-sensitive', true, { options: [true, false], parseJSON });
-// export const SHOW_PRE_RELEASE = create('show-pre-release', false, { options: [false, true], parseJSON });
-// export const SHOW_CHART_MODE = create('chart-mode', 'featured', { parseJSON });
 
 export const DATE_FORMAT = create('date-format', 'ddd, MMM D YYYY', {
   options: [
@@ -247,6 +245,7 @@ export const mutations = {
   },
 
   reset(state) {
+    console.log('### Mutation reset');
     for (const key in state.definitions) {
       if ( state.definitions[key]?.asCookie ) {
         continue;
