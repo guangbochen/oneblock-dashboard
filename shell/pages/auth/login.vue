@@ -10,7 +10,6 @@ import { Banner } from '@components/Banner';
 import { LOCAL, LOGGED_OUT, TIMED_OUT, _FLAGGED } from '@shell/config/query-params';
 import { Checkbox } from '@components/Form/Checkbox';
 import Password from '@shell/components/form/Password';
-// import { configType } from '@shell/models/management.cattle.io.authconfig';
 import { mapGetters } from 'vuex';
 import { MANAGEMENT } from '@shell/config/types';
 import { SETTING } from '@shell/config/settings';
@@ -19,7 +18,6 @@ import {
   getVendor,
   getProduct,
 } from '@shell/config/private-label';
-import loadPlugins from '@shell/plugins/plugin';
 
 export default {
   name:       'Login',
@@ -29,84 +27,17 @@ export default {
   },
 
   async asyncData({ route, redirect, store }) {
-    // // const drivers = await store.dispatch('auth/getAuthProviders');
-    // // const providers = sortBy(drivers.map((x) => x.id), ['id']);
-
-    // // const hasLocal = providers.includes('local');
-    // // const hasOthers = hasLocal && !!providers.find((x) => x !== 'local');
-
-    // // if ( hasLocal ) {
-    // //   // Local is special and handled here so that it can be toggled
-    // //   removeObject(providers, 'local');
-    // // }
-
-    // let firstLoginSetting, plSetting, brand;
-
-    // // Load settings.
-    // // For newer versions this will return all settings if you are somehow logged in,
-    // // and just the public ones if you aren't.
-    // try {
-    //   await store.dispatch('management/findAll', {
-    //     type: MANAGEMENT.SETTING,
-    //     opt:  {
-    //       load: _ALL_IF_AUTHED, url: `/v1/${ MANAGEMENT.SETTING }`, redirectUnauthorized: false
-    //     },
-    //   });
-
-    //   firstLoginSetting = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FIRST_LOGIN);
-    //   plSetting = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.PL);
-    //   brand = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.BRAND);
-    // } catch (e) {
-    //   // Older versions used Norman API to get these
-    //   firstLoginSetting = await store.dispatch('rancher/find', {
-    //     type: 'setting',
-    //     id:   SETTING.FIRST_LOGIN,
-    //     opt:  { url: `/v3/settings/${ SETTING.FIRST_LOGIN }` }
-    //   });
-
-    //   plSetting = await store.dispatch('rancher/find', {
-    //     type: 'setting',
-    //     id:   SETTING.PL,
-    //     opt:  { url: `/v3/settings/${ SETTING.PL }` }
-    //   });
-
-    //   brand = await store.dispatch('rancher/find', {
-    //     type: 'setting',
-    //     id:   SETTING.BRAND,
-    //     opt:  { url: `/v3/settings/${ SETTING.BRAND }` }
-    //   });
-    // }
-
-    // if (plSetting.value?.length && plSetting.value !== getVendor()) {
-    //   setVendor(plSetting.value);
-    // }
-
-    // if (brand?.value?.length && brand.value !== getBrand()) {
-    //   setBrand(brand.value);
-    // }
-
-    // let singleProvider;
-
-    // if (providers.length === 1) {
-    //   singleProvider = providers[0];
-    // }
-
     return {
       vendor:             getVendor(),
-      // providers,
-      // hasOthers,
       hasLocal:           true,
       showLocal:          true,
       firstLogin:         false,
-      // singleProvider,
-      // showLocaleSelector: !process.env.loginLocaleSelector || process.env.loginLocaleSelector === 'true'
-      showLocaleSelector: false
+      showLocaleSelector: true,
     };
   },
 
   data({ $cookies }) {
     const username = $cookies.get(USERNAME, { parseJSON: false }) || '';
-
     return {
       product: getProduct(),
 
@@ -118,24 +49,12 @@ export default {
       loggedOut: this.$route.query[LOGGED_OUT] === _FLAGGED,
       err:       this.$route.query.err,
 
-      providers:          [],
-      providerComponents: [],
       customLoginError:   {}
     };
   },
 
   computed: {
     ...mapGetters({ t: 'i18n/t' }),
-
-    nonLocalPrompt() {
-      if (this.singleProvider) {
-        const provider = this.displayName(this.singleProvider);
-
-        return this.t('login.useProvider', { provider });
-      }
-
-      return this.t('login.useNonLocal');
-    },
 
     errorMessage() {
       if (this.err === LOGIN_ERRORS.CLIENT_UNAUTHORIZED) {
@@ -159,21 +78,10 @@ export default {
       return '';
     },
 
-    // kubectlCmd() {
-    //   return "kubectl get secret --namespace cattle-system bootstrap-secret -o go-template='{{.data.bootstrapPassword|base64decode}}{{\"\\n\"}}'";
-    // },
-
     hasLoginMessage() {
       return this.errorToDisplay || this.loggedOut || this.timedOut;
     }
 
-  },
-
-  created() {
-    this.providerComponents = this.providers.map((name) => {
-      return this.$store.getters['type-map/importLogin'](name);
-      // return this.$store.getters['type-map/importLogin'](configType[name] || name);
-    });
   },
 
   async fetch() {
@@ -239,15 +147,6 @@ export default {
           }
         });
 
-        // const user = await this.$store.dispatch('rancher/findAll', {
-        //   type: NORMAN.USER,
-        //   opt:  { url: '/v3/users?me=true', load: _MULTI }
-        // });
-        //
-        // if (!!user?.[0]) {
-        //   this.$store.dispatch('auth/gotUser', user[0]);
-        // }
-
         if ( this.remember ) {
           this.$cookies.set(USERNAME, this.username, {
             encode:   (x) => x,
@@ -259,15 +158,6 @@ export default {
         } else {
           this.$cookies.remove(USERNAME);
         }
-
-        // User logged with local login - we don't do any redirect/reload, so the boot-time plugin will not run again to laod the plugins
-        // so we manually load them here - other SSO auth providers bounce out and back to the Dashboard, so on the bounce-back
-        // the plugins will load via the boot-time plugin
-        await loadPlugins({
-          app:     this.$store.app,
-          store:   this.$store,
-          $plugin: this.$store.$plugin
-        });
 
         this.$router.replace('/');
       } catch (err) {
@@ -313,22 +203,6 @@ export default {
           </h4>
         </div>
 
-        <div
-          v-if="(!hasLocal || (hasLocal && !showLocal)) && providers.length"
-          :class="{'mt-30': !hasLoginMessage}"
-        >
-          <component
-            :is="providerComponents[idx]"
-            v-for="(name, idx) in providers"
-            :key="name"
-            class="mb-10"
-            :focus-on-mount="(idx === 0 && !showLocal)"
-            :name="name"
-            :open="!showLocal"
-            @showInputs="showLocal = false"
-            @error="handleProviderError"
-          />
-        </div>
         <template v-if="hasLocal">
           <form
             v-if="showLocal"
@@ -395,21 +269,10 @@ export default {
               {{ t('login.useLocal') }}
             </a>
           </div>
-          <div
-            v-if="hasLocal && showLocal && providers.length"
-            class="mt-20 text-center"
-          >
-            <a
-              role="button"
-              @click="toggleLocal"
-            >
-              {{ nonLocalPrompt }}
-            </a>
-          </div>
         </template>
         <div
           v-if="showLocaleSelector"
-          class="locale-elector"
+          class="locale-elector text-center"
         >
           <LocaleSelector mode="login" />
         </div>
@@ -484,5 +347,8 @@ export default {
   .locale-elector {
     position: absolute;
     bottom: 30px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0 auto;
   }
 </style>

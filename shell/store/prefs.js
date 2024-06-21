@@ -116,7 +116,7 @@ export const MENU_MAX_CLUSTERS = 10;
 export const SCALE_POOL_PROMPT = create('scale-pool-prompt', null, { parseJSON });
 // --------------------
 
-const cookiePrefix = 'R_';
+const cookiePrefix = 'L_';
 const cookieOptions = {
   maxAge:   365 * 86400,
   path:     '/',

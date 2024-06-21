@@ -25,7 +25,7 @@ export default {
   computed: {
     ...mapGetters(['releaseNotesUrl']),
     rancherVersion() {
-      return this.settings.find((s) => s.id === SETTING.VERSION_RANCHER);
+      return this.settings.find((s) => s.id === SETTING.VERSION_PRODUCT);
     },
     appName() {
       return getVendor();

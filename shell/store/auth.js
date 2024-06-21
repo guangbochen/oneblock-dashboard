@@ -77,10 +77,6 @@ export const actions = {
     commit('gotHeader', fromHeader);
   },
 
-  gotUser({ commit }, user) {
-    commit('gotUser', user);
-  },
-
   setInitialPass({ commit }, pass) {
     commit('initialPass', pass);
   },

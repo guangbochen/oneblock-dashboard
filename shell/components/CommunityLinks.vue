@@ -1,10 +1,7 @@
 <script>
 import SimpleBox from '@shell/components/SimpleBox';
 import Closeable from '@shell/mixins/closeable';
-import { MANAGEMENT } from '@shell/config/types';
-import { SETTING } from '@shell/config/settings';
 import { mapGetters } from 'vuex';
-// import { isRancherPrime } from '@shell/config/version';
 import { fetchLinks } from '@shell/config/home-links';
 
 export default {

@@ -2,7 +2,6 @@ import { productsLoaded } from '@shell/store/type-map';
 import { clearModelCache } from '@shell/plugins/dashboard-store/model-loader';
 import { Plugin } from './plugin';
 import { PluginRoutes } from './plugin-routes';
-import { UI_PLUGIN_BASE_URL } from '@shell/config/uiplugins';
 import { ExtensionPoint } from './types';
 
 const MODEL_TYPE = 'models';
@@ -41,24 +40,6 @@ export default function({
       };
 
       return internal;
-    },
-
-    // Load a plugin from a UI package
-    loadPluginAsync(plugin) {
-      const { name, version } = plugin;
-      const id = `${ name }-${ version }`;
-      let url;
-
-      if (plugin?.metadata?.direct === 'true') {
-        url = plugin.endpoint;
-      } else {
-        // See if the plugin has a main metadata property set
-        const main = plugin?.metadata?.main || `${ id }.umd.min.js`;
-
-        url = `${ UI_PLUGIN_BASE_URL }/${ name }/${ version }/plugin/${ main }`;
-      }
-
-      return this.loadAsync(id, url);
     },
 
     // Load a plugin from a UI package
@@ -112,9 +93,6 @@ export default function({
             // Load all of the types etc from the plugin
             this.applyPlugin(plugin);
 
-            // Add the plugin to the store
-            store.dispatch('uiplugins/addPlugin', plugin);
-
             resolve();
           };
 
@@ -158,8 +136,6 @@ export default function({
         // Load all of the types etc from the plugin
         this.applyPlugin(plugin);
 
-        // Add the plugin to the store
-        store.dispatch('uiplugins/addPlugin', plugin);
       } catch (e) {
         console.error(`Error loading plugin ${ plugin.name }`); // eslint-disable-line no-console
         console.error(e); // eslint-disable-line no-console
@@ -227,9 +203,6 @@ export default function({
 
       // Call plugin uninstall hooks
       plugin.uninstallHooks.forEach((fn) => fn(plugin, this.internal()));
-
-      // Remove the plugin itself
-      promises.push( store.dispatch('uiplugins/removePlugin', name));
 
       // Unregister vuex stores
       plugin.stores.forEach((pStore) => pStore.unregister(store));

@@ -1,22 +1,3 @@
-import { MANAGEMENT } from '@shell/config/types';
-import { SETTING } from '@shell/config/settings';
-
-export function filterHiddenLocalCluster(mgmtClusters, store) {
-  const hideLocalSetting = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.HIDE_LOCAL_CLUSTER) || {};
-  const value = hideLocalSetting.value || hideLocalSetting.default || 'false';
-  const hideLocal = value === 'true';
-
-  if (!hideLocal) {
-    return mgmtClusters;
-  }
-
-  return mgmtClusters.filter((c) => {
-    const target = c.mgmt || c;
-
-    return !target.isLocal;
-  });
-}
-
 const clusterNameSegments = /([A-Za-z]+|\d+)/g;
 
 /**

@@ -118,24 +118,6 @@ module.exports = function(dir, _appConfig) {
     });
   }
 
-  serverMiddleware.push({
-    path:    '/uiplugins-catalog',
-    handler: (req, res, next) => {
-      const p = req.url.split('?');
-
-      try {
-        const proxy = createProxyMiddleware({
-          target:      p[1],
-          pathRewrite: { '^.*': p[0] }
-        });
-
-        return proxy(req, res, next);
-      } catch (e) {
-        console.error(e); // eslint-disable-line no-console
-      }
-    }
-  });
-
   function includePkg(name) {
     if (name.startsWith('.') || name === 'node_modules') {
       return false;

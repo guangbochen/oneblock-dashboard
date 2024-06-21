@@ -140,7 +140,6 @@ export default {
 
     configurationApps() {
       const options = this.options;
-      console.log("aa123", this.options);
 
       return options.filter((opt) => opt.category === 'configuration');
     },

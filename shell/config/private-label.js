@@ -6,7 +6,7 @@ export const CUSTOM = 2;
 export const DOCS_BASE = 'https://llmos.docs.1block.ai/latest';
 
 const STANDARD_VENDOR = 'LLMOS';
-const STANDARD_PRODUCT = 'Explorer';
+const STANDARD_PRODUCT = 'Dashboard';
 
 let mode = STANDARD;
 let vendor = STANDARD_VENDOR;
