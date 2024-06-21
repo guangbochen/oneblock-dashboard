@@ -274,13 +274,10 @@ function queueChange({ getters, state, rootGetters }, { data, revision }, load, 
     return;
   }
 
-  console.log(`${ label } Event [${ state.config.namespace }]`, data.type, data.id); // eslint-disable-line no-console
-
   if (!namespaceHandler.validChange({ getters, rootGetters }, type, data)) {
     return;
   }
 
-  console.log("---", namespaceHandler.validChange({ getters, rootGetters }, type, data), load)
   if ( load ) {
     state.queue.push({
       action: 'dispatch',

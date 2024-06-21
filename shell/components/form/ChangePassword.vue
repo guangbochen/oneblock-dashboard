@@ -272,12 +272,12 @@ export default {
           label-key="changePassword.deleteKeys.label"
           class="mt-10"
         />
-        <Checkbox
-          v-if="isCreateEdit"
-          v-model="userChangeOnLogin"
-          label-key="changePassword.changeOnLogin.label"
-          class="mt-10 type"
-        />
+<!--        <Checkbox-->
+<!--          v-if="isCreateEdit"-->
+<!--          v-model="userChangeOnLogin"-->
+<!--          label-key="changePassword.changeOnLogin.label"-->
+<!--          class="mt-10 type"-->
+<!--        />-->
         <Checkbox
           v-if="isCreateEdit"
           v-model="isRandomGenerated"

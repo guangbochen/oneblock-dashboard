@@ -12,14 +12,10 @@ import CountGauge from '@shell/components/CountGauge';
 import { allHash } from '@shell/utils/promise';
 import DashboardMetrics from '@shell/components/DashboardMetrics';
 import { mapGetters } from 'vuex';
-import { allDashboardsExist } from '@shell/utils/grafana';
 import PlusMinus from '@shell/components/form/PlusMinus';
 import { matches } from '@shell/utils/selector';
-import { PROJECT } from '@shell/config/labels-annotations';
 
 const SCALABLE_TYPES = Object.values(SCALABLE_WORKLOAD_TYPES);
-const WORKLOAD_METRICS_DETAIL_URL = '/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/d/rancher-workload-pods-1/rancher-workload-pods?orgId=1';
-const WORKLOAD_METRICS_SUMMARY_URL = '/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/d/rancher-workload-1/rancher-workload?orgId=1';
 
 export const WORKLOAD_TYPE_TO_KIND_MAPPING = {
   // Each deployment creates a replicaset and the metrics are published for a replicaset.
@@ -83,20 +79,6 @@ export default {
     }
 
     const isMetricsSupportedKind = METRICS_SUPPORTED_KINDS.includes(this.value.type);
-
-    this.showMetrics = isMetricsSupportedKind && await allDashboardsExist(this.$store, this.currentCluster.id, [WORKLOAD_METRICS_DETAIL_URL, WORKLOAD_METRICS_SUMMARY_URL]);
-    if (!this.showMetrics) {
-      const namespace = await this.$store.dispatch('cluster/find', { type: NAMESPACE, id: this.value.metadata.namespace });
-
-      const projectId = namespace?.metadata?.labels[PROJECT];
-
-      if (projectId) {
-        this.WORKLOAD_PROJECT_METRICS_DETAIL_URL = `/api/v1/namespaces/cattle-project-${ projectId }-monitoring/services/http:cattle-project-${ projectId }-monitoring-grafana:80/proxy/d/rancher-pod-containers-1/rancher-workload-pods?orgId=1'`;
-        this.WORKLOAD_PROJECT_METRICS_SUMMARY_URL = `/api/v1/namespaces/cattle-project-${ projectId }-monitoring/services/http:cattle-project-${ projectId }-monitoring-grafana:80/proxy/d/rancher-pod-1/rancher-workload?orgId=1`;
-
-        this.showProjectMetrics = await allDashboardsExist(this.$store, this.currentCluster.id, [this.WORKLOAD_PROJECT_METRICS_DETAIL_URL, this.WORKLOAD_PROJECT_METRICS_SUMMARY_URL], 'cluster', projectId);
-      }
-    }
     this.findMatchingServices();
     this.findMatchingIngresses();
   },
@@ -110,10 +92,6 @@ export default {
       matchingIngresses:               [],
       allJobs:                         [],
       allNodes:                        [],
-      WORKLOAD_METRICS_DETAIL_URL,
-      WORKLOAD_METRICS_SUMMARY_URL,
-      POD_PROJECT_METRICS_DETAIL_URL:  '',
-      POD_PROJECT_METRICS_SUMMARY_URL: '',
       showMetrics:                     false,
       showProjectMetrics:              false,
     };
@@ -424,38 +402,6 @@ export default {
         :label="t('workload.container.titles.metrics')"
         name="workload-metrics"
         :weight="3"
-      >
-        <template #default="props">
-          <DashboardMetrics
-            v-if="props.active"
-            :detail-url="WORKLOAD_METRICS_DETAIL_URL"
-            :summary-url="WORKLOAD_METRICS_SUMMARY_URL"
-            :vars="graphVars"
-            graph-height="550px"
-          />
-        </template>
-      </Tab>
-      <Tab
-        v-if="showProjectMetrics"
-        :label="t('workload.container.titles.metrics')"
-        name="workload-metrics"
-        :weight="3"
-      >
-        <template #default="props">
-          <DashboardMetrics
-            v-if="props.active"
-            :detail-url="WORKLOAD_PROJECT_METRICS_DETAIL_URL"
-            :summary-url="WORKLOAD_PROJECT_METRICS_SUMMARY_URL"
-            :vars="graphVars"
-            graph-height="550px"
-          />
-        </template>
-      </Tab>
-      <Tab
-        v-if="v1MonitoringUrl"
-        name="v1Metrics"
-        :label="t('node.detail.tab.metrics')"
-        :weight="10"
       >
       </Tab>
       <Tab

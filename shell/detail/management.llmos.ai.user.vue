@@ -130,40 +130,6 @@ export default {
           :search="false"
         />
       </Tab>
-      <Tab
-        v-if="clusterBindings"
-        label-key="user.detail.clusterRoles.label"
-        name="cr"
-        :weight="2"
-      >
-        <div class="subtext">
-          {{ t("user.detail.clusterRoles.description") }}
-        </div>
-        <SortableTable
-          :rows="clusterBindings"
-          :headers="headers.cr"
-          key-field="id"
-          :table-actions="false"
-          :search="false"
-        />
-      </Tab>
-      <Tab
-        v-if="projectBindings"
-        label-key="user.detail.projectRoles.label"
-        name="pr"
-        :weight="1"
-      >
-        <div class="subtext">
-          {{ t("user.detail.projectRoles.description") }}
-        </div>
-        <SortableTable
-          :rows="projectBindings"
-          :headers="headers.pr"
-          key-field="id"
-          :table-actions="false"
-          :search="false"
-        />
-      </Tab>
     </ResourceTabs>
   </div>
 </template>

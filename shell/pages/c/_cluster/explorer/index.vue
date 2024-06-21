@@ -15,7 +15,6 @@ import {
   COUNT,
   SECRET
 } from '@shell/config/types';
-import { setPromiseResult } from '@shell/utils/promise';
 import AlertTable from '@shell/components/AlertTable';
 import { Banner } from '@components/Banner';
 import { parseSi, createMemoryValues } from '@shell/utils/units';
@@ -26,7 +25,6 @@ import {
 } from '@shell/config/table-headers';
 import Tabbed from '@shell/components/Tabbed';
 import Tab from '@shell/components/Tabbed/Tab';
-import { allDashboardsExist } from '@shell/utils/grafana';
 import EtcdInfoBanner from '@shell/components/EtcdInfoBanner';
 import metricPoller from '@shell/mixins/metric-poller';
 import ResourceSummary, { resourceCounts } from '@shell/components/ResourceSummary';
@@ -42,13 +40,6 @@ import Certificates from '@shell/components/Certificates';
 import { NAME as EXPLORER } from '@shell/config/product/explorer';
 
 export const RESOURCES = [NAMESPACE, INGRESS, PV, WORKLOAD_TYPES.DEPLOYMENT, WORKLOAD_TYPES.STATEFUL_SET, WORKLOAD_TYPES.JOB, WORKLOAD_TYPES.DAEMON_SET, SERVICE];
-
-const CLUSTER_METRICS_DETAIL_URL = '/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/d/rancher-cluster-nodes-1/rancher-cluster-nodes?orgId=1';
-const CLUSTER_METRICS_SUMMARY_URL = '/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/d/rancher-cluster-1/rancher-cluster?orgId=1';
-const K8S_METRICS_DETAIL_URL = '/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/d/rancher-k8s-components-nodes-1/rancher-kubernetes-components-nodes?orgId=1';
-const K8S_METRICS_SUMMARY_URL = '/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/d/rancher-k8s-components-1/rancher-kubernetes-components?orgId=1';
-const ETCD_METRICS_DETAIL_URL = '/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/d/rancher-etcd-nodes-1/rancher-etcd-nodes?orgId=1';
-const ETCD_METRICS_SUMMARY_URL = '/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/d/rancher-etcd-1/rancher-etcd?orgId=1';
 
 const COMPONENT_STATUS = [
   'etcd',
@@ -78,35 +69,6 @@ export default {
 
   fetch() {
     fetchClusterResources(this.$store, NODE);
-
-    if (this.currentCluster) {
-      setPromiseResult(
-        allDashboardsExist(this.$store, this.currentCluster.id, [CLUSTER_METRICS_DETAIL_URL, CLUSTER_METRICS_SUMMARY_URL]),
-        this,
-        'showClusterMetrics',
-        `Determine cluster metrics`
-      );
-      setPromiseResult(
-        allDashboardsExist(this.$store, this.currentCluster.id, [K8S_METRICS_DETAIL_URL, K8S_METRICS_SUMMARY_URL]),
-        this,
-        'showK8sMetrics',
-        `Determine k8s metrics`
-      );
-      setPromiseResult(
-        allDashboardsExist(this.$store, this.currentCluster.id, [ETCD_METRICS_DETAIL_URL, ETCD_METRICS_SUMMARY_URL]),
-        this,
-        'showEtcdMetrics',
-        `Determine etcd metrics`
-      );
-
-      // It's not enough to check that the grafana links are working for the current user; embedded cluster-level dashboards should only be shown if the user can view the grafana endpoint
-      // https://github.com/rancher/dashboard/issues/9792
-      // setPromiseResult(canViewGrafanaLink(this.$store), this, 'canViewMetrics', 'Determine Grafana Permission');
-
-      if (this.currentCluster.isLocal && this.$store.getters['management/schemaFor'](MANAGEMENT.NODE)) {
-        this.$store.dispatch('management/findAll', { type: MANAGEMENT.NODE });
-      }
-    }
   },
 
   data() {
@@ -126,12 +88,6 @@ export default {
       showK8sMetrics:     false,
       showEtcdMetrics:    false,
       canViewMetrics:     false,
-      CLUSTER_METRICS_DETAIL_URL,
-      CLUSTER_METRICS_SUMMARY_URL,
-      K8S_METRICS_DETAIL_URL,
-      K8S_METRICS_SUMMARY_URL,
-      ETCD_METRICS_DETAIL_URL,
-      ETCD_METRICS_SUMMARY_URL,
       clusterCounts,
       selectedTab:        'cluster-events',
       extensionCards:     getApplicableExtensionEnhancements(this, ExtensionPoint.CARD, CardLocation.CLUSTER_DASHBOARD_CARD, this.$route),
@@ -550,61 +506,6 @@ export default {
         </Tab>
       </Tabbed>
     </div>
-    <Tabbed
-      v-if="hasMetricsTabs"
-      default-tab="cluster-metrics"
-      :use-hash="false"
-      class="mt-30"
-    >
-      <Tab
-        v-if="showClusterMetrics"
-        name="cluster-metrics"
-        :label="t('clusterIndexPage.sections.clusterMetrics.label')"
-        :weight="2"
-      >
-        <template #default="props">
-          <DashboardMetrics
-            v-if="props.active"
-            :detail-url="CLUSTER_METRICS_DETAIL_URL"
-            :summary-url="CLUSTER_METRICS_SUMMARY_URL"
-            graph-height="825px"
-          />
-        </template>
-      </Tab>
-      <Tab
-        v-if="showK8sMetrics"
-        name="k8s-metrics"
-        :label="t('clusterIndexPage.sections.k8sMetrics.label')"
-        :weight="1"
-      >
-        <template #default="props">
-          <DashboardMetrics
-            v-if="props.active"
-            :detail-url="K8S_METRICS_DETAIL_URL"
-            :summary-url="K8S_METRICS_SUMMARY_URL"
-            graph-height="550px"
-          />
-        </template>
-      </Tab>
-      <Tab
-        v-if="showEtcdMetrics"
-        name="etcd-metrics"
-        :label="t('clusterIndexPage.sections.etcdMetrics.label')"
-        :weight="0"
-      >
-        <template #default="props">
-          <DashboardMetrics
-            v-if="props.active"
-            class="etcd-metrics"
-            :detail-url="ETCD_METRICS_DETAIL_URL"
-            :summary-url="ETCD_METRICS_SUMMARY_URL"
-            graph-height="550px"
-          >
-            <EtcdInfoBanner />
-          </DashboardMetrics>
-        </template>
-      </Tab>
-    </Tabbed>
   </section>
 </template>
 
