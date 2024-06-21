@@ -11,19 +11,7 @@ export default {
   mixins: [ResourceFetchNamespaced],
 
   data() {
-    // fetching the settings related to manual refresh from global settings
-    const perfSetting = this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.UI_PERFORMANCE);
-    let perfConfig = {};
-
-    if (perfSetting && perfSetting.value) {
-      try {
-        perfConfig = JSON.parse(perfSetting.value);
-      } catch (e) {
-        console.warn('ui-performance setting contains invalid data'); // eslint-disable-line no-console
-      }
-    } else {
-      perfConfig = DEFAULT_PERF_SETTING;
-    }
+    let perfConfig = DEFAULT_PERF_SETTING;
 
     return {
       perfConfig,

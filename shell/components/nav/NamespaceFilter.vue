@@ -42,7 +42,6 @@ export default {
     // This is done once and up front
     // - it doesn't need to be re-active
     // - added it as a computed caused massive amounts of churn around the `filtered` watcher
-    await this.$store.dispatch('management/find', { type: MANAGEMENT.SETTING, id: SETTING.UI_PERFORMANCE });
     this.namespaceFilterMode = this.calcNamespaceFilterMode();
   },
 

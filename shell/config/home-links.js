@@ -11,22 +11,22 @@ const DEFAULT_LINKS = [
   },
   {
     key:     'forums',
-    value:   'https://forums.rancher.com/',
+    value:   'https://forums.1block.ai/',
     enabled: true,
   },
   {
-    key:     'slack',
-    value:   'https://slack.rancher.io/',
+    key:     'discord',
+    value:   'https://discord.com/invite/5BnNqC5ccB',
     enabled: true,
   },
   {
     key:     'issues',
-    value:   'https://github.com/rancher/dashboard/issues/new/choose',
+    value:   'https://github.com/llmos-ai/llmos/issues/new/choose',
     enabled: true,
   },
   {
     key:     'getStarted',
-    value:   `${ DOCS_BASE }/getting-started/overview`,
+    value:   `${ DOCS_BASE }/overview`,
     enabled: true,
   },
 ];
@@ -50,17 +50,6 @@ export const CUSTOM_LINKS_VERSION = 'v1';
 // Fetch the settings required for the links, taking into account legacy settings if we have not migrated
 export async function fetchLinks(store, hasSupport, isSupportPage, t) {
   let uiLinks = {};
-
-  try {
-    const uiLinksSetting = await store.dispatch('management/find', { type: MANAGEMENT.SETTING, id: SETTING.UI_CUSTOM_LINKS });
-
-    // Don't try and parse empty string
-    if (uiLinksSetting.value) {
-      uiLinks = JSON.parse(uiLinksSetting.value);
-    }
-  } catch (e) {
-    console.warn('Could not parse custom link settings', e); // eslint-disable-line no-console
-  }
 
   // If uiLinks is set and has the correct version, then we are okay, otherwise we need to migrate from the old settings
   if (uiLinks?.version === CUSTOM_LINKS_VERSION) {

@@ -56,8 +56,6 @@ export const SETTING = {
   LINK_COLOR:                           'ui-link-color',
   COMMUNITY_LINKS:                      'ui-community-links',
   FAVICON:                              'ui-favicon',
-  UI_PERFORMANCE:                       'ui-performance',
-  UI_CUSTOM_LINKS:                      'ui-custom-links',
   /**
    * Allow the backend to force a light/dark theme. Used in non-rancher world and results in the theme used
    * both pre and post log in. If not present defaults to the usual process
@@ -137,7 +135,7 @@ export interface PerfSettings {
   };
   manualRefresh: {};
   disableWebsocketNotification: boolean;
-  // garbageCollection: GC_PREFERENCES;
+  garbageCollection: {};
   forceNsFilterV2: any;
   advancedWorker: {};
   kubeAPI: PerfSettingsKubeApi;
@@ -156,8 +154,20 @@ export const DEFAULT_PERF_SETTING: PerfSettings = {
     enabled:   false,
     threshold: 1500,
   },
+
   disableWebsocketNotification: true,
-  // garbageCollection:            GC_DEFAULTS,
+  garbageCollection: {
+    enabled: false,
+
+    // When GC Runs
+    enabledInterval:   true,
+    interval:          1 * 60 * 5,
+    enabledOnNavigate: true,
+
+    // How GC handles resources when GC'ing
+    ageThreshold:   1 * 60 * 2,
+    countThreshold: 500,
+  },
   forceNsFilterV2:              { enabled: false },
   advancedWorker:               { enabled: false },
   kubeAPI:                      {
@@ -178,3 +188,4 @@ export const DEFAULT_PERF_SETTING: PerfSettings = {
     }
   }
 };
+

@@ -25,7 +25,7 @@ export default {
   mixins: [Closeable],
 
   async fetch() {
-    this.links = await fetchLinks(this.$store, this.hasSupport, this.isSupportPage, (str) => this.t(str));
+    this.links = await fetchLinks(this.$store, false, this.isSupportPage, (str) => this.t(str));
   },
 
   data() {
@@ -40,10 +40,6 @@ export default {
     hasOptions() {
       return !!Object.keys(this.options).length || !!Object.keys(this.$slots).length;
     },
-
-    // hasSupport() {
-    //   return isRancherPrime() || this.$store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.SUPPORTED )?.value === 'true';
-    // },
 
     options() {
       // Use linkOptions if provided - used by Harvester

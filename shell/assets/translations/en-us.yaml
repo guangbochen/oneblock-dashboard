@@ -360,225 +360,6 @@ addonConfigConfirmation:
 addProjectMemberDialog:
   title: Add Project Member
 
-authConfig:
-  accessMode:
-    label: 'Configure who should be able to login and use {vendor}'
-    required: Restrict access to only the authorized users & groups
-    restricted: 'Allow members of clusters and projects, plus authorized users & groups'
-    unrestricted: Allow any valid user
-  allowedPrincipalIds:
-    title: Authorized Users & Groups
-  associatedWarning: 'Note: The {provider} user you authenticate as will be associated as an alternate way to login to the {vendor} user you are currently logged in as <code>{username}</code>; all the global permissions, project, and cluster role bindings of this {vendor} user will also apply to the {provider} user.'
-  github:
-    clientId:
-      label: Client ID
-    clientSecret:
-      label: Client Secret
-    form:
-      app:
-        label: Application name
-        value: 'Anything you like, e.g. My {vendor}'
-      callback:
-        label: Authorization callback URL
-      description:
-        label: Application description
-        value: 'Optional, can be left blank'
-      homepage:
-        label: Homepage URL
-      instruction: 'Fill in the form with these values:'
-      prefix:
-        1: <li><a href="{baseUrl}/settings/developers" target="_blank" rel="noopener noreferrer nofollow">Click here</a> to go to GitHub application settings in a new window.</li>
-        2: <li>Click on the "OAuth Apps" tab.</li>
-        3: <li>Click the "New OAuth App" button.</li>
-      suffix:
-        1: <li>Click "Register application"</li>
-        2: <li>Copy and paste the Client ID and Client Secret of your newly created OAuth app into the fields below</li>
-    host:
-      label: GitHub Enterprise Host
-      placeholder: e.g. github.mycompany.example
-    target:
-      label: Which version of GitHub do you want to use?
-      private: A private installation of GitHub Enterprise
-      public: Public GitHub.com
-    table:
-      server: Server
-      clientId: Client ID
-  googleoauth:
-    adminEmail: Admin Email
-    domain: Domain
-    oauthCredentials:
-      label: OAuth Credentials
-      tip: The OAuth Credentials JSON can be found in the Google API developers console.
-    serviceAccountCredentials:
-      label: Service Account Credentials
-      tip: The Service Account Credentials JSON can be found in the service accounts section of the Google API developers console.
-    steps:
-      1:
-        title: 'Click <a href="https://console.developers.google.com/apis/credentials" target="_blank" rel="noopener noreferrer nofollow">here</a> to open applications settings in a new window'
-        body:
-         1: Login to your account. Navigate to "APIs & Services" and then select "OAuth consent screen".
-         2: 'Authorized domains:'
-         3: 'Application homepage link: '
-         4: 'Under Scopes for Google APIs, enable "email", "profile", and "openid".'
-         5: 'Click on "Save".'
-        topPrivateDomain: 'Top private domain of:'
-      2:
-        title: 'Navigate to the "Credentials" tab to create your OAuth client ID'
-        body:
-          1: 'Select the "Create Credentials" dropdown, and select "OAuth clientID", then select "Web application".'
-          2: 'Authorized Javascript origins:'
-          3: 'Authorized redirect URIs:'
-          4: 'Click "Create", and then click on the "Download JSON" button.'
-          5: 'Upload the downloaded JSON file in the OAuth credentials box.'
-      3:
-        title: 'Create Service Account credentials'
-        introduction: 'Follow <a href="{docsBase}/admin-settings/authentication/google/#3-creating-service-account-credentials" target="_blank" rel="noopener noreferrer nofollow">this</a> guide to:'
-        body:
-          1: Create a service account.
-          2: Generate a key for the service account.
-          3: Add the service account as an OAuth client in your google domain.
-  ldap:
-    freeipa: Configure a FreeIPA server
-    activedirectory: Configure an Active Directory account
-    openldap: Configure an OpenLDAP server
-    defaultLoginDomain:
-      label: Default Login Domain
-      placeholder: eg mycompany
-      hint: This domain will be used if a user logs in without specifying one.
-    cert: Certificate
-    disabledStatusBitmask: Disabled Status Bitmask
-    groupDNAttribute: Group DN Attribute
-    groupMemberMappingAttribute: Group Member Mapping Attribute
-    groupMemberUserAttribute: Group Member User Attribute
-    groupSearchBase:
-      label: Group Search Base
-      placeholder: 'ou=groups,dc=mycompany,dc=com'
-    hostname:
-      label: Hostname/IP
-      placeholder: eg server1,server2
-      hint: Multiple servers can be specified as a comma separated list
-    loginAttribute: Login Attribute
-    nameAttribute: Name Attribute
-    nestedGroupMembership:
-      label: Nested Group Membership
-      options:
-        direct: Search only direct group memberships
-        nested: Search direct and nested group memberships
-    objectClass: Object Class
-    password: Password
-    port: Port
-    protocol: Protocol
-    protocols:
-      starttls: Start TLS
-      ldap: LDAP
-      tls: LDAPS (TLS)
-    customizeSchema: Customize Schema
-    oktaSchema: 'The defaults below are for a generic OpenLDAP server. For more information on the values to use when using the Okta LDAP interface, see: <a target="_blank" rel="noopener noreferrer nofollow" href="https://help.okta.com/en-us/Content/Topics/Directory/LDAP-interface-connection-settings.htm">Okta LDAP Interface connection settings</a>'
-    users: Users
-    groups: Groups
-    searchAttribute: Search Attribute
-    searchFilter: Search Filter
-    serverConnectionTimeout: Server Connection Timeout
-    serviceAccountDN: Service Account Distinguished Name
-    serviceAccountPassword: Service Account Password
-    serviceAccountInfo: '{vendor} needs a service account that has read-only access to all of the domains that will be able to login, so that we can determine what groups a user is a member of when they make a request with an API key.'
-    starttls:
-      label: Start TLS
-      tip: Upgrades non-encrypted connections by wrapping with TLS during the connection process. Can not be used in conjunction with TLS.
-    tls: TLS
-    userEnabledAttribute: User Enabled Attribute
-    userMemberAttribute: User Member Attribute
-    userSearchBase:
-      label: User Search Base
-      placeholder: 'e.g. ou=users,dc=mycompany,dc=com'
-    username: Username
-    usernameAttribute: Username Attribute
-    table:
-      server: Server
-      clientId: Client ID
-  saml:
-    entityID: Entity ID Field
-    UID: UID Field
-    adfs: Configure an AD FS account
-    api: '{vendor} API Host'
-    cert:
-      label: Certificate
-      placeholder: Paste in the certificate, starting with -----BEGIN CERTIFICATE-----
-    displayName: Display Name Field
-    groups: Groups Field
-    key:
-      label: Private Key
-      placeholder: Paste in the private key, typically starting with -----BEGIN RSA PRIVATE KEY-----
-    keycloak: Configure a Keycloak account
-    metadata:
-      label: Metadata XML
-      placeholder: Paste in the IDP Metadata XML
-    okta: Configure an Okta account
-    ping: Configure a Ping account
-    shibboleth: Configure a Shibboleth account
-    showLdap: Configure an OpenLDAP Server
-    userName: User Name Field
-    search:
-      title: User and Group Search
-      message: The SAML Protocol does not support search or lookup for users or groups. In order to enabled search, an OpenLDAP server must be configured.
-      on: LDAP User and Group search has been configured
-      off: LDAP User and Group search is not configured
-      show: Show details
-      hide: Hide details
-  azuread:
-    tenantId: Tenant ID
-    applicationId: Application ID
-    endpoint: Endpoint
-    graphEndpoint: Graph Endpoint
-    tokenEndpoint: Token Endpoint
-    authEndpoint: Auth Endpoint
-    reply:
-      info: 'Azure AD requires a whitelisted URL for your Rancher server before beginning this setup. Please ensure that the following URL is set in the Reply URL section of your Azure Portal. Please note that it may take up to 5 minutes for the whitelisted URL to propagate.'
-      label: Reply URL
-    updateEndpoint:
-      button: Update Endpoint
-      banner:
-        message: 'Azure AD Authentication must be updated: it is using the Azure Graph API, which will be deprecated at the end of 2022.'
-        linkText: 'Update it here.'
-      modal:
-        title: Are you sure? This update is irreversible.
-        body: '<p><b>You may need to make some additional changes</b>. Please ensure the Azure AD app has the Directory.Read.All <b>Application</b> permission added to Microsoft Graph.<br> If any endpoints were customized while configuring Azure AD authentication in Rancher, they will not be automatically updated. </p>'
-  oidc:
-    oidc: Configure an OIDC account
-    keycloakoidc: Configure a Keycloak OIDC account
-    rancherUrl: Rancher URL
-    clientId: Client ID
-    clientSecret: Client Secret
-    customEndpoint:
-      label: Endpoints
-      custom: Specify
-      standard: Generate
-    keycloak:
-      url: Keycloak URL
-      realm: Keycloak Realm
-    issuer: Issuer
-    authEndpoint: Auth Endpoint
-    cert:
-      label: Certificate
-      placeholder: Paste in the certificate, starting with -----BEGIN CERTIFICATE-----
-    key:
-      label: Private Key
-      placeholder: Paste in the private key, typically starting with -----BEGIN RSA PRIVATE KEY-----
-  stateBanner:
-    disabled: 'The {provider} authentication provider is currently disabled.'
-    enabled: 'The {provider} authentication provider is currently enabled.'
-  testAndEnable: Test and Enable Authentication
-  noneEnabled: Local Authentication is always enabled, but you may select another additional authentication provider from those shown below.
-  localEnabled: '{vendor} is configured to allow access to accounts in its local database.'
-  manageLocal: Manage Accounts
-
-authGroups:
-  actions:
-    refresh: Refresh Group Memberships
-    assignRoles: Assign Global Roles
-  assignEdit:
-    assignTitle: Assign Global Roles To Group
-
 assignTo:
   title: |-
     {count, plural,
@@ -748,82 +529,6 @@ asyncButton:
     action: Generate
     success: Generated
     waiting: Generating&hellip;
-
-backupRestoreOperator:
-  backupFilename: Backup Filename
-  deleteTimeout:
-    label: Delete Timeout
-    tip: Seconds to wait for a resource delete to succeed before removing finalizers to force deletion.
-  deployment:
-    rancherNamespace: Rancher ResourceSet Namespace
-    size: Size
-    storage:
-      label: Default Storage Location
-      options:
-        defaultStorageClass: 'Use the default storage class ({name})'
-        none: No default storage location
-        pickPV: Use an existing persistent volume
-        pickSC: Use an existing storage class
-        s3: Use an S3-compatible object store
-      persistentVolume:
-        label: Persistent Volume
-      storageClass:
-        label: Storage Class
-      tip: 'Configure a storage location where all backups are saved by default. You will have the option to override this with each backup, but will be limited to using an S3-compatible object store.'
-      warning: 'This {type} does not have its reclaim policy set to "Retain".  Your backups may be lost if the volume is changed or becomes unbound.'
-  encryption: Encryption
-  encryptionConfigName:
-    backuptip: 'Any secret in the <code>cattle-resources-system</code> namespace that has an <code>encryption-provider-config.yaml</code> key. <br/>The contents of this file are necessary to perform a restore from this backup, and are not stored by Rancher Backup.'
-    label: Encryption Config Secret
-    options:
-      none: Store the contents of the backup unencrypted
-      secret: 'Encrypt backups using an <a target="_blank" rel="noopener noreferrer nofollow" href="https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/#understanding-the-encryption-at-rest-configuration">Encryption Config Secret</a> (Recommended)'
-    restoretip: 'If the backup was performed with encryption enabled, a secret containing the same encryption-provider-config should be used during restore.'
-    warning: 'The contents of this file are necessary to perform a restore from this backup, and are not stored by Rancher Backup.'
-  lastBackup: Last Backup
-  nextBackup: Next Backup
-  noResourceSet: You must define a ResourceSet in this namespace to create a backup CR.
-  prune:
-    label: Prune
-    tip: Delete the resources managed by Rancher that are not present in the backup. (Recommended)
-  resourceSetName: Resource Set
-  restoreFrom:
-    default: The default storage target
-    existing: An existing backup config
-    s3: An S3-compatible object store
-  retentionCount:
-    label: Retention Count
-    units: |-
-      {count, plural,
-        =1 { File }
-        other { Files }
-      }
-  s3:
-    bucketName: Bucket Name
-    credentialSecretName: Credential Secret
-    endpoint: Endpoint
-    endpointCA:
-      label: Endpoint CA
-      prompt: Endpoint CA must be Base64 encoded
-    folder: Folder
-    insecureTLSSkipVerify: Skip TLS Verifications
-    region: Region
-    storageLocation: Storage Location
-    titles:
-      backupLocation: Backup Source
-      location: Storage Location
-      s3: S3
-  schedule:
-    label: Schedule
-    options:
-      disabled: One-Time Backup
-      enabled: Recurring Backups
-    placeholder: e.g. @midnight or 0 0 * * *
-  storageSource:
-    configureS3: Use an S3-compatible object store
-    useBackup: Use the s3 location specified on the Backup CR
-    useDefault: Use the default storage location configured during installation
-  targetBackup: Target Backup
 
 catalog:
   app:
@@ -1052,63 +757,6 @@ changePassword:
 chartHeading:
   overview: Overview
   poweredBy: "Powered by:"
-
-cis:
-  addTest: Add Test ID
-  alertNeeded: |-
-    Alerting must be enabled within the CIS chart values.yaml.
-    This requires that the <a tabindex="0" href="{link}">{vendor} Monitoring and Alerting app</a> is installed
-    and the Receivers and Routes are <a target="_blank" rel='noopener noreferrer nofollow' href='{docsBase}/monitoring-alerting/configuration/#alertmanager-configuration/'> configured to send out alerts.</a>
-  alertOnComplete: Alert on scan completion
-  alertOnFailure: Alert on scan failure
-  benchmarkVersion: Benchmark Version
-  clusterProvider: Cluster Provider
-  cronSchedule:
-    label: Schedule
-    placeholder: "e.g. 0 * * * *"
-  customConfigMap: Custom Benchmark ConfigMap
-  deleteBenchmarkWarning: |-
-    {count, plural,
-      =1 { Any profiles using this benchmark version will no longer work. }
-      other { Any profiles using these benchmark versions will no longer work }
-    }
-  deleteProfileWarning: |-
-    {count, plural,
-      =1 { Any scheduled scans using this profile will no longer work. }
-      other { Any scheduled scans using either of these profiles will no longer work. }
-    }
-  downloadAllReports: Download All Saved Reports
-  downloadLatestReport: Download Latest Report
-  downloadReport: Download Report
-  maxKubernetesVersion: Maximum allowed Kubernetes version
-  minKubernetesVersion: Minimum required Kubernetes version
-  noProfiles: There are no valid ClusterScanProfiles for this cluster type to select.
-  noReportFound: No scan report found
-  profile: Profile
-  reports: Reports
-  retention: Retention Count
-  scan:
-    description: Description
-    fail: Fail
-    lastScanTime: Last Scan Time
-    notApplicable: N/A
-    number: Number
-    pass: Pass
-    remediation: Remediation
-    scanDate: Scan Date
-    scanReport: Scan Report
-    skip: Skip
-    total: Total
-    warn: Warn
-  scheduling:
-    disable: Run scan once
-    enable: Run scan on a schedule
-  scoreWarning:
-    label: Scan state for "warn" results
-    protip: Scans with no failures will be marked "Pass" by default even if some of the tests generate "warn" output. This behavior can be changed by selecting the "fail" option from this section.
-  testID: Test ID
-  testsSkipped: Tests Skipped
-  testsToSkip: Tests to Skip
 
 cluster:
   addonChart:
@@ -2055,203 +1703,12 @@ etcdInfoBanner:
   leaderChanges: "Number of leader changes:"
   failedProposals: "Number of failed proposals:"
 
-fleet:
-  dashboard:
-    pageTitle: Continuous Delivery Dashboard
-    menuLabel: Dashboard
-    welcome: Welcome to Fleet Continuous Delivery
-    gitOpsScale: GitOps at scale.
-    learnMore: Learn More.
-    learnMoreLink: https://fleet.rancher.io
-    noRepo: "You don't have any Git Repositories in your Workspaces"
-    getStarted: Get started
-    thereIsMore: |-
-      {count, plural,
-      =1 { There is one other workspace with no repositories}
-      other { There are { count } other workspaces with no repositories}
-      }
-    expandAll: Expand All
-    collapseAll: Collapse All
-  cluster:
-    summary: Resource Summary
-    nonReady: Non-Ready Bundles
-  bundles:
-    resources: Resources
-  fleetSummary:
-    noClustersGitRepo: This git repo is not targeting any clusters
-    state:
-      ready: 'Ready'
-      info: 'Transitioning'
-      warning: 'Warning'
-      error: 'Error'
-      unknown: 'Unknown'
-      notReady: Not Ready
-      waitApplied: Wait Applied
-  gitRepo:
-    createLocalBanner: When deploying a Git Repo to the Local workspace you are unable to target any specific Cluster or Cluster Groups
-    tabs:
-      resources: Resources
-      unready: Non-Ready
-    auth:
-      label: Authentication
-      git: Git Authentication
-      helm: Helm Authentication
-    caBundle:
-      label: Certificates
-      placeholder: "Paste in one or more certificates, starting with -----BEGIN CERTIFICATE----"
-    paths:
-      label: Paths
-      placeholder: e.g. /directory/in/your/repo
-      addLabel: Add Path
-      empty: The root of the repo is used by default.  To use one or more different directories, add them here.
-    repo:
-      label: Repository URL
-      placeholder: e.g. https://github.com/rancher/fleet-examples.git or git@github.com:rancher/fleet-examples.git
-      addRepo: Add Repository
-      noRepos: No repositories have been added
-      noWorkspaces: There are no workspaces. <br/> Please create a workspace before adding repositories
-      protocolBanner: Enter a valid HTTPS or SSH URL to a git repository.
-    resources:
-      label: 'Resource Handling'
-      keepResources: Always Keep Resources
-      keepResourcesBanner: When enabled above, resources will be kept when deleting a GitRepo or Bundle - only Helm release secrets will be deleted.
-      correctDrift: Enable Self-Healing
-      correctDriftBanner: When enabled, Fleet will ensure that the cluster resources are kept in sync with the git repository. All resource changes made on the cluster will be lost.
-    add:
-      steps:
-        repoInfo:
-          label: Repository Details
-          title: Specify the Git Repository to add to fleet
-          subtext: 'Define repository details'
-          description: Fleet will continuously monitor the Git Repository you configure below and synchronise the resources contained in it to the configured targets.
-        targetInfo:
-          label: Target Details
-          title: Specify which target to synchronise this repository to
-          subtext: 'Define target details'
-          description: You can configure which clusters will be used as the target of synchronisation with the resources in the repository.
-    ref:
-      label: Watch
-      branch: A Branch
-      revision: A Revision
-      branchLabel: Branch Name
-      branchPlaceholder: e.g. master
-      revisionLabel: Tag or Commit Hash
-      revisionPlaceholder: e.g. v1.0.0
-    serviceAccount:
-      label: Service Account Name
-      placeholder: "Optional: Use a service account in the target clusters"
-    targetNamespace:
-      label: Target Namespace
-      placeholder: "Optional: Require all resources to be in this namespace"
-    target:
-      selectLabel: Target
-      advanced: Advanced
-      cluster: Cluster
-      clusterGroup: Cluster Group
-      label: Deploy To
-      labelLocal: Deploy With
-    targetDisplay:
-      advanced: Advanced
-      cluster: "Cluster"
-      clusterGroup: "Group"
-      all: All
-      none: None
-      local: Local
-    tls:
-      label: TLS Certificate Verification
-      verify: Require a valid certificate
-      specify: Specify additional certificates to be accepted
-      skip: Accept any certificate (insecure)
-    warningTooltip:
-      clusterGroup: There are no clusters in this Cluster Group
-      cluster: There are no clusters available
-    workspace:
-      label: Workspace
-      addWorkspace: Create a workspace
-    helmRepoURLRegex: Helm Repos (URL Regex)
-  clusterGroup:
-    selector:
-      label: Cluster Selectors
-      matchesAll: Matches all {total, number} existing clusters
-      matchesNone: Matches no existing clusters
-      matchesSome: |-
-        {matched, plural,
-          =1 {Matches 1 of {total, number} existing clusters: "{sample}"}
-          other {Matches {matched, number} of {total, number} existing clusters, including "{sample}"}
-        }
-  fdc:
-    loadingChart: Loading chart data...
-    renderingChart: Rendering chart...
-    id: ID
-    type: Type
-    state: State
-    cluster: Cluster
-    error: Error
-    ready: Ready
-    errors: Errors
-  workspaces:
-    tabs:
-      restrictions: Allowed Target Namespaces
-    timeout: Workspace creation timeout. It's possible the workspace was created. We suggest checking the workspace page before trying to create another.
-  restrictions:
-    addTitle: 'allowedTargetNamespaces'
-    addLabel: Add
-    banner: "{count, plural,
-          =0 { Adding namespaces here will create a GitRepoRestriction. }
-          other { Only the Git Repo Restriction's <code>allowedTargetNamespaces</code> is managed here. You can make additional changes to the Git Repo Restriction}
-        }"
 footer:
   docs: Docs
   download: Download CLI
   gitDiscussion: Github Discussions
   issue: File an Issue
   discord: Discord
-
-gatekeeperConstraint:
-  downloadViolations: Download Violations
-  match:
-    title: Match
-  tab:
-    enforcementAction:
-      title: Enforcement Action
-    rules:
-      title: Rules
-      sub:
-        labelSelector:
-          addLabel: Add Label
-          title: Label Selector
-    namespaces:
-      sub:
-        excludedNamespaces: Excluded Namespaces
-        namespaces: Namespaces
-        namespaceSelector:
-          addNamespace: Add Namespace
-          title: Namespace Selector
-        scope:
-          title: Scope
-      title: Namespaces
-    parameters:
-      addParameter: Add Parameter
-      editAsForm: Edit as Form
-      editAsYaml: Edit as YAML
-      title: Parameters
-  template: Template
-  enforcement:
-    action: Enforcement Action
-  violations:
-    title: "Violations: {total}"
-    notAll: Not all are shown due to the configured OPA Gatekeeper constraint violation limit - the constraint only includes details for {shown}
-
-gatekeeperIndex:
-  poweredBy: OPA Gatekeeper
-  unavailable: OPA + Gatekeeper is not available in the system-charts catalog.
-  violations: Violations
-  deprecated: The OPA Gatekeeper chart is deprecated as of Rancher 2.8 and will be removed in a future release. Please consider switching to <a target="_blank" rel="noopener noreferrer nofollow" href="https://www.kubewarden.io">Kubewarden</a>.
-
-gatekeeperInstall:
-  auditInterval: Auto Interval
-  constraintViolationsLimit: Constraint Violations Limit
-  runtimeDefaultSeccompProfile: Enable Runtime Default Seccomp Profile
 
 glance:
   created: Created
@@ -2966,26 +2423,6 @@ logging:
     clientPrivateKeyPath: Client Private Key Path from Secret
     clientPrivateKeyPassphrase: Client Private Key Passphrase from Secret
 
-longhorn:
-  overview:
-    title: Overview
-    subtitle: "Powered By: <a href='https://github.com/longhorn' target='_blank' rel='noopener nofollow noreferrer'>Longhorn</a>"
-    linkedList:
-      longhorn:
-        label: 'Longhorn'
-        description: 'Manage storage system via UI'
-        na: Resource Unavailable
-
-neuvector:
-  overview:
-    title: Overview
-    subtitle: "Powered by: <a href='https://github.com/neuvector' target='_blank' rel='noopener nofollow noreferrer'>NeuVector</a>"
-    linkedList:
-      neuvector:
-        label: 'NeuVector'
-        description: 'Full Lifecycle Container Security'
-        na: Resource Unavailable
-
 login:
   howdy: Howdy!
   welcome: Welcome to {vendor}
@@ -3017,45 +2454,6 @@ logout:
 
 managementNode:
   customName: Custom Name
-
-members:
-  clusterMembers: Cluster Members
-  clusterAndProject: Cluster and Project Members
-  createActionLabel: Add
-  clusterMemebership: Cluster Membership
-  projectMembership: Project Membership
-  clusterPermissions:
-    noDescription: User created - no description
-    label: Cluster Permissions
-    description: Controls what access users have to the Cluster
-    createProjects: Create Projects
-    manageClusterBackups: Manage Cluster Backups
-    manageClusterCatalogs: Manage Cluster Catalogs
-    manageClusterMembers: Manage Cluster Members
-    manageNavlinks: Manage Navlinks
-    manageNodes: Manage Nodes
-    manageStorage: Manage Storage
-    viewAllProjects: View All Projects
-    viewClusterCatalogs: View Cluster Catalogs
-    viewClusterMembers: View Cluster Members
-    viewNodes: View Nodes
-    owner:
-      label: Owner
-      description: Owners have full control over the Cluster and all resources inside it.
-    member:
-      label: Member
-      description: Members can manage the resources inside the Cluster but not change the Cluster itself.
-    custom:
-      label: Custom
-      description: Choose individual roles for this user.
-      lockedRole: This role is locked.
-  localClusterWarning: "Caution: This is the cluster that Rancher is using as a data store. Only administrators should be given write access to this cluster. Users with write access to this cluster can use it to grant themselves access to any part of this installation."
-  noRolesAssigned: There are no users assigned to this project.
-
-membershipEditor:
-  label: Members
-  user: User
-  role: Role
 
 monitoring:
   accessModes:
@@ -3984,165 +3382,6 @@ inactivity:
   cta: Resume Session
   ctaExpired: Refresh
 
-# Rancher Extensions
-plugins:
-  incompatibleRancherVersion: "The latest version of this extension ({ version }) is not compatible with the current Rancher version ({ rancherVersion })."
-  incompatibleKubeVersion: "The latest version of this extension ({ version }) is not compatible with the current Kube version ({ kubeVersion })."
-  currentInstalledVersionBlockedByKubeVersion: "This version is not compatible with the current Kubernetes version ({ kubeVersion }  Vs  { kubeVersionToCheck })."
-  labels:
-    builtin: Built-in
-    experimental: Experimental
-    third-party: Third-Party
-    image: Image
-    installing: Installing ...
-    uninstalling: Uninstalling ...
-  descriptions:
-    experimental: This Extension is marked as experimental
-    third-party: This Extension is provided by a Third-Party
-    built-in: This Extension is built-in
-    image: This Extension Image has been loaded manually
-  error:
-    title: Error loading extension
-    message: Could not load extension code
-    generic: Extension error
-    api: This Extension is not compatible with the Extensions API
-    host: This Extension is not compatible with this application
-    version: This Extension is not compatible with this version of Rancher
-    load: An error occurred loading the code for this Extension
-    developerPkg: This Extension has been loaded internally, so we won't load the external version
-  success:
-    title: Loaded extension {name}
-    message: Extension was loaded successfully
-  developer:
-    label: Developer Load
-    title: Developer Load Extension
-    prompt: Load an extension from a URL
-    fields:
-      url: Extension URL
-      name: Extension module name
-      persist: Persist extension by creating custom resource
-  info:
-    detail: Detail
-    versions: Versions
-    versionError: Could not load version information
-    requiresRancherVersion: "Requires Rancher {version}"
-    requiresKubeVersion: "Requires Kube version {version}"
-  empty:
-    all: Extensions are neither installed nor available
-    available: No Extensions available
-    installed: No Extensions installed
-    updates: No updates available for installed Extensions
-    images: No Extension Images installed
-  loadError: An error occurred loading the code for this extension
-  helmError: "An error occurred installing the extension via Helm"
-  manageRepos: Manage Repositories
-  addRancherRepos: Add Rancher Repositories
-  manageCharts: Manage Extension Charts
-  manageCatalog:
-    label: Manage Extension Catalogs
-    title: Extension
-    subtitle: Catalogs
-    imageLoad:
-      load: Import Extension Catalog
-      prompt: An Extension Catalog contains extension assets bundled into an image, importing will take the image and host a Helm repository to act as a catalog for custom built Extensions.
-      fields:
-        image:
-          label: Catalog Image Reference
-          placeholder: "e.g. hub.docker.io/example-org/my-image:latest"
-        secrets:
-          banner: "If the registry that hosts the Catalog Image requires Pull Secrets, they must be created in the following namespace:<pre>cattle-ui-plugin-system</pre>"
-      banner: This will create an Deployment, Service, and Helm repository to serve the extension charts.
-      imageVersion:
-        title: Image Version Not Found
-        message: Unable to determine image version from {image}, defaulting to latest
-      error:
-        exists:
-          deployment:
-            title: Deployment Conflict
-            message: A container with the image {image} already exists
-          service:
-            title: Service Conflict
-            message: A service with the name {svc} already exists
-          repo:
-            title: Helm Repository Conflict
-            message: A repository with the name {repo} already exists
-      success:
-        title: "Imported Extension Catalog from: {name}"
-        message: Extension Catalog image was imported successfully
-    headers:
-      image:
-        name: images
-        label: Deployment Image
-      repository:
-        label: Repository Name
-  tabs:
-    all: All
-    available: Available
-    images: Images
-    installed: Installed
-    updates: Updates
-  title: Extensions
-  version: "Version: {version}"
-  install:
-    label: Install
-    title: Install Extension {name}
-    prompt: "Are you sure that you want to install this Extension?"
-    version: Version
-    warnNotCertified: Please ensure that you are aware of the risks of installing Extensions from untrusted authors
-  update:
-    label: Update
-    title: Update Extension {name}
-    prompt: "Are you sure that you want to update this Extension?"
-  rollback:
-    label: Rollback
-    title: Rollback Extension {name}
-    prompt: "Are you sure that you want to rollback this Extension?"
-  uninstall:
-    label: Uninstall
-    title: "Uninstall Extension: {name}"
-    prompt: "Are you sure that you want to uninstall this Extension?"
-    catalog: "Are you sure that you want to uninstall this Extension Catalog Image? This will also remove any Extensions provided by this image."
-  upgradeAvailable: A newer version of this Extension is available
-  reload: Extensions changed - reload required
-  safeMode:
-    title: Extensions Safe Mode
-    message: Extensions were not loaded
-  addRepos:
-    banner: There are new extensions repositories available. To enable these repositories, click the button on the right.
-    bannerBtn: Add repositories
-    title: Add Extensions repositories
-    prompt: You can install multiple Rancher extension repositories to increase your extensions catalog
-  setup:
-    installed: Already installed
-    uninstalled: Already uninstalled
-    title: Extension support is not enabled
-    prompt:
-      cant: Automatic installation is not available - required Helm Charts could not be found
-      can: You need to install the Extension Operator
-      official: The Official Rancher Extensions Repository provides extensions published by Rancher
-      partners: The Partners Extensions Repository provides extensions published by Rancher Partners
-      community: The Community Extensions Repository provides extensions published by Rancher Community
-    install:
-      title: Enable Extension Support?
-      prompt: This will install the Helm charts needed to enable Extension support
-      airgap: Air-gapped installations should NOT enable this feature
-      addRancherRepo: Add Official Rancher Extensions Repository
-      addPartnersRancherRepo: Add Partners Extensions Repository
-      addCommunityRancherRepo: Add Community Extensions Repository
-    remove:
-      label: Disable Extension Support
-      title: Disable Extension Support?
-      prompt: This will un-install the Helm charts that enable Extension support
-      registry:
-        official:
-          title: Remove the Official Rancher Extensions Repository
-        partners:
-          title: Remove the Partners Extensions Repository
-        community:
-          title: Remove the Community Extensions Repository
-      crd:
-        title: Remove the Rancher Extensions Custom Resource Definition
-        prompt: There are one or more extensions installed - removing the CRD will require you to manually reinstall these extensions if you subsequently re-enable extensions support.
 podSecurityAdmission:
   name: Pod Security Admission
   description: Define the admission control mode you want to use for the pod security
@@ -7023,85 +6262,6 @@ advancedSettings:
       debug: Debug
       trace: Trace
 
-featureFlags:
-  label: Feature Flags
-  warning: |-
-    Feature flags allow {vendor} to gate certain features behind flags.
-    Features that are off by default should be considered experimental functionality.
-    Some features require a restart of the {vendor} server to change.
-    This will result in a short outage of the API and UI, but not affect running clusters or workloads.
-  promptActivate: Please confirm that you want to activate the feature flag "{flag}"
-  promptDeactivate: Please confirm that you want to deactivate the feature flag "{flag}"
-  restartRequired: "Note: Updating this feature flag requires a restart"
-  restart:
-    title: Waiting for Restart
-    wait: This may take a few moments
-
-performance:
-  label: UI Performance Settings
-  settingName: Performance
-  experimental: This setting is experimental and may be removed or updated in future versions.
-  incrementalLoad:
-    label: Incremental Loading
-    setting: You can configure the threshold above which incremental loading will be used.
-    description: |-
-      When enabled, resources will appear more quickly, but it may take slightly longer to load the entire set of resources. This setting only applies to resources that come from the Kubernetes API
-    checkboxLabel: Enable incremental loading
-    inputLabel: Resource Threshold
-    incompatibleDescription: "Incremental Loading is incomaptible with Namespace/Project filtering. Enabling this will disable it."
-  manualRefresh:
-    label: Manual Refresh
-    setting: You can configure a threshold above which manual refresh will be enabled.
-    buttonTooltip: Refresh list
-    description: |-
-      When enabled, list data will not auto-update but instead the user must manually trigger a list-view refresh. This setting only applies to resources that come from the Kubernetes API
-    checkboxLabel: Enable manual refresh of data for lists
-    inputLabel: Resource Threshold
-    incompatibleDescription: "Manual Refresh is incomaptible with Namespace/Project filtering. Enabling this will disable it."
-  websocketNotification:
-    label: Websocket Notifications
-    description: |-
-      When checked, websocket notifications will not appear when the UI detects a disconnection.
-    checkboxLabel: Disable websocket notifications
-  gc:
-    label: Resource Garbage Collection
-    description: The UI will cache kuberentes resources locally to avoid having to re-fetch them. In some cases this can lead to a large amount of data stored in the browser. Enable this setting to periodically remove them.
-    checkboxLabel: Enable Garbage Collection
-    whenRun:
-      description: Update when garbage collection runs
-      intervalCheckBox:
-        label: Run garbage collection periodically
-      interval:
-        inputLabel: Run every
-      route:
-        description: Run garbage collection on page change
-        inputLabel: Page Change
-    howRun:
-      description: Update how garbage collection runs
-      age:
-        description: "Resource types musn't have been accessed within this period to be considered for garbage collection."
-        inputLabel: Resource Age
-      count:
-        description: Resource types must exceed this amount to be considered for garbage collection.
-        inputLabel: Resource Count
-  nsFiltering:
-    label: Require Namespace / Project Filtering
-    description: Require the user to select namespaces and/or projects. This restricts the number of resources fetched when viewing lists and should help the responsiveness of the UI in systems with a lot of resources.
-    checkboxLabel: Enable Required Namespace / Project Filtering
-    incompatibleDescription: "Required Namespace / Project Filtering is incomaptible with Manual Refresh and Incremental Loading. Enabling this will disable them."
-  advancedWorker:
-    label: Websocket Web Worker
-    description: Updates to resources pushed to the UI come via WebSocket and are handled in the UI thread. Enable this option to handle cluster WebSocket updates in a Web Worker in a separate thread. This should help the responsiveness of the UI in systems where resources change often.
-    checkboxLabel: Enable Advanced Websocket Web Worker
-  inactivity:
-    title: Inactivity
-    checkboxLabel: Enable inactivity session expiration
-    inputLabel: Inactivity timeout (minutes)
-    information: To change the automatic logout behaviour, edit the authorisation and/or session token timeout values (<code>auth-user-session-ttl-minutes</code> and <code>auth-token-max-ttl-minutes</code>) in the Settings page.
-    description: When enabled and the user is inactive past the specified timeout, the UI will no longer fresh page content and the user must reload the page to continue.
-    authUserTTL: This timeout cannot be higher than the user session timeout auth-user-session-ttl-minutes, which is currently {current} minutes.
-
-
 banner:
   label: Fixed Banners
   settingName: Banners
@@ -7153,7 +6313,7 @@ branding:
     useCustom: Use a Custom Favicon
   options:
     default: Default Rancher Theme
-    suse: SUSE Theme
+    suse:  Theme
     custom: Define a Custom Theme
   uiPL:
     label: Private Label
@@ -7235,6 +6395,7 @@ customLinks:
     docs:       Docs
     forums:     Forums
     slack:      Slack
+    discord:    Discord
     issues:     File an Issue
     getStarted: Get Started
     commercialSupport: Commercial Support
@@ -7247,73 +6408,46 @@ customLinks:
 
 support:
   community:
-    title: SUSE Rancher provides world-class support
+    title: Please contact us if you need official support.
     linksTitle: Community Support
-    learnMore: Find out more about 1Block.AI.
+    learnMore: Find out more about LLMOS @1block.ai.
     pricing: Contact us for pricing
   subscription:
     haveSupport: Already have support?
     addSubscription: Add a Subscription ID
     removeSubscription: Remove your Subscription ID
-    addTitle: Add your SUSE Subscription ID
+    addTitle: Add your Subscription ID
     addLabel: "Please enter a valid Subscription ID:"
     removeTitle: Remove your ID?
     removeBody: "Note: This will not affect your subscription."
 
-  suse:
+  llmos:
     title: "Great News - You're covered"
     editBrand: Customize UI Theme
     access:
       title: Get Support
-      text: Login to SUSE Customer Center to access support for your subscription
-      action: SUSE Customer Center
+      text: Login to  Customer Center to access support for your subscription
+      action:  Customer Center
       aws:
         generateConfig: Generate Support Config
-        text: 'Login to SUSE Customer Center to access support for your subscription. Need to open a new support case? Download a support config file below.'
+        text: 'Login to Customer Center to access support for your subscription. Need to open a new support case? Download a support config file below.'
   promos:
     one:
       title: 24x7 Support
       text: We provide tightly defined SLAs, and offer round the clock support options.
     two:
       title: Issue Resolution
-      text: Run SUSE Rancher products with confidence, knowing that the developers who built them are available to quickly resolve issues.
+      text: Run products with confidence, knowing that the developers who built them are available to quickly resolve issues.
     three:
       title: Troubleshooting
-      text: We focus on uncovering the root cause of any issue, whether it is related to Rancher Labs products, Kubernetes, Docker or your underlying infrastructure.
+      text: We focus on uncovering the root cause of any issue, whether it is related to LLMOS, Generative AI or your underlying infrastructure.
     four:
       title: Innovate with Freedom
-      text: Take advantage of our certified compatibility with a wide range of Kubernetes providers, operating systems, and open source software.
+      text: Avoid vendor lock-in and provide open and compatible open source and commercial interoperability solutions, allowing you to achieve independent innovation more flexibly.
 
 embedding:
   retry: Retry
   unavailable: Cluster Manager UI is not available
-
-v1ClusterTools:
-  monitoring:
-    label: Monitoring (Legacy)
-    description: 'Legacy V1 monitoring. V1 Monitoring is deprecated since Rancher 2.5.0. <a target="blank" href="{docsBase}/monitoring-alerting/guides/migrating/">Learn more</a> about the migration steps to V2 Monitoring.'
-  logging:
-    label: Logging (Legacy)
-    description: 'Legacy V1 logging. V1 Logging is deprecated since Rancher 2.5.0. <a target="blank" href="{docsBase}/logging/migrating/">Learn more</a> about migrating to V2 Logging.'
-  istio:
-    label: Istio (Legacy)
-    description: 'Legacy V1 Istio. Istio v1.5 has been deprecated since Rancher 2.5.0. <a target="blank" href="{docsBase}/istio/#migrate-from-previous-istio-version">Learn more</a> about migrating to the latest version.'
-
-legacy:
-  alerts: Alerts
-  apps: Apps
-  catalogs: Catalogs
-  configMaps: Config Maps
-  configuration: Configuration
-  globalDnsEntries: Global DNS Entries
-  globalDnsProviders: Global DNS Providers
-  notifiers: Notifiers
-  monitoring: Monitoring
-  secrets: Secrets
-
-  project:
-    label: Project
-    select: "Use the Project/Namespace filter at the top of the page to select a Project in order to see legacy Project features."
 
 serverUpgrade:
   title: "{vendor} Server Changed"

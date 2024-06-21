@@ -10,7 +10,6 @@
 import { addObject, clear, removeObject } from '@shell/utils/array';
 import { get } from '@shell/utils/object';
 import { SCHEMA, MANAGEMENT } from '@shell/config/types';
-import { SETTING } from '@shell/config/settings';
 import { CSRF } from '@shell/config/cookies';
 import { getPerformanceSetting } from '@shell/utils/settings';
 import Socket, {
@@ -46,10 +45,6 @@ const isWaitingForDestroy = (storeName, store) => {
 
 const waitForSettingsSchema = (storeName, store) => {
   return waitFor(() => isWaitingForDestroy(storeName, store) || !!store.getters['management/byId'](SCHEMA, MANAGEMENT.SETTING));
-};
-
-const waitForSettings = (storeName, store) => {
-  return waitFor(() => isWaitingForDestroy(storeName, store) || !!store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.UI_PERFORMANCE));
 };
 
 const isAdvancedWorker = (ctx) => {
@@ -110,7 +105,6 @@ export async function createWorker(store, ctx) {
   }
 
   await waitForSettingsSchema(storeName, store);
-  await waitForSettings(storeName, store);
   if (store.$workers[storeName].waitingForDestroy()) {
     store.$workers[storeName].destroy();
 
@@ -476,6 +470,7 @@ const sharedActions = {
       msg.selector = selector;
     }
 
+    // TODO, only use when worker mode is enabled
     // const worker = this.$workers?.[getters.storeName] || {};
     // if (worker.mode === WORKER_MODES.ADVANCED || worker.mode === WORKER_MODES.WAITING) {
     //   if ( force ) {

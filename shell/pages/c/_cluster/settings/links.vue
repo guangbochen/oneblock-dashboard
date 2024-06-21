@@ -8,7 +8,6 @@ import { SETTING } from '@shell/config/settings';
 import { _EDIT, _VIEW } from '@shell/config/query-params';
 import KeyValue from '@shell/components/form/KeyValue';
 import { mapGetters } from 'vuex';
-// import { isRancherPrime } from '@shell/config/version';
 import DefaultLinksEditor from './DefaultLinksEditor';
 import { CUSTOM_LINKS_VERSION, fetchLinks } from '@shell/config/home-links';
 
@@ -65,12 +64,6 @@ export default {
     async save(btnCB) {
       this.errors = [];
       try {
-        const uiCustomLinks = await fetchOrCreateSetting(this.$store, SETTING.UI_CUSTOM_LINKS, '');
-
-        uiCustomLinks.value = JSON.stringify(this.allValues);
-
-        await uiCustomLinks.save();
-
         this.value = await fetchLinks(this.$store, this.hasSupport, false, (str) => this.t(str));
         btnCB(true);
       } catch (err) {

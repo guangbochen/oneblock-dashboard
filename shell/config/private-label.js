@@ -3,7 +3,7 @@ import { SETTING } from './settings';
 export const ANY = 0;
 export const STANDARD = 1;
 export const CUSTOM = 2;
-export const DOCS_BASE = 'https://llmos.docs.1block.ai/latest';
+export const DOCS_BASE = 'https://llmos-docs.1block.ai';
 
 const STANDARD_VENDOR = 'LLMOS';
 const STANDARD_PRODUCT = 'Dashboard';

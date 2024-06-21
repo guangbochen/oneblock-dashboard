@@ -41,13 +41,13 @@ export default {
     };
 
     this.brandSetting = await fetchOrCreateSetting(SETTING.BRAND, '');
-    this.serverUrlSetting = await fetchOrCreateSetting(SETTING.SERVER_URL, '');
     this.uiIssuesSetting = await this.$store.dispatch('management/find', { type: MANAGEMENT.SETTING, id: SETTING.ISSUES });
     this.settings = await this.$store.dispatch('management/findAll', { type: MANAGEMENT.SETTING });
   },
 
   data() {
     return {
+      hasSupport:      false,
       apps:            [],
       vendor:          getVendor(),
       supportKey:      '',
@@ -65,44 +65,15 @@ export default {
   },
 
   computed: {
-    cspAdapter() {
-      return hasCspAdapter(this.apps);
-    },
-
-    // hasSupport() {
-    //   return this.hasAWSSupport || isRancherPrime();
-    // },
-
-    hasAWSSupport() {
-      return !!this.cspAdapter;
-    },
-
     serverUrl() {
       // Client-side rendered: use the current window location
       return window.location.origin;
     },
 
-    supportConfigLink() {
-      const adapter = this.cspAdapter;
-
-      if (!adapter) {
-        return false;
-      }
-
-      if (adapter.metadata.name === 'rancher-csp-billing-adapter') {
-        return `${ this.serverUrl }/v1/generateSUSERancherSupportConfig?usePAYG=true`;
-      } else {
-        return `${ this.serverUrl }/v1/generateSUSERancherSupportConfig`;
-      }
-    },
-
     title() {
-      return this.hasSupport ? 'support.suse.title' : 'support.community.title';
+      return this.hasSupport ? 'support.llmos.title' : 'support.community.title';
     },
 
-    sccLink() {
-      return this.hasAWSSupport ? addParam('https://scc.suse.com', 'from_marketplace', '1') : 'https://scc.suse.com';
-    }
   },
 
 };
@@ -115,7 +86,7 @@ export default {
       <div class="content mt-20">
         <div class="promo col main-panel">
           <div class="box mb-20 box-primary">
-            <h2>{{ t('support.suse.access.title') }}</h2>
+            <h2>{{ t('support.llmos.access.title') }}</h2>
             <div
               v-if="!hasSupport"
               class="external support-links mt-20"
@@ -123,38 +94,11 @@ export default {
               <div class="support-link">
                 <a
                   class="support-link"
-                  href="https://www.rancher.com/support"
+                  href="https://1block.ai"
                   target="_blank"
                   rel="noopener noreferrer nofollow"
                 >{{ t('support.community.learnMore') }}</a>
               </div>
-              <div class="support-link">
-                <a
-                  class="support-link"
-                  href="https://rancher.com/pricing"
-                  target="_blank"
-                  rel="noopener noreferrer nofollow"
-                >{{ t('support.community.pricing') }}</a>
-              </div>
-            </div>
-            <div v-else>
-              <p class="pb-10">
-                {{ hasAWSSupport ? t("support.suse.access.aws.text") : t("support.suse.access.text") }}
-              </p>
-              <a
-                v-if="hasAWSSupport"
-                class="mr-5 btn role-secondary btn-sm"
-                :href="supportConfigLink"
-              >
-                {{ t('support.suse.access.aws.generateConfig') }}
-              </a>
-              <a
-                :href="sccLink"
-                target="_blank"
-                rel="noopener noreferrer nofollow"
-              >
-                {{ t('support.suse.access.action') }} <i class="icon icon-external-link" />
-              </a>
             </div>
           </div>
           <div class="boxes">

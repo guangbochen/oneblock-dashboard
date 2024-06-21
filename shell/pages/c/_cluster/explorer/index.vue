@@ -101,12 +101,10 @@ export default {
     this.$store.dispatch('cluster/forgetType', NODE);
     this.$store.dispatch('cluster/forgetType', ENDPOINTS); // Used by AlertTable to get alerts when v2 monitoring is installed
     this.$store.dispatch('cluster/forgetType', METRIC.NODE);
-    this.$store.dispatch('cluster/forgetType', MANAGEMENT.NODE);
   },
 
   computed: {
     ...mapGetters(['currentCluster']),
-    // ...monitoringStatus(),
 
     nodes() {
       return this.$store.getters['cluster/all'](NODE);
@@ -380,18 +378,6 @@ export default {
         /></span>
       </div>
       <div :style="{'flex':1}" />
-<!--      <div v-if="!monitoringStatus.v2 && !monitoringStatus.v1">-->
-<!--        <n-link-->
-<!--          :to="{name: 'c-cluster-explorer-tools'}"-->
-<!--          class="monitoring-install"-->
-<!--        >-->
-<!--          <i class="icon icon-gear" />-->
-<!--          <span>{{ t('glance.installMonitoring') }}</span>-->
-<!--        </n-link>-->
-<!--      </div>-->
-<!--      <div v-if="monitoringStatus.v1">-->
-<!--        <span>{{ t('glance.v1MonitoringInstalled') }}</span>-->
-<!--      </div>-->
       <ConfigBadge
         v-if="currentCluster.canUpdate"
         :cluster="currentCluster"
