@@ -1247,15 +1247,18 @@ export const getters = {
         }
       }
 
-      if ( p.ifFeature) {
-        const features = Array.isArray(p.ifFeature) ? p.ifFeature : [p.ifFeature];
-
-        for (const f of features) {
-          if (!rootGetters['features/get'](f)) {
-            return false;
-          }
-        }
-      }
+      // TODO: Check features, if `ifFeature` is set
+      // if ( p.ifFeature) {
+      //   const features = Array.isArray(p.ifFeature) ? p.ifFeature : [p.ifFeature];
+      //
+      //   console.log('Checking feature', f);
+      //   for (const f of features) {
+      //     console.log('Checking feature', f);
+      //     if (!rootGetters['features/get'](f)) {
+      //       return false;
+      //     }
+      //   }
+      // }
 
       if ( p.ifHave && !ifHave(rootGetters, p.ifHave)) {
         return false;
