@@ -370,15 +370,15 @@ export const TARGET = {
 export const USERNAME = {
   name:        'username',
   labelKey:    'tableHeaders.username',
-  value:       'username',
+  value:       'spec.username',
   dashIfEmpty: true,
   sort:        'username',
 };
 
 export const USER_DISPLAY_NAME = {
   name:        'name',
-  labelKey:    'tableHeaders.name',
-  value:       'nameDisplay',
+  labelKey:    'tableHeaders.userDisplayName',
+  value:       'spec.displayName',
   sort:        ['nameSort'],
   dashIfEmpty: true,
 };

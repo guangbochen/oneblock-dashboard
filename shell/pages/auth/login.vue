@@ -18,6 +18,7 @@ import {
   getVendor,
   getProduct,
 } from '@shell/config/private-label';
+import {_ALL_IF_AUTHED} from "@shell/plugins/dashboard-store/actions";
 
 export default {
   name:       'Login',
@@ -146,6 +147,15 @@ export default {
             password: this.password
           }
         });
+
+        const user = await this.$store.dispatch('management/findAll', {
+          type: MANAGEMENT.USER,
+          opt:  { url: `/v1/${MANAGEMENT.USER}?me=true` }
+        });
+
+        if (!!user?.[0]) {
+          this.$store.dispatch('auth/gotUser', user[0]);
+        }
 
         if ( this.remember ) {
           this.$cookies.set(USERNAME, this.username, {

@@ -135,7 +135,6 @@ nav:
       other {获取支持}
     }
   restoreSnapshot: 还原快照
-  rotateCertificates: 轮换证书
   rotateEncryptionKeys: 轮换加密密钥
   saveAsRKETemplate: 保存为 RKE 模板
   takeSnapshot: 拍摄快照
@@ -270,7 +269,7 @@ about:
     cli: CLI
     helm: Helm
     machine: Machine
-    rancher: Rancher
+    LLMOS: LLMOS Operator
     releaseNotes: '查看发行说明'
   os:
     mac: macOS
@@ -1387,12 +1386,6 @@ cluster:
     registry: 镜像仓库
     upgrade: 升级策略
     registration: 注册
-  rotateCertificates:
-    label: 轮换证书
-    modalTitle: 轮换集群证书
-    services: 服务
-    allServices: 轮换所有服务证书
-    selectService: 轮换单个服务证书
   toggle:
     v1: RKE1
     v2: RKE2/K3s

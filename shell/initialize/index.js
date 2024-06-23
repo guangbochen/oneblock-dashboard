@@ -37,7 +37,6 @@ import backButton from '../plugins/back-button';
 import plugin from '../plugins/plugin';
 import codeMirror from '../plugins/codemirror-loader';
 import '../plugins/formatters';
-import version from '../plugins/version';
 import steveCreateWorker from '../plugins/steve-create-worker';
 
 // Prevent extensions from overriding existing directives

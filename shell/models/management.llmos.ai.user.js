@@ -1,4 +1,5 @@
 import HybridModel, { cleanHybridResources } from '@shell/plugins/steve/hybrid-class';
+import {MANAGEMENT} from "@shell/config/types";
 
 export default class User extends HybridModel {
   // Preserve description
@@ -118,9 +119,9 @@ export default class User extends HybridModel {
   }
 
   async setEnabled(enabled) {
-    const clone = await this.$dispatch('rancher/clone', { resource: this.norman }, { root: true });
+    const clone = await this.$dispatch('management/clone', { resource: this.norman }, { root: true });
 
-    clone.enabled = enabled;
+    clone.isActive = enabled;
     await clone.save();
   }
 
@@ -187,7 +188,23 @@ export default class User extends HybridModel {
     return true;
   }
 
+  get user() {
+    return this.$rootGetters['management/byId'](MANAGEMENT.USER, this.id);
+  }
+
   get canDelete() {
     return this.hasLink('remove') && !this.isCurrentUser;
+  }
+
+  get canDelete() {
+    return this.user?.hasLink('remove') && !this.isCurrentUser;
+  }
+
+  get canUpdate() {
+    return this.user?.hasLink('update');
+  }
+
+  remove() {
+    return this.user?.remove();
   }
 }

@@ -25,7 +25,7 @@ const STANDARD = 1;
 const dev = configHelper.dev;
 const devPorts = configHelper.devPorts;
 
-// human readable version used on rancher dashboard about page
+// human readable version used on dashboard about page
 const dashboardVersion = process.env.DASHBOARD_VERSION;
 
 const pl = process.env.PL || STANDARD;
@@ -103,8 +103,8 @@ module.exports = function(dir, _appConfig) {
     Object.keys(pkg.dependencies).forEach((pkg) => {
       const f = require(path.join(NM, pkg, 'package.json'));
 
-      // The package.json must have the 'rancher' property to mark it as a UI package
-      if (f.rancher) {
+      // The package.json must have the 'llmos' property to mark it as a UI package
+      if (f.llmos) {
         const id = `${ f.name }-${ f.version }`;
 
         nmPackages[id] = f.main;
@@ -146,8 +146,8 @@ module.exports = function(dir, _appConfig) {
     items.filter((name) => !name.startsWith('.')).forEach((name) => {
       const f = require(path.join(dir, 'pkg', name, 'package.json'));
 
-      // Package file must have rancher field to be a plugin
-      if (includePkg(name) && f.rancher) {
+      // Package file must have llmos field to be a plugin
+      if (includePkg(name) && f.llmos) {
         reqs += `$plugin.initPlugin('${ name }', require(\'~/pkg/${ name }\')); `;
       }
 
@@ -244,34 +244,20 @@ module.exports = function(dir, _appConfig) {
   if ( pl !== STANDARD ) {
     console.log(`PL: ${ pl }`); // eslint-disable-line no-console
   }
-  const rancherEnv = process.env.RANCHER_ENV || 'web';
+  const productEnv = process.env.LLMOS_ENV || 'web';
 
   const loginLocaleSelector = process.env.LOGIN_LOCALE_SELECTOR || 'true';
   const excludeOperatorPkg = process.env.EXCLUDE_OPERATOR_PKG || 'false';
 
-  console.log(`API: '${ api }'. Env: '${ rancherEnv }'`); // eslint-disable-line no-console
+  console.log(`API: '${ api }'. Env: '${ productEnv }'`); // eslint-disable-line no-console
   const proxy = {
     ...appConfig.proxies,
-    '/k8s':            configHelper.proxyWsOpts(api), // Straight to a remote cluster (/k8s/clusters/<id>/)
-    '/pp':             configHelper.proxyWsOpts(api), // For (epinio) standalone API
     '/api':            configHelper.proxyWsOpts(api), // Management k8s API
     '/apis':           configHelper.proxyWsOpts(api), // Management k8s API
     '/v1':             configHelper.proxyWsOpts(api), // Management Steve API
-    '/v3':             configHelper.proxyWsOpts(api), // Rancher API
-    // '/v3-public':      configHelper.proxyOpts(api), // Rancher Unauthed API
     '/api-ui':         configHelper.proxyOpts(api), // Browser API UI
     '/meta':           configHelper.proxyMetaOpts(api), // Browser API UI
     '/v1-*':           configHelper.proxyOpts(api), // SAML, KDM, etc
-    '/rancherversion': configHelper.proxyPrimeOpts(api), // Rancher version endpoint
-    // These are for Ember embedding
-    '/c/*/edit':       configHelper.proxyOpts('https://127.0.0.1:8000'), // Can't proxy all of /c because that's used by Vue too
-    '/k/':             configHelper.proxyOpts('https://127.0.0.1:8000'),
-    '/g/':             configHelper.proxyOpts('https://127.0.0.1:8000'),
-    '/n/':             configHelper.proxyOpts('https://127.0.0.1:8000'),
-    '/p/':             configHelper.proxyOpts('https://127.0.0.1:8000'),
-    '/assets':         configHelper.proxyOpts('https://127.0.0.1:8000'),
-    '/translations':   configHelper.proxyOpts('https://127.0.0.1:8000'),
-    '/engines-dist':   configHelper.proxyOpts('https://127.0.0.1:8000'),
   };
 
   // HAR File support - load network responses from the specified .har file and use those rather than communicating to the Rancher server
@@ -398,7 +384,7 @@ module.exports = function(dir, _appConfig) {
         'process.env.perfTest':            JSON.stringify(perfTest),
         'process.env.loginLocaleSelector': JSON.stringify(loginLocaleSelector),
         'process.env.excludeOperatorPkg':  JSON.stringify(excludeOperatorPkg),
-        'process.env.rancherEnv':          JSON.stringify(rancherEnv),
+        'process.env.productEnv':          JSON.stringify(productEnv),
         'process.env.harvesterPkgUrl':     JSON.stringify(process.env.HARVESTER_PKG_URL),
         'process.env.api':                 JSON.stringify(api),
         // Store the Router Base as env variable that we can use in `shell/config/router.js`
@@ -406,7 +392,7 @@ module.exports = function(dir, _appConfig) {
 
         // This is a replacement of the nuxt publicRuntimeConfig
         'nuxt.publicRuntimeConfig': JSON.stringify({
-          rancherEnv,
+          productEnv,
           dashboardVersion
         }),
 
@@ -427,7 +413,7 @@ module.exports = function(dir, _appConfig) {
 
       config.resolve.symlinks = false;
 
-      // Ensure we process files in the @rancher/shell folder
+      // Ensure we process files in the @shell folder
       config.module.rules.forEach((r) => {
         if ('test.js'.match(r.test)) {
           if (r.exclude) {

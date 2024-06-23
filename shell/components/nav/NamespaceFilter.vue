@@ -203,8 +203,8 @@ export default {
 
       namespaces = this.filterNamespaces(namespaces);
 
-      // isRancher = mgmt schemas are loaded and there's a project schema
-      if (this.$store.getters['isRancher']) {
+      // isMgmt = mgmt schemas are loaded and there's a project schema
+      if (this.$store.getters['isMgmt']) {
         const cluster = this.$store.getters['currentCluster'];
         let projects = this.$store.getters['management/all'](
           MANAGEMENT.PROJECT

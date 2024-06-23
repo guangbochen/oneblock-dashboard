@@ -1,16 +1,16 @@
 import ProjectRow from '@shell/components/form/ResourceQuota/ProjectRow.vue';
-import { RANCHER_TYPES } from '@shell/components/form/ResourceQuota/shared';
+import { K8S_TYPES } from '@shell/components/form/ResourceQuota/shared';
 import { shallowMount } from '@vue/test-utils';
 import Vue from 'vue';
 
-const CONFIGMAP_STRING = RANCHER_TYPES[0].value;
+const CONFIGMAP_STRING = K8S_TYPES[0].value;
 
 describe('component: ProjectRow.vue', () => {
   const wrapper = shallowMount(ProjectRow,
     {
       propsData: {
         mode:  'edit',
-        types: RANCHER_TYPES,
+        types: K8S_TYPES,
         type:  CONFIGMAP_STRING,
         value: {
           spec: {

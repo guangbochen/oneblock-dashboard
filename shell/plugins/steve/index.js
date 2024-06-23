@@ -63,9 +63,6 @@ export default (config) => {
   case 'management':
     config.modelBaseClass = STEVE_MODEL_TYPES.BY_TYPE;
     break;
-  case 'rancher':
-    config.modelBaseClass = STEVE_MODEL_TYPES.NORMAN;
-    break;
   }
 
   return coreStore(

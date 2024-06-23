@@ -1,4 +1,5 @@
 import { randomStr } from '@shell/utils/string';
+import {MANAGEMENT} from "@shell/config/types";
 
 const KEY = 'rc_nonce';
 const ERR_NONCE = 'nonce';
@@ -14,6 +15,7 @@ export const state = function() {
     fromHeader:  null,
     hasAuth:     null,
     loggedIn:    false,
+    user: null,
     principalId: null,
     initialPass: null,
   };
@@ -26,6 +28,10 @@ export const getters = {
 
   enabled(state) {
     return state.hasAuth;
+  },
+
+  user(state) {
+    return state.user;
   },
 
   loggedIn(state) {
@@ -47,21 +53,23 @@ export const mutations = {
     state.fromHeader = fromHeader;
   },
 
+  gotUser(state, user) {
+    // Always deference to avoid race condition when setting `mustChangePassword`
+    state.user = { ...user };
+  },
+
   hasAuth(state, hasAuth) {
     state.hasAuth = !!hasAuth;
   },
 
   loggedInAs(state, principalId) {
     state.loggedIn = true;
-    state.principalId = principalId;
+    state.principalId = "local://" + principalId;
 
     this.$cookies.remove(KEY);
   },
 
   loggedOut(state) {
-    // Note: plugin/norman/index watches for this mutation
-    // to automatically disconnect subscribe sockets.
-
     state.loggedIn = false;
     state.principalId = null;
     state.initialPass = null;
@@ -75,6 +83,29 @@ export const mutations = {
 export const actions = {
   gotHeader({ commit }, fromHeader) {
     commit('gotHeader', fromHeader);
+  },
+
+  async getUser({ dispatch, commit, getters }) {
+    if (getters.user) {
+      return;
+    }
+
+    try {
+      const user = await dispatch('management/findAll', {
+        type: MANAGEMENT.USER,
+        opt:  {
+          url:    `/v1/${MANAGEMENT.USER}?me=true`,
+        }
+      }, { root: true });
+
+      commit('gotUser', user?.[0]);
+    } catch (err) {
+      console.error('Error getting user', err);
+    }
+  },
+
+  gotUser({ commit }, user) {
+    commit('gotUser', user);
   },
 
   setInitialPass({ commit }, pass) {
@@ -107,7 +138,6 @@ export const actions = {
         headers:              { 'Content-Type': 'application/json' },
         redirectUnauthorized: false,
       }, { root: true, redirectUnauthorized: false });
-
       return;
     } catch (err) {
       if (err._status === 401) {

@@ -286,13 +286,13 @@ export default {
 
       &.rancher {
         .side-label, .deploys-os-label {
-          background-color: var(--app-rancher-accent);
+          background-color: var(--app-dashboard-accent);
           label {
-            color: var(--app-rancher-accent-text);
+            color: var(--app-dashboard-accent-text);
           }
         }
         &:hover:not(.disabled) {
-          border-color: var(--app-rancher-accent);
+          border-color: var(--app-dashboard-accent);
         }
       }
 

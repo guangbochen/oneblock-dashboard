@@ -43,7 +43,7 @@ if (process.argv.length < 4) {
 const harFile = process.argv[2];
 const version = process.argv[3].trim();
 const harData = har.loadFile(harFile, PORT, '/dashboard');
-const dashboardUrl = `https://releases.rancher.com/dashboard/${ version }/index.html`;
+const dashboardUrl = `https://releases.1block.ai/dashboard/${ version }/index.html`;
 
 let harFolder = process.argv.length > 4 ? process.argv[4] : '';
 

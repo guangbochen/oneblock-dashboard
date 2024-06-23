@@ -60,7 +60,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['clusterReady', 'isExplorer', 'isRancher', 'currentCluster',
+    ...mapGetters(['clusterReady', 'isExplorer', 'isMgmt', 'currentCluster',
       'currentProduct', 'backToRancherLink', 'backToRancherGlobalLink', 'pageActions', 'isSingleProduct', 'showTopLevelMenu']),
     ...mapGetters('type-map', ['activeProducts']),
 
@@ -70,6 +70,11 @@ export default {
 
     authEnabled() {
       return this.$store.getters['auth/enabled'];
+    },
+
+    loggedInUser() {
+      let user = this.$store.getters['auth/user'] || {};
+      return user
     },
 
     kubeConfigEnabled() {
@@ -97,10 +102,10 @@ export default {
     },
 
     showAccountAndApiKeyLink() {
-      // Keep this simple for the moment and only check if the user can see tokens... plus the usual isRancher/isSingleProduct
+      // Keep this simple for the moment and only check if the user can see tokens... plus the usual isMgmt/isSingleProduct
       // const canSeeTokens = this.$store.getters['rancher/schemaFor'](NORMAN.TOKEN, false, false);
 
-      return (this.isRancher || this.isSingleProduct);
+      return (this.isMgmt || this.isSingleProduct);
     },
 
     showPageActions() {
@@ -125,7 +130,7 @@ export default {
     },
 
     featureRancherDesktop() {
-      return this.$config.rancherEnv === 'desktop';
+      return this.$config.productEnv === 'desktop';
     },
 
     importEnabled() {
@@ -143,7 +148,7 @@ export default {
     },
 
     showImportYaml() {
-      return this.currentProduct?.inStore !== 'oneblock';
+      return this.currentProduct?.inStore !== 'llmos';
     },
 
     nameTooltip() {
@@ -364,8 +369,7 @@ export default {
           v-if="isSingleProduct"
           class="product-name"
         >
-          <!-- {{ t(isSingleProduct.productNameKey) }} -->
-          OneBlock
+           {{ t(isSingleProduct.productNameKey) }}
         </div>
         <template v-else>
           <ClusterProviderIcon
@@ -391,7 +395,7 @@ export default {
           >
             <BrandImage
               class="side-menu-logo-img"
-              file-name="llmos-logo.svg"
+              file-name="logo.svg"
             />
           </div>
         </template>
@@ -429,7 +433,7 @@ export default {
       >
         <BrandImage
           class="side-menu-logo-img"
-          file-name="llmos-logo.svg"
+          file-name="logo.svg"
         />
       </div>
     </div>
@@ -636,13 +640,13 @@ export default {
           :container="false"
         >
           <div class="user-image text-right hand">
-<!--            <img-->
-<!--              v-if="principal && principal.avatarSrc"-->
-<!--              :src="principal.avatarSrc"-->
-<!--              :class="{'avatar-round': principal.roundAvatar}"-->
-<!--              width="36"-->
-<!--              height="36"-->
-<!--            >-->
+            <img
+              v-if="loggedInUser && loggedInUser.avatarSrc"
+              :src="loggedInUser.avatarSrc"
+              :class="{'avatar-round': loggedInUser.roundAvatar}"
+              width="36"
+              height="36"
+            >
             <i class="icon icon-user icon-2x avatar p-5" />
           </div>
           <template
@@ -659,12 +663,12 @@ export default {
                 class="user-info"
               >
                 <div class="user-name">
-<!--                  <i class="icon icon-lg icon-user" /> {{ principal.loginName }}-->
+                  <i class="icon icon-lg icon-user" /> {{ loggedInUser.spec?.username }}
                 </div>
                 <div class="text-small pt-5 pb-5">
-<!--                  <template v-if="principal.loginName !== principal.name">-->
-<!--                    {{ principal.name }}-->
-<!--                  </template>-->
+                  <template v-if="loggedInUser.spec?.username !== loggedInUser.spec?.displayName">
+                    {{ loggedInUser.spec?.displayName }}
+                  </template>
                 </div>
               </li>
               <nuxt-link

@@ -195,9 +195,9 @@ export function init(store) {
   headers(MANAGEMENT.USER, [
     STATE,
     USER_ID,
-    USER_DISPLAY_NAME,
-    USER_PROVIDER,
     USERNAME,
+    USER_DISPLAY_NAME,
+    // USER_PROVIDER,
     AGE
   ]);
 
@@ -232,7 +232,7 @@ export function init(store) {
     group:            'cluster',
     icon:             'globe',
     namespaced:       false,
-    ifRancherCluster: false,
+    ifMgmtCluster: false,
     name:             VIRTUAL_TYPES.NAMESPACES,
     weight:           98,
     route:            { name: 'c-cluster-product-namespaces' },

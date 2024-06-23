@@ -40,7 +40,7 @@ export default {
 
   computed: {
     ...mapGetters(['clusterId']),
-    ...mapGetters(['clusterReady', 'isRancher', 'currentCluster', 'currentProduct']),
+    ...mapGetters(['clusterReady', 'isMgmt', 'currentCluster', 'currentProduct']),
     ...mapGetters({ features: 'features/get' }),
 
     value: {
@@ -281,7 +281,7 @@ export default {
             /><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" /></svg>
           </div>
           <div class="side-menu-logo">
-            <BrandImage file-name="llmos-logo.svg" />
+            <BrandImage file-name="logo.svg" />
           </div>
         </div>
 
@@ -985,7 +985,7 @@ export default {
 
   .side-menu-logo {
     align-items: center;
-    display: flex;
+    //display: flex;
     transform: translateX($app-bar-collapsed-width);
     opacity: 1;
     max-width: 200px;

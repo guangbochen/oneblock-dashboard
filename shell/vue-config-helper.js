@@ -37,7 +37,6 @@ function proxyOpts(target) {
   };
 }
 
-// Intercept the /rancherversion API call wnad modify the 'RancherPrime' value
 // if configured to do so by the environment variable PRIME
 function proxyPrimeOpts(target) {
   const opts = proxyOpts(target);
@@ -63,8 +62,6 @@ function proxyPrimeOpts(target) {
 
       try {
         const out = JSON.parse(body);
-
-        out.RancherPrime = prime;
         output = JSON.stringify(out);
       } catch (err) {}
 

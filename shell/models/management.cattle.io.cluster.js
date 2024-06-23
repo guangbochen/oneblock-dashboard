@@ -16,24 +16,9 @@ import { copyTextToClipboard } from '@shell/utils/clipboard';
 // If the logo is not named with the provider name, add an override here
 const PROVIDER_LOGO_OVERRIDE = {};
 
-function findRelationship(verb, type, relationships = []) {
-  const from = `${ verb }Type`;
-  const id = `${ verb }Id`;
-
-  return relationships.find((r) => r[from] === type)?.[id];
-}
-
 export default class MgmtCluster extends HybridModel {
   get details() {
     const out = [
-      {
-        label:   'Provisioner',
-        content: this.provisionerDisplay
-      },
-      {
-        label:   'Machine Provider',
-        content: this.machineProviderDisplay
-      },
       {
         label:   'Kubernetes Version',
         content: this.kubernetesVersion,
@@ -59,14 +44,14 @@ export default class MgmtCluster extends HybridModel {
       label:      this.t('nav.kubeconfig.download'),
       icon:       'icon icon-download',
       bulkable:   true,
-      enabled:    this.$rootGetters['isRancher'] && this.hasAction('generateKubeconfig'),
+      enabled:    this.$rootGetters['isMgmt'] && this.hasAction('generateKubeconfig'),
     });
 
     insertAt(out, 2, {
       action:   'copyKubeConfig',
       label:    this.t('cluster.copyConfig'),
       bulkable: false,
-      enabled:  this.$rootGetters['isRancher'] && this.hasAction('generateKubeconfig'),
+      enabled:  this.$rootGetters['isMgmt'] && this.hasAction('generateKubeconfig'),
       icon:     'icon icon-copy',
     });
 

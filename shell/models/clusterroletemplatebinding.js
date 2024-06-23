@@ -18,10 +18,6 @@ export default class CRTB extends NormanModel {
     return this.$rootGetters['management/byId'](MANAGEMENT.ROLE_TEMPLATE, this.roleTemplateId);
   }
 
-  get clusterroletemplatebinding() {
-    return this.$rootGetters[`management/byId`](MANAGEMENT.CLUSTER_ROLE_TEMPLATE_BINDING, this.id?.replace(':', '/'));
-  }
-
   get steve() {
     return this.$dispatch(`management/find`, {
       type: MANAGEMENT.CLUSTER_ROLE_TEMPLATE_BINDING,

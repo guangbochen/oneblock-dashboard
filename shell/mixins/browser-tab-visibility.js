@@ -4,7 +4,7 @@ export default {
   computed: { ...mapGetters(['isSingleProduct']) },
   methods:  {
     setTabVisibilityListener(isAdd) {
-      if ((!this.isSingleProduct || this.isSingleProduct?.enableSessionCheck) && this.$config.rancherEnv !== 'desktop') {
+      if ((!this.isSingleProduct || this.isSingleProduct?.enableSessionCheck) && this.$config.productEnv !== 'desktop') {
         const method = isAdd ? 'addEventListener' : 'removeEventListener';
 
         document[method]('visibilitychange', this.visibilityChange, true);

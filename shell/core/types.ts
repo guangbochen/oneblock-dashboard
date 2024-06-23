@@ -1,9 +1,6 @@
 import { ProductFunction } from './plugin';
 import { RouteConfig, Location } from 'vue-router';
 
-// Cluster Provisioning types
-export * from './types-provisioning';
-
 // package.json metadata
 export interface PackageMetadata {
   name: string;
@@ -11,13 +8,6 @@ export interface PackageMetadata {
   description: string;
   icon: string;
 }
-
-// export interface Route {
-//   name: string;
-//   path: string;
-//   component: Object | Function,
-//   children: Route[];
-// }
 
 export type VuexStoreObject = { [key: string]: any }
 export type CoreStoreSpecifics = { state: () => VuexStoreObject, getters: VuexStoreObject, mutations: VuexStoreObject, actions: VuexStoreObject }

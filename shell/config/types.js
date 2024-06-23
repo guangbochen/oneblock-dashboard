@@ -73,10 +73,10 @@ export const METRIC = {
 };
 
 // --------------------------------------
-// 2. Only if Rancher is installed
+// 2. Only if LLMOS-Operator is installed
 // --------------------------------------
 
-// Rancher Management API (via Steve)
+// Management API (via Steve)
 // Base: /v1
 export const MANAGEMENT = {
   SETTING:                       'management.llmos.ai.setting',

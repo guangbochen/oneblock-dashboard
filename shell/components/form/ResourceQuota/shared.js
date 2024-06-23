@@ -1,4 +1,4 @@
-export const RANCHER_TYPES = [
+export const K8S_TYPES = [
   {
     value:          'configMaps',
     inputExponent:  0,
@@ -94,37 +94,6 @@ export const RANCHER_TYPES = [
     baseUnit:       '',
     labelKey:       'resourceQuota.servicesNodePorts',
     placeholderKey: 'resourceQuota.projectLimit.unitlessPlaceholder'
-  },
-];
-
-export const HARVESTER_TYPES = [
-  {
-    value:          'limitsCpu',
-    inputExponent:  -1,
-    baseUnitKey:    'suffix.cpus',
-    labelKey:       'resourceQuota.limitsCpu',
-    placeholderKey: 'resourceQuota.projectLimit.cpuPlaceholder'
-  },
-  {
-    value:          'limitsMemory',
-    inputExponent:  2,
-    increment:      1024,
-    labelKey:       'resourceQuota.limitsMemory',
-    placeholderKey: 'resourceQuota.projectLimit.memoryPlaceholder'
-  },
-  {
-    value:          'requestsCpu',
-    inputExponent:  -1,
-    baseUnitKey:    'suffix.cpus',
-    labelKey:       'resourceQuota.requestsCpu',
-    placeholderKey: 'resourceQuota.projectLimit.cpuPlaceholder'
-  },
-  {
-    value:          'requestsMemory',
-    inputExponent:  2,
-    increment:      1024,
-    labelKey:       'resourceQuota.requestsMemory',
-    placeholderKey: 'resourceQuota.projectLimit.memoryPlaceholder'
   },
 ];
 

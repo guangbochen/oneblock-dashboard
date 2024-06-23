@@ -19,12 +19,6 @@ flags:
   shell:
     paths:
     - shell
-  epinio:
-    paths:
-    - pkg/epinio
-  llmos:
-    paths:
-    - pkg/llmos
   rancher-components:
     paths:
     - pkg/rancher-components

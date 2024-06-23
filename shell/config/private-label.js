@@ -64,7 +64,7 @@ export function setTitle() {
   const v = getVendor();
 
   if (v === 'llmos') {
-    const ico = require(`~shell/assets/images/pl/oneblock.png`);
+    const ico = require(`~shell/assets/images/pl/logo.svg`);
 
     document.title = 'LLMOS';
     const link = document.createElement('link');

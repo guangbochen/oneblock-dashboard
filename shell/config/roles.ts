@@ -14,122 +14,15 @@ export const SCOPED_RESOURCES = {
   // subset of the cluster scoped list.
 
   globalScopedApiGroups: {
-    // Global scoped resources are resources for
-    // Rancher's global apps, mainly Cluster
-    // Management and Continuous Delivery.
+    // Global scoped resources are resources for global apps,
+    // mainly Cluster Management.
     // A global role can include everything at the global
     // scope, plus everything in the cluster and project scope.
-    'catalog.cattle.io': {
-      resources: [
-        'Apps',
-        'ClusterRepos',
-        'Operations',
-      ]
-    },
     'cluster.x-k8s.io': {
       resources: [
         'Clusters'
       ]
     },
-    'fleet.cattle.io': {
-      resources: [
-        'Bundles',
-        'BundleDeployments',
-        'BundleNamespaceMappings',
-        'Clusters',
-        'ClusterGroups',
-        'ClusterRegistrations',
-        'ClusterRegistrationTokens',
-        'Contents',
-        'GitRepos',
-        'GitRepoRestrictions',
-      ],
-    },
-    'gitjob.cattle.io': {
-      resources: [
-        'GitJobs',
-      ]
-    },
-    'harvesterhci.io.management': {
-      resources: [
-        'Clusters'
-      ]
-    },
-    'management.cattle.io': {
-      // Resources provided by the Norman API.
-      resources: [
-        'APIServices',
-        'AuthConfigs',
-        'Catalogs',
-        'CatalogTemplates',
-        'CatalogTemplateVersions',
-        'CisBenchmarkVersions',
-        'CisConfigs',
-        'ClusterCatalogs',
-        'ClusterRegistrationTokens',
-        'ClusterRoleTemplateBindings',
-        'Clusters',
-        'ClusterScans',
-        'ClusterTemplates',
-        'ClusterTemplateRevisions',
-        'ComposeConfigs',
-        'DynamicSchemas',
-        'EtcdBackups',
-        'Features',
-        'FleetWorkspaces',
-        'GlobalRoles',
-        'Groups',
-        'GroupMembers',
-        'KontainerDrivers',
-        'RkeK8sSystemImages',
-        'MonitorMetrics',
-        'Nodes',
-        'NodeDrivers',
-        'NodePools',
-        'NodeTemplates',
-        'PodSecurityPolicyTemplates',
-        'PodSecurityPolicyTemplateProjectBindings',
-        'Preferences',
-        'Projects',
-        'ProjectCatalogs',
-        'ProjectLoggings',
-        'ProjectMonitorGraphs',
-        'ProjectNetworkPolicies',
-        'ProjectRoleTemplateBindings',
-        'RkeAddons',
-        'RkeK8sServiceOptions',
-        'RoleTemplates',
-        'RoleTemplateBindings',
-        'SamlTokens',
-        'Settings',
-        'Templates',
-        'TemplateContents',
-        'TemplateVersions',
-        'Tokens',
-        'Users',
-        'UserAttributes',
-      ],
-      deprecatedResources: [
-        'ClusterAlerts', // Replaced by monitoring V2
-        'ClusterAlertGroups', // Replaced by monitoring V2
-        'ClusterAlertRules', // Replaced by monitoring V2
-        'ClusterLoggings', // Replaced by logging V2
-        'ClusterMonitorGraphs', // Replaced by monitoring V2
-        'GlobalDnses', // Deprecated along with legacy catalogs
-        'GlobalDnsProviders', // Deprecated along with legacy catalogs
-        'MultiClusterApps', // Replaced by Fleet
-        'MultiClusterAppRevisions', // Replaced by Fleet
-        'Notifiers', // Replaced by monitoring V2
-        'ProjectAlerts', // Replaced by monitoring V2
-        'ProjectAlertGroups', // Replaced by monitoring V2
-        'ProjectAlertRules', // Replaced by monitoring V2
-      ]
-    },
-    'provisioning.cattle.io': {
-      resources: [
-        'Clusters'
-      ]
-    }
   },
   clusterScopedApiGroups: {
     // Cluster scoped resources are for non-namespaced
@@ -238,12 +131,6 @@ export const SCOPED_RESOURCES = {
         'Jobs',
       ]
     },
-    'cis.cattle.io': {
-      resources: [
-        'ClusterScans',
-        'ClusterScanReports'
-      ]
-    },
     'constraints.gatekeeper.sh': {
       resources: [
         'K8sAllowedRepos',
@@ -264,11 +151,6 @@ export const SCOPED_RESOURCES = {
     'events.k8s.io': {
       resources: [
         'Events',
-      ]
-    },
-    'helm.cattle.io': {
-      resources: [
-        'ProjectHelmCharts',
       ]
     },
     'monitoring.coreos.com': {
@@ -311,41 +193,6 @@ export const SCOPED_RESOURCES = {
       resources: [
         'PodDisruptionBudgets',
         'PodSecurityPolicies',
-      ]
-    },
-    'project.cattle.io': {
-      resources: [
-        'Apps',
-        'AppRevisions'
-      ],
-      deprecatedResources: [
-        'Pipelines', // Replaced by Fleet
-        'PipelineExecutions', // Replaced by Fleet
-        'PipelineSettings', // Replaced by Fleet
-        'SourceCodeCredentials', // Replaced by Fleet
-        'SourceCodeProviderConfigs', // Replaced by Fleet
-        'SourceCodeRepositories', // Replaced by Fleet
-      ]
-    },
-    'logging.banzaicloud.io': {
-      resources: [
-        'ClusterFlows',
-        'ClusterOutputs',
-        'Flows',
-        'Loggings',
-        'Outputs',
-      ]
-    },
-    'install.istio.io': {
-      resources: [
-        'IstioOperators',
-      ]
-    },
-    'security.istio.io': {
-      resources: [
-        'AuthorizationPolicies',
-        'RequestAuthentications',
-        'PeerAuthentications',
       ]
     },
     'status.gatekeeper.sh': {

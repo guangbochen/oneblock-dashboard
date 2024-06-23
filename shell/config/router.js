@@ -71,10 +71,6 @@ export const routerOptions = {
     component: () => interopDefault(import('../pages/c/_cluster/settings/index.vue' /* webpackChunkName: "pages/c/_cluster/settings/index" */)),
     name:      'c-cluster-settings'
   }, {
-    path:      '/c/:cluster/explorer/ConfigBadge',
-    component: () => interopDefault(import('../pages/c/_cluster/explorer/ConfigBadge.vue' /* webpackChunkName: "pages/c/_cluster/explorer/ConfigBadge" */)),
-    name:      'c-cluster-explorer-ConfigBadge'
-  }, {
     path:      '/c/:cluster/explorer/EventsTable',
     component: () => interopDefault(import('../pages/c/_cluster/explorer/EventsTable.vue' /* webpackChunkName: "pages/c/_cluster/explorer/EventsTable" */)),
     name:      'c-cluster-explorer-EventsTable'

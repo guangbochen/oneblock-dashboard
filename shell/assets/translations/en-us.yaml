@@ -135,7 +135,6 @@ nav:
       other {Get Support}
     }
   restoreSnapshot: Restore Snapshot
-  rotateCertificates: Rotate Certificates
   rotateEncryptionKeys: Rotate Encryption Keys
   saveAsRKETemplate: Save as RKE Template
   takeSnapshot: Take Snapshot
@@ -272,7 +271,7 @@ about:
     cli: CLI
     helm: Helm
     machine: Machine
-    rancher: Rancher
+    llmos: LLMOS Operator
     releaseNotes: 'View release notes'
   os:
     mac: macOS
@@ -1569,12 +1568,6 @@ cluster:
     registry: Registries
     upgrade: Upgrade Strategy
     registration: Registration
-  rotateCertificates:
-    label: Rotate Certificates
-    modalTitle: Rotate Cluster Certificates
-    services: Services
-    allServices: Rotate all service certificates
-    selectService: Rotate an individual service
   toggle:
     v1: RKE1
     v2: RKE2/K3s
@@ -4715,7 +4708,7 @@ tableHeaders:
   userDisplayName: Display Name
   userId: ID
   userStatus: Status
-  username: Local Username
+  username: Username
   value: Value
   version: Version
   volume: Volume

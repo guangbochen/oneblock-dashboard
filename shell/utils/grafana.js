@@ -1,14 +1,6 @@
 import { parse as parseUrl, addParam } from '@shell/utils/url';
 
-// these two versions of monitoring included a bug fix attempt that required the local cluster to use a different url
-// the solution going forward doesn't require this, see https://github.com/rancher/dashboard/issues/8885
-const MONITORING_VERSION_ALT_URL = ['100.2.0+up40.1.2', '102.0.0+up40.1.2'];
-
 export function getClusterPrefix(monitoringVersion, clusterId) {
-  if (MONITORING_VERSION_ALT_URL.includes(monitoringVersion)) {
-    return `/k8s/clusters/${ clusterId }`;
-  }
-
   return clusterId === 'local' ? '' : `/k8s/clusters/${ clusterId }`;
 }
 
@@ -31,10 +23,6 @@ export function computeDashboardUrl(monitoringVersion, embedUrl, clusterId, para
 }
 
 export async function dashboardExists(monitoringVersion, store, clusterId, embedUrl, storeName = 'cluster', projectId = null) {
-  // if ( !haveV2Monitoring(store.getters) ) {
-  //   return false;
-  // }
-
   const url = parseUrl(embedUrl);
   let prefix = `${ getClusterPrefix(monitoringVersion, clusterId) }/api/v1/namespaces/cattle-monitoring-system/services/http:rancher-monitoring-grafana:80/proxy/`;
   let delimiter = 'http:rancher-monitoring-grafana:80/proxy/';

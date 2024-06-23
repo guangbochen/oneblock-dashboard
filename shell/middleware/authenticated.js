@@ -48,9 +48,9 @@ function findMeta(route, key) {
 export function getClusterFromRoute(to) {
   let cluster = to.params?.cluster;
 
-  // if (!cluster) {
-  //   cluster = findMeta(to, 'cluster');
-  // }
+  if (!cluster) {
+    cluster = findMeta(to, 'cluster');
+  }
 
   return cluster;
 }
@@ -67,9 +67,9 @@ export function getProductFromRoute(to) {
   }
 
   // If still no product, see if the route indicates the product via route metadata
-  // if (!product) {
-  //   product = findMeta(to, 'product');
-  // }
+  if (!product) {
+    product = findMeta(to, 'product');
+  }
 
   return product;
 }
@@ -204,7 +204,7 @@ export default async function({
 
   if ( firstLogin === null ) {
     try {
-      const res = await store.dispatch('rancher/find', {
+      const res = await store.dispatch('management/find', {
         type: 'setting',
         id:   SETTING.FIRST_LOGIN,
         opt:  { url: `/v1/settings/${ SETTING.FIRST_LOGIN }` }
@@ -212,7 +212,7 @@ export default async function({
 
       firstLogin = res?.value === 'true';
 
-      const plSetting = await store.dispatch('rancher/find', {
+      const plSetting = await store.dispatch('management/find', {
         type: 'setting',
         id:   SETTING.PL,
         opt:  { url: `/v1/settings/${ SETTING.PL }` }
@@ -262,13 +262,7 @@ export default async function({
 
   if ( store.getters['auth/enabled'] !== false && !store.getters['auth/loggedIn'] ) {
     // `await` so we have one successfully request whilst possibly logged in (ensures fromHeader is populated from `x-api-cattle-auth`)
-    // await store.dispatch('auth/getUser');
-
-    // const v3User = store.getters['auth/v3User'] || {};
-    //
-    // if (v3User?.mustChangePassword) {
-    //   return redirect({ name: 'auth-setup' });
-    // }
+    await store.dispatch('auth/getUser');
 
     // In newer versions the API calls return the auth state instead of having to make a new call all the time.
     const fromHeader = store.getters['auth/fromHeader'];
@@ -277,7 +271,7 @@ export default async function({
       noAuth();
     } else if ( fromHeader === 'true' ) {
       const me = await findMe(store);
-
+      console.log('isLoggedIn', me);
       isLoggedIn(me);
     } else if ( fromHeader === 'false' ) {
       notLoggedIn();
@@ -286,6 +280,7 @@ export default async function({
       try {
         const me = await findMe(store);
 
+        console.log('isLoggedIn2', me);
         isLoggedIn(me);
       } catch (e) {
         const status = e?._status;
@@ -499,19 +494,7 @@ export default async function({
 }
 
 async function findMe(store) {
-  return ""
-  // First thing we do in loadManagement is fetch principals anyway.... so don't ?me=true here
-  // const principals = await store.dispatch('rancher/findAll', {
-  //   type: NORMAN.PRINCIPAL,
-  //   opt:  {
-  //     url:                  '/v3/principals',
-  //     redirectUnauthorized: false,
-  //   }
-  // });
-  //
-  // const me = findBy(principals, 'me', true);
-  //
-  // return me;
+  return store.getters['auth/user']
 }
 
 async function tryInitialSetup(store, password = 'admin') {

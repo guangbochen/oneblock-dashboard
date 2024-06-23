@@ -19,16 +19,15 @@ export default {
   data() {
     return {
       form: {
-        username:    this.value.username,
-        description: this.value.description,
-        displayName: this.value.displayName,
+        username:    this.value.spec?.username,
+        description: this.value.spec?.description,
+        displayName: this.value.spec?.displayName,
         password:    {
-          password:          '',
-          userChangeOnLogin: false,
+          password: '',
         }
       },
       validation: {
-        password:     false,
+        password: false,
       },
     };
   },
@@ -64,9 +63,8 @@ export default {
       }
       if (this.isEdit) {
         return !!this.form.password.password ||
-          this.form.description !== this.value.description ||
-          this.form.displayName !== this.value.displayName ||
-          this.form.password.userChangeOnLogin !== this.value.mustChangePassword;
+          this.form.description !== this.value.spec.description ||
+          this.form.displayName !== this.value.spec.displayName;
       }
 
       return false;
@@ -108,7 +106,7 @@ export default {
       // Ensure username is unique (this does not happen in the backend)
       const users = await this.$store.dispatch('management/findAll', { type: MANAGEMENT.USER });
 
-      if (users.find((u) => u.username === this.form.username)) {
+      if (users.find((u) => u.spec.username === this.form.username)) {
         throw new Error(this.t('user.edit.credentials.username.exists'));
       }
 
@@ -117,13 +115,14 @@ export default {
         metadata: {
           generateName: 'user-',
         },
-        description:        this.form.description,
-        isAdmin:            true,
-        enabled:            true,
-        mustChangePassword: this.form.password.userChangeOnLogin,
-        displayName:        this.form.displayName,
-        password:           this.form.password.password,
-        username:           this.form.username
+        spec: {
+          username:    this.form.username,
+          password:    this.form.password.password,
+          displayName: this.form.displayName,
+          isAdmin:     true,
+          isActive:    true,
+          description: this.form.description,
+        },
       });
 
       return await user.save();
@@ -142,21 +141,12 @@ export default {
       // Save change of password
       // - Password must be changed before editing mustChangePassword (setpassword action sets this to false)
       if (this.form.password.password) {
-        await this.$refs.changePassword.save(user);
-
-        // Why the wait? Without these the user updates below are ignored
-        // - The update request succeeds and shows the correct values in it's response.
-        // - Fetching the norman user again sometimes shows the correct value, sometimes not
-        // - Even if the fetched norman user shows the correct value, it doesn't show up in the steve user
-        //   - Looks like we re-request the stale version via socket?
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+        user.spec.password = this.form.password.password;
       }
 
       // Save user updates
-      user.description = this.form.description;
-      user._name = this.form.displayName;
-      user.mustChangePassword = this.form.password.userChangeOnLogin;
-
+      user.spec.description = this.form.description;
+      user.spec.displayName = this.form.displayName;
       await user.save();
 
       return await this.$store.dispatch('management/find', {

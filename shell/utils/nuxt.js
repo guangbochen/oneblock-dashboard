@@ -212,7 +212,7 @@ export async function setContext(app, context) {
       error:   context.error,
       base:    app.router.options.base,
       env:     {
-        commit: 'head', version: '0.1.2', dev: true, pl: 1, perfTest: false, rancherEnv: 'web', api: 'http://localhost:8989'
+        commit: 'head', version: '0.1.2', dev: true, pl: 1, perfTest: false, productEnv: 'web', api: 'http://localhost:8989'
       }
     };
     // Only set once

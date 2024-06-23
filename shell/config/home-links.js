@@ -38,12 +38,6 @@ const SUPPORT_LINK = {
   readonly: true
 };
 
-const CN_FORUMS_LINK = {
-  key:     'cnforums',
-  value:   'https://forums.rancher.cn/',
-  enabled: true,
-};
-
 // We add a version attribute to the setting so we know what has been migrated and which version of the setting we have
 export const CUSTOM_LINKS_VERSION = 'v1';
 
@@ -126,10 +120,6 @@ export function ensureSupportLink(links, hasSupport, isSupportPage, t, store) {
   }
 
   const selectedLocaleLabel = store.getters['i18n/selectedLocaleLabel'];
-
-  if (selectedLocaleLabel === t('locale.zh-hans')) {
-    links.defaults.push(CN_FORUMS_LINK);
-  }
 
   // Localise the default links
   links.defaults = links.defaults.map((link) => {

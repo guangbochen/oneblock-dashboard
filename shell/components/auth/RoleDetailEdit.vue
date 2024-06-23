@@ -16,14 +16,7 @@ import SortableTable from '@shell/components/SortableTable';
 import { _CLONE, _DETAIL } from '@shell/config/query-params';
 import { SCOPED_RESOURCES } from '@shell/config/roles';
 import { Banner } from '@components/Banner';
-
-// import { SUBTYPE_MAPPING, VERBS } from '@shell/models/management.cattle.io.roletemplate';
 import Loading from '@shell/components/Loading';
-
-// const GLOBAL = SUBTYPE_MAPPING.GLOBAL.key;
-// const CLUSTER = SUBTYPE_MAPPING.CLUSTER.key;
-// const NAMESPACE = SUBTYPE_MAPPING.NAMESPACE.key;
-// const RBAC_ROLE = SUBTYPE_MAPPING.RBAC_ROLE.key;
 
 /**
  * Handles the View, Create and Edit of
@@ -312,13 +305,13 @@ export default {
         }
       ];
     },
-    isRancherRoleTemplate() {
+    isMgmtRoleTemplate() {
       return this.value.subtype === CLUSTER || this.value.subtype === NAMESPACE;
     },
     isNamespaced() {
       return this.value.subtype === RBAC_ROLE;
     },
-    isRancherType() {
+    isMgmtType() {
       return this.value.subtype === GLOBAL || this.value.subtype === CLUSTER || this.value.subtype === NAMESPACE;
     },
     isDetail() {
@@ -598,7 +591,7 @@ export default {
         :rules="{ name: fvGetAndReportPathRules('displayName') }"
       />
       <div
-        v-if="isRancherType"
+        v-if="isMgmtType"
         class="row"
       >
         <div class="col span-6">
@@ -613,7 +606,7 @@ export default {
           />
         </div>
         <div
-          v-if="isRancherRoleTemplate"
+          v-if="isMgmtRoleTemplate"
           class="col span-6"
         >
           <RadioGroup
@@ -738,7 +731,7 @@ export default {
           </ArrayList>
         </Tab>
         <Tab
-          v-if="isRancherRoleTemplate"
+          v-if="isMgmtRoleTemplate"
           name="inherit-from"
           label="Inherit From"
           :weight="0"

@@ -14,7 +14,7 @@ const pkg = require(pkgFilepath);
 // Ensure we have the keys we need
 
 pkg.files = ['**/*'];
-pkg.rancher = true;
+pkg.llmos = true;
 pkg.main = `${ pkg.name }-${ pkg.version }.umd.min.js`;
 
 delete pkg.scripts;

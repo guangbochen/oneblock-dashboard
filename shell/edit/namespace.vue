@@ -14,7 +14,7 @@ import { PROJECT_ID, _VIEW, FLAT_VIEW, _CREATE } from '@shell/config/query-param
 import MoveModal from '@shell/components/MoveModal';
 import ResourceQuota from '@shell/components/form/ResourceQuota/Namespace';
 import Loading from '@shell/components/Loading';
-import { HARVESTER_TYPES, RANCHER_TYPES } from '@shell/components/form/ResourceQuota/shared';
+import { K8S_TYPES } from '@shell/components/form/ResourceQuota/shared';
 import { LLMOS_NAME as HARVESTER } from '@shell/config/features';
 import Labels from '@shell/components/form/Labels';
 import { randomStr } from '@shell/utils/string';
@@ -61,8 +61,7 @@ export default {
       containerResourceLimits: this.value.annotations?.[CONTAINER_DEFAULT_RESOURCE_LIMIT] || this.getDefaultContainerResourceLimits(projectName),
       rerenderNums:            randomStr(4),
       projectName,
-      HARVESTER_TYPES,
-      RANCHER_TYPES,
+      K8S_TYPES: K8S_TYPES,
     };
   },
 
@@ -228,7 +227,7 @@ export default {
           v-model="value"
           :mode="mode"
           :project="project"
-          :types="RANCHER_TYPES"
+          :types="K8S_TYPES"
         />
       </Tab>
       <Tab

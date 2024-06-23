@@ -822,7 +822,7 @@ export const getters = {
         } else if ( !attrs.kind ) {
           // Skip the schemas that aren't top-level types
           continue;
-        } else if ( typeof typeOptions.ifRancherCluster !== 'undefined' && typeOptions.ifRancherCluster !== rootGetters.isRancher ) {
+        } else if ( typeof typeOptions.ifMgmtCluster !== 'undefined' && typeOptions.ifMgmtCluster !== rootGetters.isMgmt ) {
           continue;
         } else if (typeOptions.localOnly && !rootGetters.currentCluster?.isLocal) {
           continue;
@@ -892,7 +892,7 @@ export const getters = {
             }
           }
 
-          if ( typeof item.ifRancherCluster !== 'undefined' && item.ifRancherCluster !== rootGetters.isRancher ) {
+          if ( typeof item.ifMgmtCluster !== 'undefined' && item.ifMgmtCluster !== rootGetters.isMgmt ) {
             continue;
           }
 

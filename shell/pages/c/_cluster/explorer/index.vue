@@ -30,7 +30,6 @@ import metricPoller from '@shell/mixins/metric-poller';
 import ResourceSummary, { resourceCounts } from '@shell/components/ResourceSummary';
 import HardwareResourceGauge from '@shell/components/HardwareResourceGauge';
 import { isEmpty } from '@shell/utils/object';
-import ConfigBadge from './ConfigBadge';
 import EventsTable from './EventsTable';
 import { fetchClusterResources } from './explorer-utils';
 import SimpleBox from '@shell/components/SimpleBox';
@@ -59,7 +58,6 @@ export default {
     Tabbed,
     AlertTable,
     Banner,
-    ConfigBadge,
     EventsTable,
     SimpleBox,
     Certificates
@@ -378,10 +376,6 @@ export default {
         /></span>
       </div>
       <div :style="{'flex':1}" />
-      <ConfigBadge
-        v-if="currentCluster.canUpdate"
-        :cluster="currentCluster"
-      />
     </div>
 
     <div class="resource-gauges">

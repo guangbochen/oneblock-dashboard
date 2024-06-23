@@ -5,14 +5,12 @@ import { NAMESPACE, SCHEMA, COUNT } from '@shell/config/types';
 
 import SteveModel from './steve-class';
 import HybridModel, { cleanHybridResources } from './hybrid-class';
-import NormanModel from './norman-class';
 import { urlFor } from '@shell/plugins/dashboard-store/getters';
 import { normalizeType } from '@shell/plugins/dashboard-store/normalize';
 import pAndNFiltering from '@shell/utils/projectAndNamespaceFiltering.utils';
 import { parse } from '@shell/utils/url';
 
 export const STEVE_MODEL_TYPES = {
-  NORMAN:  'norman',
   STEVE:   'steve',
   BY_TYPE: 'byType'
 };
@@ -137,8 +135,6 @@ export default {
       } else {
         return SteveModel;
       }
-    } else if ( which === STEVE_MODEL_TYPES.NORMAN ) {
-      return NormanModel;
     } else {
       return SteveModel;
     }
@@ -159,8 +155,6 @@ export default {
       } else {
         return SteveModel;
       }
-    } else if ( which === STEVE_MODEL_TYPES.NORMAN ) {
-      return NormanModel;
     } else {
       return SteveModel;
     }

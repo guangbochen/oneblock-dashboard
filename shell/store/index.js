@@ -216,7 +216,7 @@ export const state = () => {
   return {
     managementReady:         false,
     clusterReady:            false,
-    isRancher:               false,
+    isMgmt:                  false,
     namespaceFilters:        [],
     activeNamespaceCache:    {}, // Used to efficiently check if a resource should be displayed
     activeNamespaceCacheKey: '', // Fingerprint of activeNamespaceCache
@@ -250,8 +250,8 @@ export const getters = {
     }
   },
 
-  isRancher(state) {
-    return state.isRancher === true;
+  isMgmt(state) {
+    return state.isMgmt === true;
   },
 
   clusterId(state) {
@@ -551,7 +551,7 @@ export const getters = {
   releaseNotesUrl(state, getters) {
     const version = getters['management/byId'](MANAGEMENT.SETTING, 'server-version')?.value;
 
-    const base = 'https://github.com/rancher/rancher/releases';
+    const base = 'https://github.com/llmos-ai/llmos-operator/releases';
 
     if (version && !isDevBuild(version)) {
       return `${ base }/tag/${ version }`;
@@ -563,9 +563,9 @@ export const getters = {
 };
 
 export const mutations = {
-  managementChanged(state, { ready, isRancher }) {
+  managementChanged(state, { ready, isMgmt }) {
     state.managementReady = ready;
-    state.isRancher = isRancher;
+    state.isMgmt = isMgmt;
   },
   clusterReady(state, ready) {
     state.clusterReady = ready;
@@ -679,9 +679,9 @@ export const actions = {
       }),
     };
 
-    const isRancher = !!getters['management/schemaFor'](MANAGEMENT.PROJECT);
+    const isMgmt = !!getters['management/schemaFor'](MANAGEMENT.PROJECT);
 
-    if ( isRancher ) {
+    if ( isMgmt ) {
       promises['prefs'] = dispatch('prefs/loadServer');
       promises['rancherSubscribe'] = dispatch('rancher/subscribe');
     }
@@ -725,7 +725,7 @@ export const actions = {
 
     commit('managementChanged', {
       ready: true,
-      isRancher,
+      isMgmt,
     });
 
     if ( res.workspaces ) {
@@ -736,7 +736,7 @@ export const actions = {
       });
     }
 
-    console.log(`Done loading management; isRancher=${ isRancher }; isMultiCluster=${ isMultiCluster }`); // eslint-disable-line no-console
+    console.log(`Done loading management; isMgmt=${ isMgmt }; isMultiCluster=${ isMultiCluster }`); // eslint-disable-line no-console
   },
 
   async loadCluster({
@@ -1015,13 +1015,11 @@ export const actions = {
     Object.defineProperty(this, '$plugin', { value: nuxt.app.$plugin });
 
     dispatch('management/rehydrateSubscribe');
-    // dispatch('cluster/rehydrateSubscribe');
+    dispatch('cluster/rehydrateSubscribe');
 
-    if ( rootState.isRancher ) {
+    if ( rootState.isMgmt ) {
       dispatch('rancher/rehydrateSubscribe');
     }
-
-    // dispatch('catalog/rehydrate');
 
     dispatch('prefs/loadCookies');
     dispatch('prefs/loadTheme');

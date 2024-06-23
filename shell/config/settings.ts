@@ -41,7 +41,7 @@ export const SETTING = {
   KUBECONFIG_DEFAULT_TOKEN_TTL_MINUTES: 'kubeconfig-default-token-ttl-minutes',
   FIRST_LOGIN:                          'first-login',
   SERVER_URL:                           'server-url',
-  PASSWORD_MIN_LENGTH:                  'password-min-length', // CATTLE_PASSWORD_MIN_LENGTH
+  PASSWORD_MIN_LENGTH:                  'password-min-length', // L_PASSWORD_MIN_LENGTH
   UI_OFFLINE_PREFERRED:                 'ui-offline-preferred',
 
   UI_INDEX:                             'ui-index',
