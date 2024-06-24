@@ -89,18 +89,9 @@ function setProduct(store, to, redirect) {
   }
 
   const oldProduct = store.getters['productId'];
-  const oldStore = store.getters['currentProduct']?.inStore;
 
   if ( product !== oldProduct ) {
     store.commit('setProduct', product);
-  }
-
-  const neuStore = store.getters['currentProduct']?.inStore;
-
-  if ( neuStore !== oldStore ) {
-    // If the product store changes, clear the catalog.
-    // There might be management catalog items in it vs cluster.
-    store.commit('catalog/reset');
   }
 
   return false;

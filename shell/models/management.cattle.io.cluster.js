@@ -243,6 +243,10 @@ export default class MgmtCluster extends HybridModel {
   }
 
   get providerLogo() {
+    if (this.id === 'local') {
+      return require(`~shell/assets/images/providers/kubernetes.svg`);
+    }
+
     let provider = this.status?.provider || 'kubernetes';
 
     // Only interested in the part before the period

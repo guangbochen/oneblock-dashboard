@@ -79,12 +79,14 @@ export const METRIC = {
 // Management API (via Steve)
 // Base: /v1
 export const MANAGEMENT = {
-  SETTING:                       'management.llmos.ai.setting',
-  USER:                          'management.llmos.ai.user',
-  CLUSTER:                       'management.cattle.io.cluster',
-
-  //TODO, remove
-  PROJECT:                       'management.cattle.io.project',
+  CLUSTER:   'management.cattle.io.cluster',
+  SETTING:   'management.llmos.ai.setting',
+  USER:      'management.llmos.ai.user',
+  MODELFILE: 'ml.llmos.ai.modelfile',
+  CHAT:      'chat',
+  //TODO, add project
+  PROJECT: 'management.llmos.io.project',
+  // ML related resources
 };
 
 export const VIRTUAL_TYPES = {

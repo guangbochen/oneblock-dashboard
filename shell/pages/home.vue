@@ -126,13 +126,6 @@ export default {
     v-if="managementReady"
     class="home-page"
   >
-    <BannerGraphic
-      :small="true"
-      :title="t('landing.welcomeToRancher', {vendor})"
-      :pref="HIDE_HOME_PAGE_CARDS"
-      pref-key="welcomeBanner"
-      data-testid="home-banner-graphic"
-    />
     <IndentedPanel class="mt-20 mb-20">
       <div class="row home-panels">
         <div class="col main-panel">

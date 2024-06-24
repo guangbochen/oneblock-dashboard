@@ -785,7 +785,6 @@ export const actions = {
       });
 
       commit('management/forgetType', MANAGEMENT.PROJECT);
-      commit('catalog/reset');
 
       if (oldPkgClusterStore) {
         // Mirror actions on the 'cluster' store for our specific pkg `cluster` store

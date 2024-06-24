@@ -30,10 +30,6 @@ export default {
       return { name: 'c-cluster', params: { cluster: this.clusterDetail.id } };
     },
 
-    clusterToolsLink() {
-      return { name: 'c-cluster-explorer-tools', params: { cluster: this.clusterDetail.id } };
-    },
-
     accessibleResources() {
       return RESOURCES.filter((resource) => this.$store.getters['cluster/schemaFor'](resource));
     },
@@ -65,6 +61,18 @@ export default {
     canAccessNamespaces() {
       return !!this.clusterCounts?.[0]?.counts?.[NAMESPACE];
     },
+
+    canAccessModelFiles() {
+      return !!this.clusterCounts?.[0]?.counts?.[MANAGEMENT.MODELFILE];
+    },
+
+    canAccessChats() {
+      return !!this.clusterCounts?.[0]?.counts?.[MANAGEMENT.CHAT];
+    },
+
+    llmIcon() {
+      return  require(`~shell/assets/images/pl/ai.svg`);
+    }
   },
 
   watch: {
@@ -80,9 +88,33 @@ export default {
 <template>
   <div v-if="clusterDetail">
     <div class="single-cluster-header">
+      <img
+          class="cluster-llm-logo"
+          :src="llmIcon"
+          alt="LLM ICON"
+      >
+      <h1>{{ t('glance.clusterLLMInfo') }}</h1>
+    </div>
+
+    <div class="single-cluster-info">
+      <div class="cluster-counts">
+        <ResourceSummary
+            v-if="canAccessModelFiles"
+            :cluster="clusterDetail.id"
+            resource="ml.llmos.ai.modelfile"
+        />
+        <ResourceSummary
+            v-if="canAccessChats"
+            :cluster="clusterDetail.id"
+            resource="chat"
+        />
+      </div>
+    </div>
+
+    <div class="single-cluster-header">
       <ClusterProviderIcon
         :cluster="clusterDetail"
-        class="rancher-icon"
+        class="provider-icon"
         width="32"
       />
       <h1>{{ t('glance.clusterInfo') }}</h1>
@@ -92,14 +124,14 @@ export default {
       <div class="cluster-counts">
         <ResourceSummary :spoofed-counts="totalCountGaugeInput" />
         <ResourceSummary
-          v-if="canAccessNodes"
-          :cluster="clusterDetail.id"
-          resource="node"
+            v-if="canAccessNodes"
+            :cluster="clusterDetail.id"
+            resource="node"
         />
         <ResourceSummary
-          v-if="canAccessNamespaces"
-          :cluster="clusterDetail.id"
-          resource="namespace"
+            v-if="canAccessNamespaces"
+            :cluster="clusterDetail.id"
+            resource="namespace"
         />
       </div>
       <div class="glance-item">
@@ -144,13 +176,19 @@ export default {
     align-items: center;
     display: flex;
 
-    .rancher-icon {
+    .provider-icon {
       margin-right: 10px;
     }
 
     h1 {
       font-size: 20px;
       margin: 0;
+    }
+
+    .cluster-llm-logo {
+      margin-right: 10px;
+      width: 30px;
+      height: 30px;
     }
   }
   .single-cluster-info {
@@ -163,12 +201,15 @@ export default {
 
     .cluster-counts {
       display: flex;
+      flex-wrap: wrap;
       margin: 10px 0;
       > * {
-        flex: 1;
-        &:not(:last-child) {
-          margin-right: 20px;
-        }
+        flex: 1 0 21%;
+        margin: 5px;
+        height: 100px;
+        //&:not(:last-child) {
+        //  margin-right: 20px;
+        //}
       }
     }
 
