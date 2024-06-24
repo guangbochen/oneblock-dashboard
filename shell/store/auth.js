@@ -12,20 +12,14 @@ export const LOGIN_ERRORS = {
 
 export const state = function() {
   return {
-    fromHeader:  null,
     hasAuth:     null,
     loggedIn:    false,
     user: null,
     principalId: null,
-    initialPass: null,
   };
 };
 
 export const getters = {
-  fromHeader() {
-    return state.fromHeader;
-  },
-
   enabled(state) {
     return state.hasAuth;
   },
@@ -42,17 +36,9 @@ export const getters = {
     return state.principalId;
   },
 
-  initialPass(state) {
-    return state.initialPass;
-  },
-
 };
 
 export const mutations = {
-  gotHeader(state, fromHeader) {
-    state.fromHeader = fromHeader;
-  },
-
   gotUser(state, user) {
     // Always deference to avoid race condition when setting `mustChangePassword`
     state.user = { ...user };
@@ -64,7 +50,7 @@ export const mutations = {
 
   loggedInAs(state, principalId) {
     state.loggedIn = true;
-    state.principalId = "local://" + principalId;
+    state.principalId = principalId;
 
     this.$cookies.remove(KEY);
   },
@@ -72,19 +58,10 @@ export const mutations = {
   loggedOut(state) {
     state.loggedIn = false;
     state.principalId = null;
-    state.initialPass = null;
   },
-
-  initialPass(state, pass) {
-    state.initialPass = pass;
-  }
 };
 
 export const actions = {
-  gotHeader({ commit }, fromHeader) {
-    commit('gotHeader', fromHeader);
-  },
-
   async getUser({ dispatch, commit, getters }) {
     if (getters.user) {
       return;
@@ -106,10 +83,6 @@ export const actions = {
 
   gotUser({ commit }, user) {
     commit('gotUser', user);
-  },
-
-  setInitialPass({ commit }, pass) {
-    commit('initialPass', pass);
   },
 
   /**

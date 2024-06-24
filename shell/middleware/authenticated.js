@@ -1,9 +1,7 @@
-import { REDIRECTED } from '@shell/config/cookies';
 import { NAME as EXPLORER } from '@shell/config/product/explorer';
 import {
-  SETUP, TIMED_OUT, UPGRADED, _FLAGGED, _UNFLAG
+  TIMED_OUT, UPGRADED, _FLAGGED, _UNFLAG
 } from '@shell/config/query-params';
-import { SETTING } from '@shell/config/settings';
 import { MANAGEMENT } from '@shell/config/types';
 import { _ALL_IF_AUTHED } from '@shell/plugins/dashboard-store/actions';
 import { applyProducts } from '@shell/store/type-map';
@@ -140,49 +138,36 @@ function invalidResource(store, to, redirect) {
 export default async function({
   route, app, store, redirect, $cookies, req, isDev, from, $plugin, next
 }) {
-  if ( route.path && typeof route.path === 'string') {
+  if (route.path && typeof route.path === 'string') {
     // Ignore webpack hot module reload requests
-    if ( route.path.startsWith('/__webpack_hmr/') ) {
+    if (route.path.startsWith('/__webpack_hmr/')) {
       return;
     }
 
     // Ignore the error page
-    if ( route.path.startsWith('/fail-whale') ) {
+    if (route.path.startsWith('/fail-whale')) {
       return;
     }
   }
 
-  // This tells Ember not to redirect back to us once you've already been to dashboard once.
-  if ( !$cookies.get(REDIRECTED) ) {
-    $cookies.set(REDIRECTED, 'true', {
-      path:     '/',
-      sameSite: true,
-      secure:   true,
-    });
-  }
-
   const upgraded = route.query[UPGRADED] === _FLAGGED;
 
-  if ( upgraded ) {
-    app.router.applyQuery({ [UPGRADED]: _UNFLAG });
+  if (upgraded) {
+    app.router.applyQuery({[UPGRADED]: _UNFLAG});
 
     store.dispatch('growl/success', {
-      title:   store.getters['i18n/t']('serverUpgrade.title'),
+      title: store.getters['i18n/t']('serverUpgrade.title'),
       message: store.getters['i18n/t']('serverUpgrade.message'),
       timeout: 0,
     });
   }
 
-  // Initial ?setup=admin-password can technically be on any route
-  let initialPass = route.query[SETUP];
-  let firstLogin = null;
-
   try {
     // Load settings, which will either be just the public ones if not logged in, or all if you are
     await store.dispatch('management/findAll', {
       type: MANAGEMENT.SETTING,
-      opt:  {
-        load: _ALL_IF_AUTHED, url: `/v1/${ MANAGEMENT.SETTING }`, redirectUnauthorized: false
+      opt: {
+        load: _ALL_IF_AUTHED, url: `/v1/${MANAGEMENT.SETTING}`, redirectUnauthorized: false
       }
     });
 
@@ -190,54 +175,8 @@ export default async function({
     if (!haveSetFavIcon()) {
       setFavIcon(store);
     }
-
-    const res = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.FIRST_LOGIN);
-    const plSetting = store.getters['management/byId'](MANAGEMENT.SETTING, SETTING.PL);
-
-    firstLogin = res?.value === 'true';
-
-    if (!initialPass && plSetting?.value === 'llmos') {
-      initialPass = 'admin';
-    }
   } catch (e) {
-  }
-
-  if ( firstLogin === null ) {
-    try {
-      const res = await store.dispatch('management/find', {
-        type: 'setting',
-        id:   SETTING.FIRST_LOGIN,
-        opt:  { url: `/v1/settings/${ SETTING.FIRST_LOGIN }` }
-      });
-
-      firstLogin = res?.value === 'true';
-
-      const plSetting = await store.dispatch('management/find', {
-        type: 'setting',
-        id:   SETTING.PL,
-        opt:  { url: `/v1/settings/${ SETTING.PL }` }
-      });
-
-      if (!initialPass && plSetting?.value === 'llmos') {
-        initialPass = 'admin';
-      }
-    } catch (e) {
-    }
-  }
-
-  // TODO show error if firstLogin and default pass doesn't work
-  if ( firstLogin ) {
-    const ok = await tryInitialSetup(store, initialPass);
-
-    if (ok) {
-      if (initialPass) {
-        store.dispatch('auth/setInitialPass', initialPass);
-      }
-
-      return redirect({ name: 'auth-setup' });
-    } else {
-      return redirect({ name: 'auth-login' });
-    }
+    console.error('Error loading authenticated settings', e);
   }
 
   // Make sure you're actually logged in
@@ -261,41 +200,23 @@ export default async function({
   }
 
   if ( store.getters['auth/enabled'] !== false && !store.getters['auth/loggedIn'] ) {
-    // `await` so we have one successfully request whilst possibly logged in (ensures fromHeader is populated from `x-api-cattle-auth`)
+    // `await` so we have one successfully request whilst possibly logged in
     await store.dispatch('auth/getUser');
 
-    // In newer versions the API calls return the auth state instead of having to make a new call all the time.
-    const fromHeader = store.getters['auth/fromHeader'];
-
-    if ( fromHeader === 'none' ) {
-      noAuth();
-    } else if ( fromHeader === 'true' ) {
+    try {
       const me = await findMe(store);
-      console.log('isLoggedIn', me);
       isLoggedIn(me);
-    } else if ( fromHeader === 'false' ) {
-      notLoggedIn();
-    } else {
-      // Older versions look at principals and see what happens
-      try {
-        const me = await findMe(store);
-
-        console.log('isLoggedIn2', me);
-        isLoggedIn(me);
-      } catch (e) {
-        const status = e?._status;
-
-        if ( status === 404 ) {
-          noAuth();
+    } catch (e) {
+      const status = e?._status;
+      if ( status === 404 ) {
+        noAuth();
+      } else {
+        if ( status === 401 ) {
+          notLoggedIn();
         } else {
-          if ( status === 401 ) {
-            notLoggedIn();
-          } else {
-            store.commit('setError', { error: e, locationError: new Error('Auth Middleware') });
-          }
-
-          return;
+          store.commit('setError', { error: e, locationError: new Error('Auth Middleware') });
         }
+        return;
       }
     }
   }
@@ -307,9 +228,6 @@ export default async function({
 
     window.location.href = backTo;
   }
-
-  // GC should be notified of route change before any find/get request is made that might be used for that page
-  // store.dispatch('gcRouteChanged', route);
 
   // Load stuff
   let localCheckResource = false;
@@ -365,22 +283,6 @@ export default async function({
     const pkg = getPackageFromRoute(route);
     const product = getProductFromRoute(route);
 
-    const oldPkg = getPackageFromRoute(from);
-    const oldProduct = getProductFromRoute(from);
-
-    // Leave an old pkg where we weren't before?
-    const oldPkgPlugin = oldPkg ? Object.values($plugin.getPlugins()).find((p) => p.name === oldPkg) : null;
-
-    if (oldPkg && oldPkg !== pkg ) {
-      // Execute anything optional the plugin wants to. For example resetting it's store to remove data
-      await oldPkgPlugin.onLeave(store, {
-        clusterId,
-        product,
-        oldProduct,
-        oldIsExt: !!oldPkg
-      });
-    }
-
     // Sometimes this needs to happen before or alongside other things... but is always needed
     const always = [
       store.dispatch('loadManagement')
@@ -388,20 +290,6 @@ export default async function({
 
     // Entering a new package where we weren't before?
     const newPkgPlugin = pkg ? Object.values($plugin.getPlugins()).find((p) => p.name === pkg) : null;
-
-    // Note - We can't block on oldPkg !== newPkg because on a fresh load the `from` route equals the `to` route
-    if (pkg && (oldPkg !== pkg || from.fullPath === route.fullPath)) {
-      // Execute mandatory store actions
-      await Promise.all(always);
-
-      // Execute anything optional the plugin wants to
-      await newPkgPlugin.onEnter(store, {
-        clusterId,
-        product,
-        oldProduct,
-        oldIsExt: !!oldPkg
-      });
-    }
 
     if (!route.matched?.length) {
       // If there are no matching routes we could be trying to nav to a page belonging to a dynamic plugin which needs loading
@@ -421,32 +309,14 @@ export default async function({
       }
     }
 
-    // Ensure that the activeNamespaceCache is updated given the change of context either from or to a place where it uses workspaces
-    // When fleet moves to it's own package this should be moved to pkg onEnter/onLeave
-    // if ((oldProduct === FLEET_NAME || product === FLEET_NAME) && oldProduct !== product) {
-    //   // See note above for store.app.router.beforeEach, need to setProduct manually, for the moment do this in a targeted way
-    //   const redirected = setProduct(store, route, redirect);
-    //
-    //   if (redirected) {
-    //     return redirected();
-    //   }
-    //
-    //   store.commit('updateWorkspace', {
-    //     value:   store.getters['prefs/get'](WORKSPACE) || DEFAULT_WORKSPACE,
-    //     getters: store.getters
-    //   });
-    // }
-
     // Always run loadCluster, it handles 'unload' as well
     // Run them in parallel
     await Promise.all([
       ...always,
       store.dispatch('loadCluster', {
         id:          clusterId,
-        oldPkg:      oldPkgPlugin,
         newPkg:      newPkgPlugin,
         product,
-        oldProduct,
         targetRoute: route
       })
     ]);
@@ -495,22 +365,4 @@ export default async function({
 
 async function findMe(store) {
   return store.getters['auth/user']
-}
-
-async function tryInitialSetup(store, password = 'admin') {
-  try {
-    const res = await store.dispatch('auth/login', {
-      provider: 'local',
-      body:     {
-        username: 'admin',
-        password
-      },
-    });
-
-    return res._status === 200;
-  } catch (e) {
-    console.error('Error trying initial setup', e); // eslint-disable-line no-console
-
-    return false;
-  }
 }

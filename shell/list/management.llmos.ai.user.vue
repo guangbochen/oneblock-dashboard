@@ -1,7 +1,6 @@
 <script>
 import AsyncButton from '@shell/components/AsyncButton';
 import { MANAGEMENT } from '@shell/config/types';
-import { NAME } from '@shell/config/product/auth';
 import ResourceTable from '@shell/components/ResourceTable';
 import Masthead from '@shell/components/ResourceList/Masthead';
 import ResourceFetch from '@shell/mixins/resource-fetch';
@@ -67,22 +66,9 @@ export default {
     },
 
     users() {
-      if ( !this.rows ) {
-        return [];
-      }
-
-      // Update the list of users
-      // 1) Only show system users in explorer/users and not in auth/users
-      // 2) Supplement user with info to enable/disable the refresh group membership action (this is not persisted on save)
-      const params = { ...this.$route.params };
-      const requiredUsers = params.product === NAME ? this.rows.filter((a) => !a.isSystem) : this.rows;
-
-      return requiredUsers;
+      return this.rows
     }
-
   },
-
-  methods: {},
 };
 </script>
 

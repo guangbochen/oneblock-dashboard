@@ -4,26 +4,20 @@ import {MANAGEMENT} from "@shell/config/types";
 export default class User extends HybridModel {
   // Preserve description
   constructor(data, ctx, rehydrateNamespace = null, setClone = false) {
-    const _description = data.description;
+    console.log('User constructor', data);
+    const _description = data.spec?.description;
 
     super(data, ctx, rehydrateNamespace, setClone);
     this.description = _description;
   }
 
   get isSystem() {
-    for ( const p of this.principalIds || [] ) {
-      if ( p.startsWith('system://') ) {
-        return true;
-      }
-    }
-
-    return false;
+    const p = this.$rootGetters['auth/principalId'];
+    return p.startsWith('system://');
   }
 
   get isCurrentUser() {
-    const currentPrincipal = this.$rootGetters['auth/principalId'];
-
-    return !!(this.principalIds || []).find((p) => p === currentPrincipal);
+    return this.$rootGetters['auth/principalId'] === this.user.id;
   }
 
   get nameDisplay() {
@@ -42,41 +36,7 @@ export default class User extends HybridModel {
   }
 
   get provider() {
-    const principals = [];
-    let isSystem = false;
-    let isLocal = true;
-    let provider = '';
-
-    for ( const p of principals ) {
-      const idx = p.indexOf(':');
-      const driver = p.substr(0, idx).toLowerCase().split('_')[0];
-
-      if ( driver === 'system' ) {
-        isSystem = true;
-      } else if ( driver === 'local' ) {
-        // Do nothing, defaults to local
-      } else {
-        isLocal = false;
-
-        if ( provider ) {
-          provider = 'multiple';
-        } else {
-          provider = driver;
-        }
-      }
-    }
-
-    let key;
-
-    if ( isSystem ) {
-      key = 'system';
-    } else if ( isLocal ) {
-      key = 'local';
-    } else {
-      key = provider;
-    }
-
-    return key;
+    return 'local';
   }
 
   get providerDisplay() {
@@ -84,7 +44,7 @@ export default class User extends HybridModel {
   }
 
   get state() {
-    if ( this.enabled === false ) {
+    if ( this.spec?.isActive === false ) {
       return 'inactive';
     }
 
@@ -103,7 +63,7 @@ export default class User extends HybridModel {
   toJSON() {
     const data = super.toJSON();
 
-    data.description = this._description;
+    data.spec.description = this._description;
     delete data._description;
 
     return data;
@@ -112,16 +72,13 @@ export default class User extends HybridModel {
   async save(opt) {
     const clone = await this.$dispatch('clone', { resource: this });
 
-    // Remove local properties
-    delete clone.canRefreshAccess;
-
     return clone._save(opt);
   }
 
   async setEnabled(enabled) {
-    const clone = await this.$dispatch('management/clone', { resource: this.norman }, { root: true });
+    const clone = await this.$dispatch('management/clone', { resource: this.user }, { root: true });
 
-    clone.isActive = enabled;
+    clone.spec.isActive = enabled;
     await clone.save();
   }
 
@@ -129,16 +86,8 @@ export default class User extends HybridModel {
     await this.setEnabled(true);
   }
 
-  async activateBulk(items) {
-    await Promise.all(items.map((item) => item.setEnabled(true)));
-  }
-
   async deactivate() {
     await this.setEnabled(false);
-  }
-
-  async deactivateBulk(items) {
-    await Promise.all(items.map((item) => item.setEnabled(false)));
   }
 
   canActivate(state) {
@@ -178,7 +127,7 @@ export default class User extends HybridModel {
       {
         label:     this.t('user.detail.username'),
         formatter: 'CopyToClipboard',
-        content:   this.username
+        content:   this.spec.username
       },
       ...this._details
     ];
@@ -190,10 +139,6 @@ export default class User extends HybridModel {
 
   get user() {
     return this.$rootGetters['management/byId'](MANAGEMENT.USER, this.id);
-  }
-
-  get canDelete() {
-    return this.hasLink('remove') && !this.isCurrentUser;
   }
 
   get canDelete() {
